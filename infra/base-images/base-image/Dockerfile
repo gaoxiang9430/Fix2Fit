@@ -16,7 +16,7 @@
 
 # Base image for all other images.
 
-FROM ubuntu:16.04
+FROM mechtaev/ubuntu-16.04-llvm-3.8.1
 MAINTAINER mike.aizatsky@gmail.com
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update && apt-get upgrade -y && apt-get autoremove -y

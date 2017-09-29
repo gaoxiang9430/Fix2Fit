@@ -16,10 +16,11 @@
 
 # Docker image with head clang installed.
 
-FROM gcr.io/oss-fuzz-base/base-image
+FROM base-image-3.8.1
+
 MAINTAINER mike.aizatsky@gmail.com
 
-RUN apt-get install -y libc6-dev binutils libgcc-5-dev
+RUN apt-get install -y libc6-dev binutils libgcc-5-dev wget
 
 COPY checkout_build_install_llvm.sh /root/
 # Keep all steps in the same script to decrease the number of intermediate
