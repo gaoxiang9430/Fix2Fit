@@ -14,7 +14,8 @@
 #
 ################################################################################
 
-FROM gcr.io/oss-fuzz-base/base-builder
+FROM base-builder-3.8.1
+
 MAINTAINER dvyukov@google.com
 RUN apt-get update && apt-get install -y make autoconf automake libtool libssl-dev zlib1g-dev
 

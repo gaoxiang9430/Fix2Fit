@@ -14,7 +14,8 @@
 #
 ################################################################################
 
-FROM gcr.io/oss-fuzz-base/base-builder
+FROM base-builder-3.8.1
+
 MAINTAINER matt@ucc.asn.au
 RUN apt-get update && apt-get install -y libz-dev autoconf mercurial
 RUN hg clone -b fuzz https://secure.ucc.asn.au/hg/dropbear dropbear

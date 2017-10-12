@@ -14,7 +14,8 @@
 #
 ################################################################################
 
-FROM gcr.io/oss-fuzz-base/base-builder
+FROM base-builder-3.8.1
+
 MAINTAINER mike.aizatsky@gmail.com
 RUN apt-get update && apt-get install -y make autoconf automake libtool docbook2x
 

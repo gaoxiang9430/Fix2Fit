@@ -14,7 +14,8 @@
 #
 ################################################################################
 
-FROM gcr.io/oss-fuzz-base/base-builder
+FROM f1x-oss-fuzz
+
 MAINTAINER oss-fuzz@benoitblanchon.fr
 RUN apt-get update && apt-get install -y make zip git
 RUN git clone --depth 1 https://github.com/bblanchon/ArduinoJson.git arduinojson

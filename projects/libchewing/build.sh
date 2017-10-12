@@ -19,21 +19,27 @@
 ./autogen.sh
 ./configure --disable-shared --enable-static --without-sqlite3
 make clean
-make -j$(nproc) all
+#make -j$(nproc) all
+make install
+cd test 
+make check
+cd ..
 
 # build your fuzzer(s)
-make -C test CFLAGS="$CFLAGS -Dmain=stress_main -Drand=get_fuzz_input" stress.o
+#make -C test CFLAGS="$CFLAGS -Dmain=stress_main -Drand=get_fuzz_input" stress.o
 
-$CC $CFLAGS -c $SRC/chewing_fuzzer_common.c -o $WORK/chewing_fuzzer_common.o
+#$CC $CFLAGS -c $SRC/chewing_fuzzer_common.c -o $WORK/chewing_fuzzer_common.o
 
-for variant in default random_init dynamic_config; do
-    $CC $CFLAGS -c $SRC/chewing_${variant}_fuzzer.c -o $WORK/chewing_${variant}_fuzzer.o
-    $CXX $CXXFLAGS \
-      -o $OUT/chewing_${variant}_fuzzer \
-      $WORK/chewing_${variant}_fuzzer.o $WORK/chewing_fuzzer_common.o \
-      test/stress.o test/.libs/libtesthelper.a src/.libs/libchewing.a \
-      -lFuzzingEngine
-done
+#for variant in default random_init dynamic_config; do
+#    $CC $CFLAGS -c $SRC/chewing_${variant}_fuzzer.c -o $WORK/chewing_${variant}_fuzzer.o
+#    $CXX $CXXFLAGS \
+#      -o $OUT/chewing_${variant}_fuzzer \
+#      $WORK/chewing_${variant}_fuzzer.o $WORK/chewing_fuzzer_common.o \
+#      test/stress.o test/.libs/libtesthelper.a src/.libs/libchewing.a \
+#      -lFuzzingEngine
+#done
 
 # install data files
-make -j$(nproc) -C data pkgdatadir=$OUT install
+#make -j$(nproc) -C data pkgdatadir=$OUT install
+
+exec "/bin/bash";

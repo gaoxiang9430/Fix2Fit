@@ -14,7 +14,8 @@
 #
 ################################################################################
 
-FROM gcr.io/oss-fuzz-base/base-builder
+FROM base-builder-3.8.1
+
 MAINTAINER mmoroz@chromium.org
 RUN apt-get update && apt-get install -y make autoconf automake libtool build-essential \
     libass-dev libfreetype6-dev libsdl1.2-dev \
@@ -34,7 +35,7 @@ RUN git clone git://anongit.freedesktop.org/git/xorg/lib/libXfixes
 RUN git clone https://github.com/01org/libva
 RUN git clone git://people.freedesktop.org/~aplattner/libvdpau
 RUN git clone https://chromium.googlesource.com/webm/libvpx
-RUN svn co http://svn.xiph.org/trunk/ogg
+RUN svn co http://svn.xiph.org/trunk/ogg --trust-server-cert
 RUN git clone git://git.xiph.org/opus.git
 RUN git clone git://git.xiph.org/theora.git
 RUN git clone git://git.xiph.org/vorbis.git

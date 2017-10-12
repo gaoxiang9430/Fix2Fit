@@ -51,3 +51,5 @@ export EXTRA_LIBS="$EXTRA_LIBS -L$SRC/install/lib -lcurl -lssl -lcrypto -lz"
 export EXTRA_LIBS="$EXTRA_LIBS -Wl,-Bdynamic -ldl -lpthread"
 ./fuzzers/build_google_oss_fuzzers.sh
 ./fuzzers/build_seed_corpus.sh
+
+exec "/bin/bash";

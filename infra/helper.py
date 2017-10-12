@@ -33,9 +33,9 @@ OSSFUZZ_DIR = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 BUILD_DIR = os.path.join(OSSFUZZ_DIR, 'build')
 
 BASE_IMAGES = [
-    'gcr.io/oss-fuzz-base/base-image',
-    'gcr.io/oss-fuzz-base/base-clang',
-    'gcr.io/oss-fuzz-base/base-builder',
+    'base-image-3.8.1',
+    'base-clang-3.8.1',
+    'f1x-oss-fuzz',
     'gcr.io/oss-fuzz-base/base-runner',
     'gcr.io/oss-fuzz-base/base-runner-debug',
 ]
@@ -297,7 +297,7 @@ def build_fuzzers(args):
     env += args.e
 
   command = (
-      ['docker', 'run', '--rm', '-i', '--cap-add', 'SYS_PTRACE'] +
+      ['docker', 'run', '-i', '--cap-add', 'SYS_PTRACE'] +
       sum([['-e', v] for v in env], [])
   )
   if args.source_path:

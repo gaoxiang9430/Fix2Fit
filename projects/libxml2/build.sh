@@ -22,9 +22,11 @@ make -j$(nproc) clean
 make -j$(nproc) all
 
 for fuzzer in libxml2_xml_read_memory_fuzzer libxml2_xml_regexp_compile_fuzzer; do
-  $CXX $CXXFLAGS -std=c++11 -Iinclude/ \
+  $CXX $CXXFLAGS -std=c++11 -lz -llzma -Iinclude/ \
       $SRC/$fuzzer.cc -o $OUT/$fuzzer \
       -lFuzzingEngine .libs/libxml2.a
 done
 
 cp $SRC/*.dict $SRC/*.options $OUT/
+
+exec "/bin/bash";

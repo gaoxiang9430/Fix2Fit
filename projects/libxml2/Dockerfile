@@ -14,14 +14,18 @@
 #
 ################################################################################
 
-FROM gcr.io/oss-fuzz-base/base-builder
+FROM f1x-oss-fuzz
+
 MAINTAINER ochang@chromium.org
-RUN apt-get update && apt-get install -y make autoconf automake libtool pkg-config
+RUN apt-get update && apt-get install -y make autoconf automake libtool pkg-config python-dev liblzma-dev libxslt1-dev libz-dev zlib1g-dev
+
 
 RUN git clone --depth 1 git://git.gnome.org/libxml2
 WORKDIR libxml2
 
 COPY build.sh $SRC/
+COPY xmlregexp.c $SRC/libxml2/
+COPY libxml2_949 /libxml2_949
 COPY libxml2_xml_read_memory_fuzzer.* \
      libxml2_xml_regexp_compile_fuzzer.* \
      xml.dict $SRC/
