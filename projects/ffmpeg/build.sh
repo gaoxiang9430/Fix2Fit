@@ -18,6 +18,10 @@
 # Disable UBSan vptr since several targets built with -fno-rtti.
 export CFLAGS="$CFLAGS -fno-sanitize=vptr"
 export CXXFLAGS="$CXXFLAGS -fno-sanitize=vptr"
+#export F1X_PROJECT_CC="$CC"
+#export F1X_PROJECT_CXX="$CXX"
+#export CC=f1x-cc
+#export CXX=f1x-cxx
 
 # Build dependencies.
 export FFMPEG_DEPS_PATH=$SRC/ffmpeg_deps
@@ -116,13 +120,13 @@ make clean
 make -j$(nproc) all
 make install
 
-cd $SRC/theora
+cd $SRC/libtheora
 # theora requires ogg, need to pass its location to the "configure" script.
 CFLAGS="$CFLAGS -fPIC" LDFLAGS="-L$FFMPEG_DEPS_PATH/lib/" \
     CPPFLAGS="$CXXFLAGS -I$FFMPEG_DEPS_PATH/include/" \
     LD_LIBRARY_PATH="$FFMPEG_DEPS_PATH/lib/" \
     ./autogen.sh --prefix="$FFMPEG_DEPS_PATH" --enable-static --disable-examples
-make clean
+#make clean
 make -j$(nproc)
 make install
 
@@ -163,8 +167,8 @@ PKG_CONFIG_PATH="$FFMPEG_DEPS_PATH/lib/pkgconfig" ./configure \
     --prefix="$FFMPEG_DEPS_PATH" \
     --pkg-config-flags="--static" \
     --libfuzzer=-lFuzzingEngine \
-    --optflags=-O1 \
-    --enable-gpl \
+    #--optflags=-O1 \
+    #--enable-gpl \
     --enable-libass \
     --enable-libfdk-aac \
     --enable-libfreetype \
@@ -206,6 +210,7 @@ for c in $CONDITIONALS ; do
   mv tools/target_dec_${symbol}_fuzzer $OUT/${fuzzer_name}
 done
 
+exec "/bin/bash";
 # Find relevant corpus in test samples and archive them for every fuzzer.
 #cd $SRC
 #python group_seed_corpus.py $TEST_SAMPLES_PATH $OUT/
