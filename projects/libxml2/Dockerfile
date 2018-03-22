@@ -26,6 +26,7 @@ WORKDIR libxml2
 COPY build.sh $SRC/
 COPY xmlregexp.c $SRC/libxml2/
 COPY libxml2_949 /libxml2_949
+COPY libxml2_1017 /libxml2_1017
 COPY libxml2_xml_read_memory_fuzzer.* \
      libxml2_xml_regexp_compile_fuzzer.* \
      xml.dict $SRC/
