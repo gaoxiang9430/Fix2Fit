@@ -278,8 +278,7 @@ def build_image(args):
   """Build docker image."""
   pull = args.pull
   if not pull:
-    y_or_n = raw_input('Pull latest base images (compiler/runtime)? (y/N): ')
-    pull = y_or_n.lower() == 'y'
+    pull = False
 
   if pull:
     print('Pulling latest base images...')
