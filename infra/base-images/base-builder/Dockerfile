@@ -16,7 +16,7 @@
 
 FROM base-clang-3.8.1
 MAINTAINER mike.aizatsky@gmail.com
-RUN apt-get install -y git subversion jq python3 zip make libunwind8-dev binutils-dev libblocksruntime-dev
+RUN apt-get update && apt-get install -y git subversion jq python3 zip make libunwind8-dev binutils-dev libblocksruntime-dev
 
 # Default build flags for various sanitizers.
 ENV SANITIZER_FLAGS_address "-fsanitize=address -fsanitize-address-use-after-scope"
@@ -25,7 +25,7 @@ ENV SANITIZER_FLAGS_memory "-fsanitize=memory -fsanitize-memory-track-origins"
 ENV SANITIZER_FLAGS_profile "-fprofile-instr-generate -fcoverage-mapping"
 
 # Default build flags for coverage.
-ENV COVERAGE_FLAGS="-fsanitize-coverage=trace-pc-guard,trace-cmp"
+ENV COVERAGE_FLAGS="-fsanitize="
 
 # Coverage flags for generating coverage reports.
 ENV COVERAGE_FLAGS_coverage="-fsanitize-coverage=bb,no-prune,trace-pc-guard -O0"
@@ -57,4 +57,5 @@ RUN mkdir honggfuzz && \
 COPY compile compile_afl compile_libfuzzer compile_honggfuzz coverage_report srcmap /usr/local/bin/
 
 CMD ["compile"]
+
 
