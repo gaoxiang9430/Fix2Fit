@@ -1,3 +1,6 @@
 [submodule "f1x"]
 	path = f1x
 	url = git@github.com:mechtaev/f1x.git
+[submodule "IntPTI"]
+	path = IntPTI
+	url = git@github.com:domainexpert/IntPTI.git
