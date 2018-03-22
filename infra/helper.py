@@ -60,6 +60,7 @@ def main():
   build_image_parser.add_argument('project_name')
   build_image_parser.add_argument('--pull', action='store_true',
                                   help='Pull latest base image.')
+  build_image_parser.add_argument('bug_id')
 
   build_fuzzers_parser = subparsers.add_parser(
       'build_fuzzers', help='Build fuzzers for a project.')
@@ -67,6 +68,7 @@ def main():
   _add_sanitizer_args(build_fuzzers_parser)
   _add_environment_args(build_fuzzers_parser)
   build_fuzzers_parser.add_argument('project_name')
+  build_fuzzers_parser.add_argument('bug_id')
   build_fuzzers_parser.add_argument('source_path', help='path of local source',
                                     nargs='?')
 
@@ -94,6 +96,7 @@ def main():
   reproduce_parser.add_argument('project_name', help='name of the project')
   reproduce_parser.add_argument('fuzzer_name', help='name of the fuzzer')
   reproduce_parser.add_argument('testcase_path', help='path of local testcase')
+  reproduce_parser.add_argument('bug_id', help='bug id in oss-fuzz')
   reproduce_parser.add_argument('fuzzer_args', help='arguments to pass to the fuzzer',
                                 nargs=argparse.REMAINDER)
 
@@ -133,7 +136,10 @@ def _is_base_image(image_name):
   return os.path.exists(os.path.join('infra', 'base-images', image_name))
 
 
-def _check_project_exists(project_name):
+def _check_project_exists(project_name, bug_id):
+  if bug_id != 0:
+    project_name = project_name + '_' + bug_id
+
   """Checks if a project exists."""
   if not os.path.exists(os.path.join(OSSFUZZ_DIR, 'projects', project_name)):
     print(project_name, 'does not exist', file=sys.stderr)
@@ -189,7 +195,7 @@ def _add_environment_args(parser):
                       help="set environment variable e.g. VAR=value")
 
 
-def _build_image(image_name, no_cache=False, pull=False):
+def _build_image(image_name, bug_id, no_cache=False, pull=False):
   """Build image."""
 
   is_base_image = _is_base_image(image_name)
@@ -198,16 +204,22 @@ def _build_image(image_name, no_cache=False, pull=False):
     dockerfile_dir = os.path.join('infra', 'base-images', image_name)
   else:
     image_project = 'oss-fuzz'
-    if not _check_project_exists(image_name):
+    if not _check_project_exists(image_name, bug_id):
       return False
 
+  if bug_id == 0:
     dockerfile_dir = os.path.join('projects', image_name)
+  else:
+    dockerfile_dir = os.path.join('projects', image_name + '_' + bug_id)
 
   build_args = []
   if no_cache:
     build_args.append('--no-cache')
 
-  build_args += ['-t', 'gcr.io/%s/%s' % (image_project, image_name), dockerfile_dir]
+  if bug_id == 0:
+    build_args += ['-t', 'gcr.io/%s/%s' % (image_project, image_name), dockerfile_dir]
+  else:
+    build_args += ['-t', 'gcr.io/%s/%s' % (image_project, image_name + '_' + bug_id), dockerfile_dir]
 
   return docker_build(build_args, pull=pull)
 
@@ -275,7 +287,7 @@ def build_image(args):
     print('Using cached base images...')
 
   # If build_image is called explicitly, don't use cache.
-  if _build_image(args.project_name, no_cache=True, pull=pull):
+  if _build_image(args.project_name, args.bug_id, no_cache=True, pull=pull):
     return 0
 
   return 1
@@ -285,7 +297,7 @@ def build_fuzzers(args):
   """Build fuzzers."""
   project_name = args.project_name
 
-  if not _build_image(args.project_name):
+  if not _build_image(args.project_name, args.bug_id):
     return 1
 
   env = [
@@ -305,10 +317,12 @@ def build_fuzzers(args):
         '-v',
         '%s:/src/%s' % (_get_absolute_path(args.source_path), args.project_name)
     ]
+
+  project_name_with_bug_id = project_name + '_' + args.bug_id
   command += [
-      '-v', '%s:/out' % os.path.join(BUILD_DIR, 'out', project_name),
-      '-v', '%s:/work' % os.path.join(BUILD_DIR, 'work', project_name),
-      '-t', 'gcr.io/oss-fuzz/%s' % project_name
+      '-v', '%s:/out' % os.path.join(BUILD_DIR, 'out', project_name + '_' + args.bug_id),
+      '-v', '%s:/work' % os.path.join(BUILD_DIR, 'work', project_name + '_' + args.bug_id),
+      '-t', 'gcr.io/oss-fuzz/%s' % project_name_with_bug_id
   ]
 
   print('Running:', _get_command_string(command))
@@ -324,7 +338,7 @@ def build_fuzzers(args):
 
 def run_fuzzer(args):
   """Runs a fuzzer in the container."""
-  if not _check_project_exists(args.project_name):
+  if not _check_project_exists(args.project_name, 0):
     return 1
 
   if not _check_fuzzer_exists(args.project_name, args.fuzzer_name):
@@ -344,7 +358,7 @@ def run_fuzzer(args):
 
 def coverage(args):
   """Runs a fuzzer in the container."""
-  if not _check_project_exists(args.project_name):
+  if not _check_project_exists(args.project_name, 0):
     return 1
 
   if not _check_fuzzer_exists(args.project_name, args.fuzzer_name):
@@ -385,10 +399,10 @@ def coverage(args):
 
 def reproduce(args):
   """Reproduces a testcase in the container."""
-  if not _check_project_exists(args.project_name):
+  if not _check_project_exists(args.project_name, args.bug_id):
     return 1
 
-  if not _check_fuzzer_exists(args.project_name, args.fuzzer_name):
+  if not _check_fuzzer_exists(args.project_name + '_' + args.bug_id, args.fuzzer_name):
     return 1
 
   debugger = ''
@@ -403,13 +417,15 @@ def reproduce(args):
     env += ['DEBUGGER=' + debugger]
 
   run_args = sum([['-e', v] for v in env], []) + [
-      '-v', '%s:/out' % os.path.join(BUILD_DIR, 'out', args.project_name),
+      '-v', '%s:/out' % os.path.join(BUILD_DIR, 'out', args.project_name + '_' + args.bug_id),
       '-v', '%s:/testcase' % _get_absolute_path(args.testcase_path),
       '-t', 'gcr.io/oss-fuzz-base/%s' % image_name,
       'reproduce',
       args.fuzzer_name,
       '-runs=100',
   ] + args.fuzzer_args
+
+  print(run_args)
 
   docker_run(run_args)
 
@@ -451,7 +467,7 @@ def generate(args):
 
 def shell(args):
   """Runs a shell within a docker image."""
-  if not _build_image(args.project_name):
+  if not _build_image(args.project_name, 0):
     return 1
 
   env = [
@@ -475,8 +491,11 @@ def shell(args):
 
 def pull_images(args):
   """Pull base images."""
-  for base_image in BASE_IMAGES:
-    if not docker_pull(base_image):
+  #for base_image in BASE_IMAGES:
+  if not docker_pull('gcr.io/oss-fuzz-base/base-runner'):
+      return 1
+
+  if not docker_pull('gcr.io/oss-fuzz-base/base-runner-debug'):
       return 1
 
   return 0
