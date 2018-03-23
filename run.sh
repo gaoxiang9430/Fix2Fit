@@ -15,6 +15,9 @@ make_ffmpeg_project() {
     local FILED_BUG_NUMBER
     local FFMPEG_HASH
     local X264_HASH
+    local ENTRY_DIR
+
+    INITIAL_DIR=`pwd`
     
     BUG_NUMBER=$1
     FFMPEG_HASH=
@@ -38,6 +41,29 @@ make_ffmpeg_project() {
 	cd x264_prev
 	git reset --hard $X264_HASH
     fi
+
+    # Restore the supposedly original state
+    cd $INITIAL_DIR
+}
+
+build_project() {
+    local PROJECT_NAME
+    local BUG_NUMBER
+    local INITIAL_DIR
+    
+    PROJECT_NAME=$1
+    BUG_NUMBER=$2
+    INITIAL_DIR=`pwd`
+    
+    if [ x$PROJECT_NAME = xffmpeg ] ; then
+	make_ffmpeg_project $BUG_NUMBER
+    fi
+    sudo python $SCRIPT_DIR/infra/helper.py build_image $PROJECT_NAME $BUG_NUMBER
+    sudo python $SCRIPT_DIR/infra/helper.py build_fuzzers --sanitizer address $PROJECT_NAME $BUG_NUMBER
+    # For running the fuzzer
+    # sudo python infra/helper.py run_fuzzer "$PROJECT_NAME"_$BUG_NUMBER "$PROJECT_NAME"_fuzzer
+
+    cd $INITIAL_DIR
 }
 
 # The main procedure
@@ -58,24 +84,12 @@ if [ x$PROJECT_NAME != x ] ; then
 		echo Project $PROJECT_NAME with bug number $BUG_NUMBER not found.
 		exit 1
 	    else
-		if [ x$PROJECT_NAME = xffmpeg ] ; then
-		    make_ffmpeg_project $BUG_NUMBER
-		fi
-		sudo python infra/helper.py build_image $PROJECT_NAME $BUG_NUMBER
-		sudo python infra/helper.py build_fuzzers --sanitizer address $PROJECT_NAME $BUG_NUMBER
-		# For running the fuzzer
-		# sudo python infra/helper.py run_fuzzer "$PROJECT_NAME"_$BUG_NUMBER "$PROJECT_NAME"_fuzzer
+		build_project $PROJECT_NAME $BUG_NUMBER
 	    fi
 	else
 	    for BUG_NUMBER in `ls -d "projects/$PROJECT_NAME"_* | sed s/[^[:digit:]]/\ /g`
 	    do
-		if [ x$PROJECT_NAME = xffmpeg ] ; then
-		    make_ffmpeg_project $BUG_NUMBER
-		fi
-		sudo python infra/helper.py build_image $PROJECT_NAME $BUG_NUMBER
-		sudo python infra/helper.py build_fuzzers --sanitizer address $PROJECT_NAME $BUG_NUMBER
-		# For running the fuzzer
-		# sudo python infra/helper.py run_fuzzer "$PROJECT_NAME"_$BUG_NUMBER "$PROJECT_NAME"_fuzzer
+		build_project $PROJECT_NAME $BUG_NUMBER
 	    done
 	fi
     fi
@@ -84,13 +98,7 @@ else
     do
 	for BUG_NUMBER in `ls -d "projects/$PROJECT_NAME"_* | sed s/[^[:digit:]]/\ /g`
 	do
-	    if [ x$PROJECT_NAME = xffmpeg ] ; then
-		make_ffmpeg_project $BUG_NUMBER
-	    fi
-	    sudo python infra/helper.py build_image $PROJECT_NAME $BUG_NUMBER
-	    sudo python infra/helper.py build_fuzzers --sanitizer address $PROJECT_NAME $BUG_NUMBER
-	    # For running the fuzzer
-	    # sudo python infra/helper.py run_fuzzer "$PROJECT_NAME"_$BUG_NUMBER "$PROJECT_NAME"_fuzzer
+	    build_project $PROJECT_NAME $BUG_NUMBER
 	done
     done
 fi
