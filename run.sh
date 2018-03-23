@@ -46,6 +46,36 @@ make_ffmpeg_project() {
     cd $INITIAL_DIR
 }
 
+make_libarchive_project() {
+    local LINE
+    local BUG_NUMBER
+    local FILED_BUG_NUMBER
+    local LIBARCHIVE_HASH
+    local INITIAL_DIR
+
+    INITIAL_DIR=`pwd`
+    
+    BUG_NUMBER=$1
+    LIBARCHIVE_HASH=
+    while read LINE ;  do
+	FILED_BUG_NUMBER=`echo -n $LINE | cut --delimiter=, --fields=1`
+	if [ x$BUG_NUMBER = x$FILED_BUG_NUMBER ] ; then
+	    LIBARCHIVE_HASH=`echo -n $LINE | cut --delimiter=, --fields=2`
+	    break;
+	fi
+    done < $SCRIPT_DIR/all_issue_ids_libarchive.txt
+
+    if [ x$LIBARCHIVE_HASH != x ] ; then
+	cd $SCRIPT_DIR/projects/libarchive_$BUG_NUMBER
+	git clone https://github.com/libarchive/libarchive.git "libarchive_$BUG_NUMBER"_codes
+	cd "libarchive_$BUG_NUMBER"_codes
+	git reset --hard $LIBARCHIVE_HASH
+    fi
+
+    # Restore the supposedly original state
+    cd $INITIAL_DIR
+}
+
 build_project() {
     local PROJECT_NAME
     local BUG_NUMBER
@@ -57,6 +87,8 @@ build_project() {
     
     if [ x$PROJECT_NAME = xffmpeg ] ; then
 	make_ffmpeg_project $BUG_NUMBER
+    elif [ x$PROJECT_NAME = libarchive ] ; then
+	make_libarchive_project $BUG_NUMBER
     fi
     sudo python $SCRIPT_DIR/infra/helper.py build_image $PROJECT_NAME $BUG_NUMBER
     sudo python $SCRIPT_DIR/infra/helper.py build_fuzzers --sanitizer address $PROJECT_NAME $BUG_NUMBER
