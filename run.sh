@@ -15,7 +15,7 @@ make_ffmpeg_project() {
     local FILED_BUG_NUMBER
     local FFMPEG_HASH
     local X264_HASH
-    local ENTRY_DIR
+    local INITIAL_DIR
 
     INITIAL_DIR=`pwd`
     
