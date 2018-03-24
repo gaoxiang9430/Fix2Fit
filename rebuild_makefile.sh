@@ -34,7 +34,7 @@ do
 	if [ x$BUG_NUMBER != x4 ] ; then
 	    echo "$PROJECT_NAME"_"$BUG_NUMBER".log: >> Makefile
 	    echo -en "\t" >> Makefile
-	    echo "./run.sh $PROJECT_NAME $BUG_NUMBER 2&>1 > $@" >> Makefile
+	    echo "./run.sh $PROJECT_NAME $BUG_NUMBER 2&>1 > \$@" >> Makefile
 	    echo >> Makefile
 	fi
     done
