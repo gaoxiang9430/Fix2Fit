@@ -177,13 +177,13 @@ build_project() {
     
     if [ x$PROJECT_NAME = xffmpeg ] ; then
 	make_ffmpeg_project $BUG_NUMBER
-    elif [ x$PROJECT_NAME = libarchive ] ; then
+    elif [ x$PROJECT_NAME = xlibarchive ] ; then
 	make_libarchive_project $BUG_NUMBER
-    elif [ x$PROJECT_NAME = openjpeg ] ; then
+    elif [ x$PROJECT_NAME = xopenjpeg ] ; then
 	make_openjpeg_project $BUG_NUMBER
-    elif [ x$PROJECT_NAME = proj4 ] ; then
+    elif [ x$PROJECT_NAME = xproj4 ] ; then
 	make_proj4_project $BUG_NUMBER
-    elif [ x$PROJECT_NAME = wireshark ] ; then
+    elif [ x$PROJECT_NAME = xwireshark ] ; then
 	make_wireshark_project $BUG_NUMBER
     fi
     sudo python $SCRIPT_DIR/infra/helper.py build_image $PROJECT_NAME $BUG_NUMBER
