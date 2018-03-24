@@ -44,17 +44,19 @@ echo clean: >> Makefile
 
 for PROJECT_NAME in $PROJECTS
 do
-    echo -en "\t" >> Makefile
-    echo -n "rm -rf " >> Makefile
     for BUG_NUMBER in `ls -d "projects/$PROJECT_NAME"_* | sed s/[^[:digit:]]/\ /g`
     do
 	if [ x$BUG_NUMBER != x4 ] ; then
+	    echo -en "\t" >> Makefile
+	    echo -n "rm -rf " >> Makefile
 	    if [ x$PROJECT_NAME = xffmpeg -o x$PROJECT_NAME = xlibarchive ] ; then
-		echo -n "projects/$PROJECT_NAME"_"$BUG_NUMBER/$PROJECT_NAME"_"$BUG_NUMBER"_codes " " >> Makefile
+		echo "projects/$PROJECT_NAME"_"$BUG_NUMBER/$PROJECT_NAME"_"$BUG_NUMBER"_codes " " >> Makefile
 	    else
-		echo -n "projects/$PROJECT_NAME"_"$BUG_NUMBER/$PROJECT_NAME"_"$BUG_NUMBER" " " >> Makefile
+		echo "projects/$PROJECT_NAME"_"$BUG_NUMBER/$PROJECT_NAME"_"$BUG_NUMBER" " " >> Makefile
 	    fi
+	    echo -en "\t" >> Makefile
+	    echo "rm -f $PROJECT_NAME"_"$BUG_NUMBER".log >> Makefile	    
 	fi
     done
-    echo >> Makefile
 done
+echo >> Makefile
