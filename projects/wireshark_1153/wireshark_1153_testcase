@@ -1,0 +1,23 @@
+<html>
+  <head>
+    <title>Error!</title>
+    <link rel="stylesheet" type="text/css" href="resources/jquery.dataTables.fixedHeader.css" />
+    <link rel="stylesheet" type="text/css" href="resources/jquery.dataTables.css" />
+    <link rel="stylesheet" type="text/css" href="resources/jquery-ui.custom.css" />
+    <link rel="stylesheet" type="text/css" href="resources/style.css" />
+    <script src="resources/jquery.js"></script>
+    <script src="resources/jquery-ui.custom.min.js"></script>
+    <script src="resources/jquery.dataTables.min.js"></script>
+    <script src="resources/jquery.dataTables.fixedHeader.min.js"></script>
+    <script>
+      // Any javascript that should be applied to all pages.
+      jQuery.fn.dataTableExt.oPagination.iFullNumbersShowPages = 15;
+    </script>
+  </head>
+  <body>
+    <div>
+  <p>Invalid testcase.</p>
+  <p><a href="javascript:history.back()">Back</a></p>
+</div>
+  </body>
+</html>

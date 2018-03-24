@@ -1,0 +1,9 @@
+mv ../build_f1x.sh build_f1x.sh
+mv ../build_no_config.sh build_no_config.sh
+chmod 777 ../../driver_3372
+chmod 777 build_f1x.sh
+chmod 777 build_no_config.sh
+./build_f1x.sh
+f1x -f epan/dissectors/packet-dmp.c -t 1 -T 1000 -d ../../driver_3372 -b ./build_no_config.sh --all --verbose --output-one-per-loc |& tee log.txt
+rm -rf compile_commands.json
+f1x -f epan/dissectors/packet-dmp.c -t 1 -T 1000 -d ../../driver_3372 -b ./build_no_config.sh --all --verbose --output-one-per-loc |& tee log.txt
