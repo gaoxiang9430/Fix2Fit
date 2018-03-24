@@ -16,7 +16,7 @@ echo >> Makefile
 echo "all: $PROJECTS" >> Makefile
 echo >> Makefile
 
-for PROJECT_NAME in ffmpeg libarchive openjpeg proj4 wireshark
+for PROJECT_NAME in $PROJECTS
 do
     echo -n "$PROJECT_NAME: " >> Makefile
     
@@ -34,8 +34,24 @@ do
 	if [ x$BUG_NUMBER != x4 ] ; then
 	    echo "$PROJECT_NAME"_"$BUG_NUMBER".log: >> Makefile
 	    echo -en "\t" >> Makefile
-	    echo "./run.sh $PROJECT_NAME $BUG_NUMBER &> @" >> Makefile
+	    echo "./run.sh $PROJECT_NAME $BUG_NUMBER 2&>1 > $@" >> Makefile
 	    echo >> Makefile
 	fi
     done
+done
+
+echo clean: >> Makefile
+
+for PROJECT_NAME in $PROJECTS
+do
+    echo -en "\t" >> Makefile
+    echo -n "rm -rf " >> Makefile
+    for BUG_NUMBER in `ls -d "projects/$PROJECT_NAME"_* | sed s/[^[:digit:]]/\ /g`
+    do
+	if [ x$BUG_NUMBER != x4 ] ; then
+	    echo -n "projects/$PROJECT_NAME"_"$BUG_NUMBER/$PROJECT_NAME"_"$BUG_NUMBER" " " >> Makefile
+	    echo -n "projects/$PROJECT_NAME"_"$BUG_NUMBER/$PROJECT_NAME"_"$BUG_NUMBER"_codes " " >> Makefile
+	fi
+    done
+    echo >> Makefile
 done
