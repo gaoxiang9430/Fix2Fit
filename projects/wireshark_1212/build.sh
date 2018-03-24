@@ -47,4 +47,4 @@ make "-j$(nproc)"
 make install
 $SRC/wireshark/tools/oss-fuzzshark/build.sh all
 
-exec "/bin/bash"
+#exec "/bin/bash"

@@ -64,4 +64,4 @@ for dissector in $FUZZ_DISSECTORS; do
   echo -en "[libfuzzer]\nmax_len = 1024\n" > $OUT/${fuzzer_name}.options
 done
 
-exec "/bin/bash"
+#exec "/bin/bash"
