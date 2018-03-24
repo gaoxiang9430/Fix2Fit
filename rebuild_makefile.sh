@@ -49,8 +49,11 @@ do
     for BUG_NUMBER in `ls -d "projects/$PROJECT_NAME"_* | sed s/[^[:digit:]]/\ /g`
     do
 	if [ x$BUG_NUMBER != x4 ] ; then
-	    echo -n "projects/$PROJECT_NAME"_"$BUG_NUMBER/$PROJECT_NAME"_"$BUG_NUMBER" " " >> Makefile
-	    echo -n "projects/$PROJECT_NAME"_"$BUG_NUMBER/$PROJECT_NAME"_"$BUG_NUMBER"_codes " " >> Makefile
+	    if [ x$PROJECT_NAME = xffmpeg -o x$PROJECT_NAME = xlibarchive ] ; then
+		echo -n "projects/$PROJECT_NAME"_"$BUG_NUMBER/$PROJECT_NAME"_"$BUG_NUMBER"_codes " " >> Makefile
+	    else
+		echo -n "projects/$PROJECT_NAME"_"$BUG_NUMBER/$PROJECT_NAME"_"$BUG_NUMBER" " " >> Makefile
+	    fi
 	fi
     done
     echo >> Makefile
