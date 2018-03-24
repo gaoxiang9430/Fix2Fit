@@ -136,6 +136,36 @@ make_proj4_project() {
     cd $INITIAL_DIR
 }
 
+make_wireshark_project() {
+    local LINE
+    local BUG_NUMBER
+    local FILED_BUG_NUMBER
+    local WIRESHARK_HASH
+    local INITIAL_DIR
+
+    INITIAL_DIR=`pwd`
+    
+    BUG_NUMBER=$1
+    WIRESHARK_HASH=
+    while read LINE ;  do
+	FILED_BUG_NUMBER=`echo -n $LINE | cut --delimiter=, --fields=1`
+	if [ x$BUG_NUMBER = x$FILED_BUG_NUMBER ] ; then
+	    WIRESHARK_HASH=`echo -n $LINE | cut --delimiter=, --fields=2`
+	    break;
+	fi
+    done < $SCRIPT_DIR/all_issue_ids_wireshark.txt
+
+    if [ x$WIRESHARK_HASH != x ] ; then
+	cd $SCRIPT_DIR/projects/wireshark_$BUG_NUMBER
+	git clone https://github.com/wireshark/wireshark.git wireshark_$BUG_NUMBER
+	cd wireshark_$BUG_NUMBER
+	git reset --hard $WIRESHARK_HASH
+    fi
+
+    # Restore the supposedly original state
+    cd $INITIAL_DIR
+}
+
 build_project() {
     local PROJECT_NAME
     local BUG_NUMBER
@@ -153,6 +183,8 @@ build_project() {
 	make_openjpeg_project $BUG_NUMBER
     elif [ x$PROJECT_NAME = proj4 ] ; then
 	make_proj4_project $BUG_NUMBER
+    elif [ x$PROJECT_NAME = wireshark ] ; then
+	make_wireshark_project $BUG_NUMBER
     fi
     sudo python $SCRIPT_DIR/infra/helper.py build_image $PROJECT_NAME $BUG_NUMBER
     sudo python $SCRIPT_DIR/infra/helper.py build_fuzzers --sanitizer address $PROJECT_NAME $BUG_NUMBER
@@ -190,7 +222,7 @@ if [ x$PROJECT_NAME != x ] ; then
 	fi
     fi
 else
-    for PROJECT_NAME in ffmpeg libarchive openjpeg proj4
+    for PROJECT_NAME in ffmpeg libarchive openjpeg proj4 wireshark
     do
 	for BUG_NUMBER in `ls -d "projects/$PROJECT_NAME"_* | sed s/[^[:digit:]]/\ /g`
 	do
