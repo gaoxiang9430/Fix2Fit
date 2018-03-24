@@ -182,6 +182,10 @@ build_project() {
     elif [ x$PROJECT_NAME = xopenjpeg ] ; then
 	make_openjpeg_project $BUG_NUMBER
     elif [ x$PROJECT_NAME = xproj4 ] ; then
+        # In case the 4 in proj4 gets misinterpreted as the bug id
+	if [ x$BUG_NUMBER = x4 ] ; then
+            return
+	fi
 	make_proj4_project $BUG_NUMBER
     elif [ x$PROJECT_NAME = xwireshark ] ; then
 	make_wireshark_project $BUG_NUMBER
