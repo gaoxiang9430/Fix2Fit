@@ -106,6 +106,36 @@ make_openjpeg_project() {
     cd $INITIAL_DIR
 }
 
+make_proj4_project() {
+    local LINE
+    local BUG_NUMBER
+    local FILED_BUG_NUMBER
+    local PROJ4_HASH
+    local INITIAL_DIR
+
+    INITIAL_DIR=`pwd`
+    
+    BUG_NUMBER=$1
+    PROJ4_HASH=
+    while read LINE ;  do
+	FILED_BUG_NUMBER=`echo -n $LINE | cut --delimiter=, --fields=1`
+	if [ x$BUG_NUMBER = x$FILED_BUG_NUMBER ] ; then
+	    PROJ4_HASH=`echo -n $LINE | cut --delimiter=, --fields=2`
+	    break;
+	fi
+    done < $SCRIPT_DIR/all_issue_ids_proj4.txt
+
+    if [ x$PROJ4_HASH != x ] ; then
+	cd $SCRIPT_DIR/projects/proj4_$BUG_NUMBER
+	git clone https://github.com/OSGeo/proj.4.git proj4_$BUG_NUMBER
+	cd proj4_$BUG_NUMBER
+	git reset --hard $PROJ4_HASH
+    fi
+
+    # Restore the supposedly original state
+    cd $INITIAL_DIR
+}
+
 build_project() {
     local PROJECT_NAME
     local BUG_NUMBER
@@ -121,6 +151,8 @@ build_project() {
 	make_libarchive_project $BUG_NUMBER
     elif [ x$PROJECT_NAME = openjpeg ] ; then
 	make_openjpeg_project $BUG_NUMBER
+    elif [ x$PROJECT_NAME = proj4 ] ; then
+	make_proj4_project $BUG_NUMBER
     fi
     sudo python $SCRIPT_DIR/infra/helper.py build_image $PROJECT_NAME $BUG_NUMBER
     sudo python $SCRIPT_DIR/infra/helper.py build_fuzzers --sanitizer address $PROJECT_NAME $BUG_NUMBER
@@ -158,7 +190,7 @@ if [ x$PROJECT_NAME != x ] ; then
 	fi
     fi
 else
-    for PROJECT_NAME in ffmpeg libarchive
+    for PROJECT_NAME in ffmpeg libarchive openjpeg proj4
     do
 	for BUG_NUMBER in `ls -d "projects/$PROJECT_NAME"_* | sed s/[^[:digit:]]/\ /g`
 	do
