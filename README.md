@@ -22,7 +22,7 @@ Here we mention several important files:
   ```
   make -j 55 ffmpeg
   ```
-  will only execute the projects for the FFmpeg software.
+  will only execute the projects for the FFmpeg software, in parallel using at most 55 cores.
   ```
   make ffmpeg_1298
   ```
