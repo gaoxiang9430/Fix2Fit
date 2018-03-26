@@ -43,7 +43,7 @@ Here we mention several important files:
   ./run.sh wireshark 3372
   ```
   will run only the project 3372 of wireshark.
-  ```
-  The repository does not contain the source code of the buggy code subjects:
-  The code will be automatically downloaded and the right
-  commit hash will be checked out.
+
+The repository does not contain the source code of the buggy code
+subjects: The code will be automatically downloaded and the right
+commit hash will be checked out.
