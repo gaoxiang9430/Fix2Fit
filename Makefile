@@ -1221,7 +1221,7 @@ clean: remove_exited_containers
 	rm -f wireshark_3408.log wireshark_3408.log.err
 
 remove_exited_containers:
-	@EXITED_CONTAINERS=`docker ps --all --filter "exited=1"| cut --bytes=1-12` ; \
+	@EXITED_CONTAINERS=`docker ps --all --filter "status=exited"| cut --bytes=1-12` ; \
 	for CONTAINER_ID in $$EXITED_CONTAINERS ; do \
 		if [ x$$CONTAINER_ID != xCONTAINER -a x$$CONTAINER_ID != xID ] ; then \
 			docker rm $$CONTAINER_ID ; \
