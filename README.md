@@ -24,7 +24,7 @@ Here we mention several important files:
   ```
   will only execute the projects for the FFmpeg software, in parallel using at most 55 cores.
   ```
-  make ffmpeg_1298
+  make ffmpeg_1298.log
   ```
   will only execute the project for the issue 1298 of the FFmpeg
   software. Please try not to edit the `Makefile` as it is automatically
