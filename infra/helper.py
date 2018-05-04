@@ -71,6 +71,8 @@ def main():
   build_fuzzers_parser.add_argument('bug_id')
   build_fuzzers_parser.add_argument('source_path', help='path of local source',
                                     nargs='?')
+  build_fuzzers_parser.add_argument('--no_tty', action='store_true',
+                                    help='Do not use TTY when running docker.')
 
   run_fuzzer_parser = subparsers.add_parser(
       'run_fuzzer', help='Run a fuzzer.')
@@ -294,6 +296,10 @@ def build_image(args):
 
 def build_fuzzers(args):
   """Build fuzzers."""
+  no_tty = args.no_tty
+  if not no_tty:
+    no_tty = False
+
   project_name = args.project_name
 
   if not _build_image(args.project_name, args.bug_id):
@@ -320,8 +326,14 @@ def build_fuzzers(args):
   project_name_with_bug_id = project_name + '_' + args.bug_id
   command += [
       '-v', '%s:/out' % os.path.join(BUILD_DIR, 'out', project_name + '_' + args.bug_id),
-      '-v', '%s:/work' % os.path.join(BUILD_DIR, 'work', project_name + '_' + args.bug_id),
-      '-t', 'gcr.io/oss-fuzz/%s' % project_name_with_bug_id
+      '-v', '%s:/work' % os.path.join(BUILD_DIR, 'work', project_name + '_' + args.bug_id)
+  ]
+
+  if not no_tty:
+    command += [ '-t' ]
+
+  command += [
+      'gcr.io/oss-fuzz/%s' % project_name_with_bug_id
   ]
 
   print('Running:', _get_command_string(command))
