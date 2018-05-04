@@ -380,7 +380,7 @@ ffmpeg_3416.log:
 ffmpeg_3453.log:
 	./run.sh ffmpeg 3453 > $@ 2> $@.err
 
-libarchive: libarchive_15.log  libarchive_16.log  libarchive_1627.log  libarchive_220.log  libarchive_232.log  libarchive_237.log  libarchive_2394.log  libarchive_286.log  libarchive_2936.log  libarchive_335.log  libarchive_422.log  libarchive_453.log  libarchive_497.log  libarchive_504.log  libarchive_527.log  libarchive_538.log  libarchive_551.log  libarchive_552.log  libarchive_556.log  libarchive_573.log  libarchive_577.log  libarchive_806.log  libarchive_862.log  
+libarchive: libarchive_15.log  libarchive_16.log  libarchive_1627.log  libarchive_220.log  libarchive_232.log  libarchive_237.log  libarchive_2394.log  libarchive_286.log  libarchive_335.log  libarchive_422.log  libarchive_453.log  libarchive_497.log  libarchive_504.log  libarchive_527.log  libarchive_538.log  libarchive_551.log  libarchive_552.log  libarchive_556.log  libarchive_573.log  libarchive_577.log  libarchive_806.log  libarchive_862.log  
 
 libarchive_15.log:
 	./run.sh libarchive 15 > $@ 2> $@.err
@@ -405,9 +405,6 @@ libarchive_2394.log:
 
 libarchive_286.log:
 	./run.sh libarchive 286 > $@ 2> $@.err
-
-libarchive_2936.log:
-	./run.sh libarchive 2936 > $@ 2> $@.err
 
 libarchive_335.log:
 	./run.sh libarchive 335 > $@ 2> $@.err
@@ -1128,8 +1125,6 @@ clean: remove_exited_containers
 	rm -f libarchive_2394.log libarchive_2394.log.err
 	rm -rf projects/libarchive_286/libarchive_286_codes  
 	rm -f libarchive_286.log libarchive_286.log.err
-	rm -rf projects/libarchive_2936/libarchive_2936_codes  
-	rm -f libarchive_2936.log libarchive_2936.log.err
 	rm -rf projects/libarchive_335/libarchive_335_codes  
 	rm -f libarchive_335.log libarchive_335.log.err
 	rm -rf projects/libarchive_422/libarchive_422_codes  
