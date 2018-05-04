@@ -736,7 +736,7 @@ wireshark_3372.log:
 wireshark_3408.log:
 	./run.sh wireshark 3408 > $@ 2> $@.err
 
-clean: clean_exited_containers
+clean: remove_exited_containers
 	rm -rf projects/ffmpeg_1298/ffmpeg_1298_codes  
 	rm -f ffmpeg_1298.log ffmpeg_1298.log.err
 	rm -rf projects/ffmpeg_1337/ffmpeg_1337_codes  
@@ -1220,8 +1220,10 @@ clean: clean_exited_containers
 	rm -rf projects/wireshark_3408/wireshark_3408  
 	rm -f wireshark_3408.log wireshark_3408.log.err
 
-clean_exited_containers:
+remove_exited_containers:
 	@EXITED_CONTAINERS=`docker ps --all --filter "exited=1"| cut --bytes=1-12` ; \
 	for CONTAINER_ID in $$EXITED_CONTAINERS ; do \
-		docker rm $$CONTAINER_ID ; \
+		if [ x$$CONTAINER_ID != xCONTAINER -a x$$CONTAINER_ID != xID ] ; then \
+			docker rm $$CONTAINER_ID ; \
+		fi ; \
 	done
