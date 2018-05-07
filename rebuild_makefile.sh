@@ -40,7 +40,7 @@ do
     done
 done
 
-echo clean: >> Makefile
+echo clean: remove_exited_containers >> Makefile
 
 for PROJECT_NAME in $PROJECTS
 do
@@ -54,9 +54,27 @@ do
 	    else
 		echo "projects/$PROJECT_NAME"_"$BUG_NUMBER/$PROJECT_NAME"_"$BUG_NUMBER" " " >> Makefile
 	    fi
+            if [ x$PROJECT_NAME = xffmpeg ] ; then
+		echo -en "\t" >> Makefile
+		echo "rm -rf projects/$PROJECT_NAME"_"$BUG_NUMBER/x264_prev" >> Makefile
+            fi
 	    echo -en "\t" >> Makefile
 	    echo "rm -f $PROJECT_NAME"_"$BUG_NUMBER".log "$PROJECT_NAME"_"$BUG_NUMBER".log.err >> Makefile	    
 	fi
     done
 done
 echo >> Makefile
+
+echo remove_exited_containers: >> Makefile
+echo -en "\t" >> Makefile
+echo "@EXITED_CONTAINERS=\`docker ps --all --filter \"status=exited\"| cut --bytes=1-12\` ; \\" >> Makefile
+echo -en "\t" >> Makefile
+echo "for CONTAINER_ID in \$\$EXITED_CONTAINERS ; do \\" >> Makefile
+echo -en "\t\t" >> Makefile
+echo "if [ x\$\$CONTAINER_ID != xCONTAINER -a x\$\$CONTAINER_ID != xID ] ; then \\" >> Makefile
+echo -en "\t\t\t" >> Makefile
+echo "docker rm \$\$CONTAINER_ID ; \\" >> Makefile
+echo -en "\t\t" >> Makefile
+echo "fi ; \\" >> Makefile
+echo -en "\t" >> Makefile
+echo "done" >> Makefile
