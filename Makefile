@@ -733,7 +733,7 @@ wireshark_3372.log:
 wireshark_3408.log:
 	./run.sh wireshark 3408 > $@ 2> $@.err
 
-clean: remove_exited_containers
+clean: remove_exited_containers remove_images
 	rm -rf projects/ffmpeg_1298/ffmpeg_1298_codes  
 	rm -rf projects/ffmpeg_1298/x264_prev
 	rm -f ffmpeg_1298.log ffmpeg_1298.log.err
