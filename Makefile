@@ -1347,3 +1347,968 @@ remove_exited_containers:
 			docker rm $$CONTAINER_ID ; \
 		fi ; \
 	done
+
+remove_images:
+	rm -f all_images.txt ; docker images > all_images.txt
+	@grep ffmpeg_1298 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_1298 ; \
+	fi
+	@grep ffmpeg_1337 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_1337 ; \
+	fi
+	@grep ffmpeg_1342 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_1342 ; \
+	fi
+	@grep ffmpeg_1345 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_1345 ; \
+	fi
+	@grep ffmpeg_1352 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_1352 ; \
+	fi
+	@grep ffmpeg_1353 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_1353 ; \
+	fi
+	@grep ffmpeg_1354 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_1354 ; \
+	fi
+	@grep ffmpeg_1368 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_1368 ; \
+	fi
+	@grep ffmpeg_1369 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_1369 ; \
+	fi
+	@grep ffmpeg_1377 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_1377 ; \
+	fi
+	@grep ffmpeg_1378 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_1378 ; \
+	fi
+	@grep ffmpeg_1390 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_1390 ; \
+	fi
+	@grep ffmpeg_1398 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_1398 ; \
+	fi
+	@grep ffmpeg_1399 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_1399 ; \
+	fi
+	@grep ffmpeg_1407 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_1407 ; \
+	fi
+	@grep ffmpeg_1411 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_1411 ; \
+	fi
+	@grep ffmpeg_1418 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_1418 ; \
+	fi
+	@grep ffmpeg_1419 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_1419 ; \
+	fi
+	@grep ffmpeg_1420 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_1420 ; \
+	fi
+	@grep ffmpeg_1422 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_1422 ; \
+	fi
+	@grep ffmpeg_1425 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_1425 ; \
+	fi
+	@grep ffmpeg_1427 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_1427 ; \
+	fi
+	@grep ffmpeg_1438 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_1438 ; \
+	fi
+	@grep ffmpeg_1440 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_1440 ; \
+	fi
+	@grep ffmpeg_1442 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_1442 ; \
+	fi
+	@grep ffmpeg_1473 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_1473 ; \
+	fi
+	@grep ffmpeg_1478 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_1478 ; \
+	fi
+	@grep ffmpeg_1487 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_1487 ; \
+	fi
+	@grep ffmpeg_1505 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_1505 ; \
+	fi
+	@grep ffmpeg_1508 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_1508 ; \
+	fi
+	@grep ffmpeg_1514 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_1514 ; \
+	fi
+	@grep ffmpeg_1519 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_1519 ; \
+	fi
+	@grep ffmpeg_1557 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_1557 ; \
+	fi
+	@grep ffmpeg_1569 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_1569 ; \
+	fi
+	@grep ffmpeg_1604 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_1604 ; \
+	fi
+	@grep ffmpeg_1630 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_1630 ; \
+	fi
+	@grep ffmpeg_1643 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_1643 ; \
+	fi
+	@grep ffmpeg_1656 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_1656 ; \
+	fi
+	@grep ffmpeg_1669 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_1669 ; \
+	fi
+	@grep ffmpeg_1671 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_1671 ; \
+	fi
+	@grep ffmpeg_1681 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_1681 ; \
+	fi
+	@grep ffmpeg_1706 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_1706 ; \
+	fi
+	@grep ffmpeg_1723 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_1723 ; \
+	fi
+	@grep ffmpeg_1727 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_1727 ; \
+	fi
+	@grep ffmpeg_1735 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_1735 ; \
+	fi
+	@grep ffmpeg_1738 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_1738 ; \
+	fi
+	@grep ffmpeg_1764 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_1764 ; \
+	fi
+	@grep ffmpeg_1766 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_1766 ; \
+	fi
+	@grep ffmpeg_1778 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_1778 ; \
+	fi
+	@grep ffmpeg_1781 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_1781 ; \
+	fi
+	@grep ffmpeg_1825 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_1825 ; \
+	fi
+	@grep ffmpeg_1832 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_1832 ; \
+	fi
+	@grep ffmpeg_1874 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_1874 ; \
+	fi
+	@grep ffmpeg_1875 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_1875 ; \
+	fi
+	@grep ffmpeg_1891 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_1891 ; \
+	fi
+	@grep ffmpeg_1892 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_1892 ; \
+	fi
+	@grep ffmpeg_1902 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_1902 ; \
+	fi
+	@grep ffmpeg_1906 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_1906 ; \
+	fi
+	@grep ffmpeg_1908 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_1908 ; \
+	fi
+	@grep ffmpeg_1922 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_1922 ; \
+	fi
+	@grep ffmpeg_1925 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_1925 ; \
+	fi
+	@grep ffmpeg_1967 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_1967 ; \
+	fi
+	@grep ffmpeg_2005 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_2005 ; \
+	fi
+	@grep ffmpeg_2014 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_2014 ; \
+	fi
+	@grep ffmpeg_2038 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_2038 ; \
+	fi
+	@grep ffmpeg_2065 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_2065 ; \
+	fi
+	@grep ffmpeg_2071 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_2071 ; \
+	fi
+	@grep ffmpeg_2100 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_2100 ; \
+	fi
+	@grep ffmpeg_2106 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_2106 ; \
+	fi
+	@grep ffmpeg_2113 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_2113 ; \
+	fi
+	@grep ffmpeg_2143 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_2143 ; \
+	fi
+	@grep ffmpeg_2159 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_2159 ; \
+	fi
+	@grep ffmpeg_2164 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_2164 ; \
+	fi
+	@grep ffmpeg_2175 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_2175 ; \
+	fi
+	@grep ffmpeg_2176 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_2176 ; \
+	fi
+	@grep ffmpeg_2224 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_2224 ; \
+	fi
+	@grep ffmpeg_2225 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_2225 ; \
+	fi
+	@grep ffmpeg_2233 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_2233 ; \
+	fi
+	@grep ffmpeg_2234 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_2234 ; \
+	fi
+	@grep ffmpeg_2249 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_2249 ; \
+	fi
+	@grep ffmpeg_2263 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_2263 ; \
+	fi
+	@grep ffmpeg_2271 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_2271 ; \
+	fi
+	@grep ffmpeg_2272 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_2272 ; \
+	fi
+	@grep ffmpeg_2291 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_2291 ; \
+	fi
+	@grep ffmpeg_2299 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_2299 ; \
+	fi
+	@grep ffmpeg_2306 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_2306 ; \
+	fi
+	@grep ffmpeg_2331 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_2331 ; \
+	fi
+	@grep ffmpeg_2351 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_2351 ; \
+	fi
+	@grep ffmpeg_2365 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_2365 ; \
+	fi
+	@grep ffmpeg_2377 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_2377 ; \
+	fi
+	@grep ffmpeg_2385 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_2385 ; \
+	fi
+	@grep ffmpeg_2395 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_2395 ; \
+	fi
+	@grep ffmpeg_2408 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_2408 ; \
+	fi
+	@grep ffmpeg_2422 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_2422 ; \
+	fi
+	@grep ffmpeg_2451 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_2451 ; \
+	fi
+	@grep ffmpeg_2456 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_2456 ; \
+	fi
+	@grep ffmpeg_2467 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_2467 ; \
+	fi
+	@grep ffmpeg_2515 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_2515 ; \
+	fi
+	@grep ffmpeg_2527 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_2527 ; \
+	fi
+	@grep ffmpeg_2568 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_2568 ; \
+	fi
+	@grep ffmpeg_2674 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_2674 ; \
+	fi
+	@grep ffmpeg_2698 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_2698 ; \
+	fi
+	@grep ffmpeg_2702 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_2702 ; \
+	fi
+	@grep ffmpeg_2707 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_2707 ; \
+	fi
+	@grep ffmpeg_2710 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_2710 ; \
+	fi
+	@grep ffmpeg_2729 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_2729 ; \
+	fi
+	@grep ffmpeg_2739 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_2739 ; \
+	fi
+	@grep ffmpeg_2764 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_2764 ; \
+	fi
+	@grep ffmpeg_2815 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_2815 ; \
+	fi
+	@grep ffmpeg_2818 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_2818 ; \
+	fi
+	@grep ffmpeg_2819 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_2819 ; \
+	fi
+	@grep ffmpeg_2826 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_2826 ; \
+	fi
+	@grep ffmpeg_2834 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_2834 ; \
+	fi
+	@grep ffmpeg_2861 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_2861 ; \
+	fi
+	@grep ffmpeg_2873 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_2873 ; \
+	fi
+	@grep ffmpeg_2879 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_2879 ; \
+	fi
+	@grep ffmpeg_2893 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_2893 ; \
+	fi
+	@grep ffmpeg_3013 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_3013 ; \
+	fi
+	@grep ffmpeg_3051 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_3051 ; \
+	fi
+	@grep ffmpeg_3091 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_3091 ; \
+	fi
+	@grep ffmpeg_3202 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_3202 ; \
+	fi
+	@grep ffmpeg_3203 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_3203 ; \
+	fi
+	@grep ffmpeg_3279 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_3279 ; \
+	fi
+	@grep ffmpeg_3416 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_3416 ; \
+	fi
+	@grep ffmpeg_3453 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/ffmpeg_3453 ; \
+	fi
+	@grep libarchive_15 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/libarchive_15 ; \
+	fi
+	@grep libarchive_16 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/libarchive_16 ; \
+	fi
+	@grep libarchive_1627 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/libarchive_1627 ; \
+	fi
+	@grep libarchive_220 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/libarchive_220 ; \
+	fi
+	@grep libarchive_232 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/libarchive_232 ; \
+	fi
+	@grep libarchive_237 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/libarchive_237 ; \
+	fi
+	@grep libarchive_2394 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/libarchive_2394 ; \
+	fi
+	@grep libarchive_286 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/libarchive_286 ; \
+	fi
+	@grep libarchive_335 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/libarchive_335 ; \
+	fi
+	@grep libarchive_422 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/libarchive_422 ; \
+	fi
+	@grep libarchive_453 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/libarchive_453 ; \
+	fi
+	@grep libarchive_497 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/libarchive_497 ; \
+	fi
+	@grep libarchive_504 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/libarchive_504 ; \
+	fi
+	@grep libarchive_527 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/libarchive_527 ; \
+	fi
+	@grep libarchive_538 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/libarchive_538 ; \
+	fi
+	@grep libarchive_551 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/libarchive_551 ; \
+	fi
+	@grep libarchive_552 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/libarchive_552 ; \
+	fi
+	@grep libarchive_556 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/libarchive_556 ; \
+	fi
+	@grep libarchive_573 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/libarchive_573 ; \
+	fi
+	@grep libarchive_577 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/libarchive_577 ; \
+	fi
+	@grep libarchive_806 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/libarchive_806 ; \
+	fi
+	@grep libarchive_862 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/libarchive_862 ; \
+	fi
+	@grep openjpeg_2485 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/openjpeg_2485 ; \
+	fi
+	@grep openjpeg_2487 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/openjpeg_2487 ; \
+	fi
+	@grep openjpeg_2494 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/openjpeg_2494 ; \
+	fi
+	@grep openjpeg_2495 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/openjpeg_2495 ; \
+	fi
+	@grep openjpeg_2496 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/openjpeg_2496 ; \
+	fi
+	@grep openjpeg_2506 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/openjpeg_2506 ; \
+	fi
+	@grep openjpeg_2516 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/openjpeg_2516 ; \
+	fi
+	@grep openjpeg_2558 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/openjpeg_2558 ; \
+	fi
+	@grep openjpeg_2785 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/openjpeg_2785 ; \
+	fi
+	@grep openjpeg_2786 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/openjpeg_2786 ; \
+	fi
+	@grep openjpeg_2787 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/openjpeg_2787 ; \
+	fi
+	@grep openjpeg_2795 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/openjpeg_2795 ; \
+	fi
+	@grep openjpeg_2799 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/openjpeg_2799 ; \
+	fi
+	@grep openjpeg_2851 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/openjpeg_2851 ; \
+	fi
+	@grep openjpeg_3068 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/openjpeg_3068 ; \
+	fi
+	@grep openjpeg_3115 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/openjpeg_3115 ; \
+	fi
+	@grep openjpeg_3255 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/openjpeg_3255 ; \
+	fi
+	@grep openjpeg_3297 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/openjpeg_3297 ; \
+	fi
+	@grep openjpeg_3305 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/openjpeg_3305 ; \
+	fi
+	@grep openjpeg_3331 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/openjpeg_3331 ; \
+	fi
+	@grep proj4_1787 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/proj4_1787 ; \
+	fi
+	@grep proj4_1789 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/proj4_1789 ; \
+	fi
+	@grep proj4_1791 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/proj4_1791 ; \
+	fi
+	@grep proj4_1793 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/proj4_1793 ; \
+	fi
+	@grep proj4_1794 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/proj4_1794 ; \
+	fi
+	@grep proj4_1795 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/proj4_1795 ; \
+	fi
+	@grep proj4_1797 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/proj4_1797 ; \
+	fi
+	@grep proj4_1799 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/proj4_1799 ; \
+	fi
+	@grep proj4_1800 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/proj4_1800 ; \
+	fi
+	@grep proj4_1801 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/proj4_1801 ; \
+	fi
+	@grep proj4_1809 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/proj4_1809 ; \
+	fi
+	@grep proj4_1836 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/proj4_1836 ; \
+	fi
+	@grep proj4_1873 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/proj4_1873 ; \
+	fi
+	@grep proj4_1923 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/proj4_1923 ; \
+	fi
+	@grep proj4_1927 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/proj4_1927 ; \
+	fi
+	@grep proj4_1950 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/proj4_1950 ; \
+	fi
+	@grep proj4_1956 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/proj4_1956 ; \
+	fi
+	@grep proj4_2000 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/proj4_2000 ; \
+	fi
+	@grep proj4_2167 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/proj4_2167 ; \
+	fi
+	@grep proj4_2230 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/proj4_2230 ; \
+	fi
+	@grep proj4_2723 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/proj4_2723 ; \
+	fi
+	@grep proj4_3204 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/proj4_3204 ; \
+	fi
+	@grep proj4_3235 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/proj4_3235 ; \
+	fi
+	@grep proj4_3274 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/proj4_3274 ; \
+	fi
+	@grep proj4_3276 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/proj4_3276 ; \
+	fi
+	@grep proj4_3288 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/proj4_3288 ; \
+	fi
+	@grep proj4_3321 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/proj4_3321 ; \
+	fi
+	@grep proj4_3573 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/proj4_3573 ; \
+	fi
+	@grep proj4_3620 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/proj4_3620 ; \
+	fi
+	@grep proj4_3630 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/proj4_3630 ; \
+	fi
+	@grep proj4_3641 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/proj4_3641 ; \
+	fi
+	@grep proj4_3643 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/proj4_3643 ; \
+	fi
+	@grep proj4_3645 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/proj4_3645 ; \
+	fi
+	@grep proj4_3940 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/proj4_3940 ; \
+	fi
+	@grep proj4_3944 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/proj4_3944 ; \
+	fi
+	@grep proj4_3947 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/proj4_3947 ; \
+	fi
+	@grep proj4_3955 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/proj4_3955 ; \
+	fi
+	@grep proj4_3960 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/proj4_3960 ; \
+	fi
+	@grep proj4_4404 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/proj4_4404 ; \
+	fi
+	@grep proj4_4658 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/proj4_4658 ; \
+	fi
+	@grep proj4_4667 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/proj4_4667 ; \
+	fi
+	@grep proj4_4695 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/proj4_4695 ; \
+	fi
+	@grep wireshark_1149 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/wireshark_1149 ; \
+	fi
+	@grep wireshark_1151 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/wireshark_1151 ; \
+	fi
+	@grep wireshark_1152 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/wireshark_1152 ; \
+	fi
+	@grep wireshark_1153 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/wireshark_1153 ; \
+	fi
+	@grep wireshark_1154 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/wireshark_1154 ; \
+	fi
+	@grep wireshark_1156 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/wireshark_1156 ; \
+	fi
+	@grep wireshark_1167 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/wireshark_1167 ; \
+	fi
+	@grep wireshark_1172 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/wireshark_1172 ; \
+	fi
+	@grep wireshark_1179 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/wireshark_1179 ; \
+	fi
+	@grep wireshark_1183 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/wireshark_1183 ; \
+	fi
+	@grep wireshark_1200 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/wireshark_1200 ; \
+	fi
+	@grep wireshark_1206 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/wireshark_1206 ; \
+	fi
+	@grep wireshark_1212 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/wireshark_1212 ; \
+	fi
+	@grep wireshark_1221 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/wireshark_1221 ; \
+	fi
+	@grep wireshark_1232 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/wireshark_1232 ; \
+	fi
+	@grep wireshark_1243 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/wireshark_1243 ; \
+	fi
+	@grep wireshark_1268 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/wireshark_1268 ; \
+	fi
+	@grep wireshark_1302 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/wireshark_1302 ; \
+	fi
+	@grep wireshark_1303 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/wireshark_1303 ; \
+	fi
+	@grep wireshark_1307 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/wireshark_1307 ; \
+	fi
+	@grep wireshark_1329 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/wireshark_1329 ; \
+	fi
+	@grep wireshark_1359 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/wireshark_1359 ; \
+	fi
+	@grep wireshark_1363 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/wireshark_1363 ; \
+	fi
+	@grep wireshark_1550 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/wireshark_1550 ; \
+	fi
+	@grep wireshark_1678 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/wireshark_1678 ; \
+	fi
+	@grep wireshark_1979 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/wireshark_1979 ; \
+	fi
+	@grep wireshark_2163 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/wireshark_2163 ; \
+	fi
+	@grep wireshark_2198 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/wireshark_2198 ; \
+	fi
+	@grep wireshark_2736 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/wireshark_2736 ; \
+	fi
+	@grep wireshark_3372 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/wireshark_3372 ; \
+	fi
+	@grep wireshark_3408 all_images.txt ; \
+	if [ $$? -eq 0 ] ; then \
+		docker rmi -f gcr.io/oss-fuzz/wireshark_3408 ; \
+	fi
+	rm -rf all_images.txt
+

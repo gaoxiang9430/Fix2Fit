@@ -40,7 +40,7 @@ do
     done
 done
 
-echo clean: remove_exited_containers >> Makefile
+echo clean: remove_exited_containers remove_images >> Makefile
 
 for PROJECT_NAME in $PROJECTS
 do
@@ -78,3 +78,30 @@ echo -en "\t\t" >> Makefile
 echo "fi ; \\" >> Makefile
 echo -en "\t" >> Makefile
 echo "done" >> Makefile
+
+echo >> Makefile
+
+echo remove_images: >> Makefile
+echo -en "\t" >> Makefile
+echo "rm -f all_images.txt ; docker images > all_images.txt" >> Makefile
+for PROJECT_NAME in $PROJECTS
+do
+    for BUG_NUMBER in `ls -d "projects/$PROJECT_NAME"_* | sed s/[^[:digit:]]/\ /g`
+    do
+	if [ x$BUG_NUMBER != x4 ] ; then
+	    echo -en "\t" >> Makefile
+	    echo "@grep $PROJECT_NAME"_"$BUG_NUMBER all_images.txt ; \\" >> Makefile
+	    echo -en "\t" >> Makefile
+	    echo "if [ \$\$? -eq 0 ] ; then \\" >> Makefile
+	    echo -en "\t\t" >> Makefile
+	    echo "docker rmi -f gcr.io/oss-fuzz/$PROJECT_NAME"_"$BUG_NUMBER ; \\" >> Makefile
+	    echo -en "\t" >> Makefile
+	    echo "fi" >> Makefile
+	fi
+    done
+done
+echo -en "\t" >> Makefile
+echo "rm -rf all_images.txt" >> Makefile
+
+echo >> Makefile
+
