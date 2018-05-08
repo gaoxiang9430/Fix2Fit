@@ -40,7 +40,7 @@ do
     done
 done
 
-echo clean: remove_exited_containers remove_images >> Makefile
+echo clean: >> Makefile
 
 for PROJECT_NAME in $PROJECTS
 do
@@ -102,6 +102,10 @@ do
 done
 echo -en "\t" >> Makefile
 echo "rm -rf all_images.txt" >> Makefile
+
+echo >> Makefile
+
+echo realclean: clean remove_exited_containers remove_images >> Makefile
 
 echo >> Makefile
 
