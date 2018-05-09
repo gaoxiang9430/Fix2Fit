@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+# Build LLVM 3.8.1 for building f1x
+
+pushd build
+mkdir -p llvm-3.8.1
+pushd llvm-3.8.1
+wget http://releases.llvm.org/3.8.1/llvm-3.8.1.src.tar.xz
+wget http://releases.llvm.org/3.8.1/cfe-3.8.1.src.tar.xz
+wget http://releases.llvm.org/3.8.1/compiler-rt-3.8.1.src.tar.xz
+tar xf llvm-3.8.1.src.tar.xz
+tar xf cfe-3.8.1.src.tar.xz
+tar xf compiler-rt-3.8.1.src.tar.xz
+mv llvm-3.8.1.src src
+mv cfe-3.8.1.src src/tools/clang
+mv compiler-rt-3.8.1.src src/projects/compiler-rt
+mkdir -p install
+LLVM_INSTALL_DIR=$PWD/install
+mkdir -p build
+pushd build
+cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX=$LLVM_INSTALL_DIR -DCMAKE_BUILD_TYPE=Release -DLLVM_ENABLE_ASSERTIONS=Off
+make install
+popd
+popd
+popd
