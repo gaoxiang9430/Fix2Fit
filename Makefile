@@ -6,732 +6,732 @@ all: ffmpeg libarchive openjpeg proj4 wireshark
 ffmpeg: ffmpeg_1298.log  ffmpeg_1337.log  ffmpeg_1342.log  ffmpeg_1345.log  ffmpeg_1352.log  ffmpeg_1353.log  ffmpeg_1354.log  ffmpeg_1368.log  ffmpeg_1369.log  ffmpeg_1377.log  ffmpeg_1378.log  ffmpeg_1390.log  ffmpeg_1398.log  ffmpeg_1399.log  ffmpeg_1407.log  ffmpeg_1411.log  ffmpeg_1418.log  ffmpeg_1419.log  ffmpeg_1420.log  ffmpeg_1422.log  ffmpeg_1425.log  ffmpeg_1427.log  ffmpeg_1438.log  ffmpeg_1440.log  ffmpeg_1442.log  ffmpeg_1473.log  ffmpeg_1478.log  ffmpeg_1487.log  ffmpeg_1505.log  ffmpeg_1508.log  ffmpeg_1514.log  ffmpeg_1519.log  ffmpeg_1557.log  ffmpeg_1569.log  ffmpeg_1604.log  ffmpeg_1630.log  ffmpeg_1643.log  ffmpeg_1656.log  ffmpeg_1669.log  ffmpeg_1671.log  ffmpeg_1681.log  ffmpeg_1706.log  ffmpeg_1723.log  ffmpeg_1727.log  ffmpeg_1735.log  ffmpeg_1738.log  ffmpeg_1764.log  ffmpeg_1766.log  ffmpeg_1778.log  ffmpeg_1781.log  ffmpeg_1825.log  ffmpeg_1832.log  ffmpeg_1874.log  ffmpeg_1875.log  ffmpeg_1891.log  ffmpeg_1892.log  ffmpeg_1902.log  ffmpeg_1906.log  ffmpeg_1908.log  ffmpeg_1922.log  ffmpeg_1925.log  ffmpeg_1967.log  ffmpeg_2005.log  ffmpeg_2014.log  ffmpeg_2038.log  ffmpeg_2065.log  ffmpeg_2071.log  ffmpeg_2100.log  ffmpeg_2106.log  ffmpeg_2113.log  ffmpeg_2143.log  ffmpeg_2159.log  ffmpeg_2164.log  ffmpeg_2175.log  ffmpeg_2176.log  ffmpeg_2224.log  ffmpeg_2225.log  ffmpeg_2233.log  ffmpeg_2234.log  ffmpeg_2249.log  ffmpeg_2263.log  ffmpeg_2271.log  ffmpeg_2272.log  ffmpeg_2291.log  ffmpeg_2299.log  ffmpeg_2306.log  ffmpeg_2331.log  ffmpeg_2351.log  ffmpeg_2365.log  ffmpeg_2377.log  ffmpeg_2385.log  ffmpeg_2395.log  ffmpeg_2408.log  ffmpeg_2422.log  ffmpeg_2451.log  ffmpeg_2456.log  ffmpeg_2467.log  ffmpeg_2515.log  ffmpeg_2527.log  ffmpeg_2568.log  ffmpeg_2674.log  ffmpeg_2698.log  ffmpeg_2702.log  ffmpeg_2707.log  ffmpeg_2710.log  ffmpeg_2729.log  ffmpeg_2739.log  ffmpeg_2764.log  ffmpeg_2815.log  ffmpeg_2818.log  ffmpeg_2819.log  ffmpeg_2826.log  ffmpeg_2834.log  ffmpeg_2861.log  ffmpeg_2873.log  ffmpeg_2879.log  ffmpeg_2893.log  ffmpeg_3013.log  ffmpeg_3051.log  ffmpeg_3091.log  ffmpeg_3202.log  ffmpeg_3203.log  ffmpeg_3279.log  ffmpeg_3416.log  ffmpeg_3453.log  
 
 ffmpeg_1298.log:
-	./run.sh ffmpeg 1298 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 1298 > $@ 2> $@.err
 
 ffmpeg_1337.log:
-	./run.sh ffmpeg 1337 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 1337 > $@ 2> $@.err
 
 ffmpeg_1342.log:
-	./run.sh ffmpeg 1342 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 1342 > $@ 2> $@.err
 
 ffmpeg_1345.log:
-	./run.sh ffmpeg 1345 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 1345 > $@ 2> $@.err
 
 ffmpeg_1352.log:
-	./run.sh ffmpeg 1352 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 1352 > $@ 2> $@.err
 
 ffmpeg_1353.log:
-	./run.sh ffmpeg 1353 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 1353 > $@ 2> $@.err
 
 ffmpeg_1354.log:
-	./run.sh ffmpeg 1354 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 1354 > $@ 2> $@.err
 
 ffmpeg_1368.log:
-	./run.sh ffmpeg 1368 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 1368 > $@ 2> $@.err
 
 ffmpeg_1369.log:
-	./run.sh ffmpeg 1369 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 1369 > $@ 2> $@.err
 
 ffmpeg_1377.log:
-	./run.sh ffmpeg 1377 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 1377 > $@ 2> $@.err
 
 ffmpeg_1378.log:
-	./run.sh ffmpeg 1378 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 1378 > $@ 2> $@.err
 
 ffmpeg_1390.log:
-	./run.sh ffmpeg 1390 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 1390 > $@ 2> $@.err
 
 ffmpeg_1398.log:
-	./run.sh ffmpeg 1398 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 1398 > $@ 2> $@.err
 
 ffmpeg_1399.log:
-	./run.sh ffmpeg 1399 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 1399 > $@ 2> $@.err
 
 ffmpeg_1407.log:
-	./run.sh ffmpeg 1407 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 1407 > $@ 2> $@.err
 
 ffmpeg_1411.log:
-	./run.sh ffmpeg 1411 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 1411 > $@ 2> $@.err
 
 ffmpeg_1418.log:
-	./run.sh ffmpeg 1418 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 1418 > $@ 2> $@.err
 
 ffmpeg_1419.log:
-	./run.sh ffmpeg 1419 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 1419 > $@ 2> $@.err
 
 ffmpeg_1420.log:
-	./run.sh ffmpeg 1420 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 1420 > $@ 2> $@.err
 
 ffmpeg_1422.log:
-	./run.sh ffmpeg 1422 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 1422 > $@ 2> $@.err
 
 ffmpeg_1425.log:
-	./run.sh ffmpeg 1425 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 1425 > $@ 2> $@.err
 
 ffmpeg_1427.log:
-	./run.sh ffmpeg 1427 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 1427 > $@ 2> $@.err
 
 ffmpeg_1438.log:
-	./run.sh ffmpeg 1438 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 1438 > $@ 2> $@.err
 
 ffmpeg_1440.log:
-	./run.sh ffmpeg 1440 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 1440 > $@ 2> $@.err
 
 ffmpeg_1442.log:
-	./run.sh ffmpeg 1442 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 1442 > $@ 2> $@.err
 
 ffmpeg_1473.log:
-	./run.sh ffmpeg 1473 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 1473 > $@ 2> $@.err
 
 ffmpeg_1478.log:
-	./run.sh ffmpeg 1478 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 1478 > $@ 2> $@.err
 
 ffmpeg_1487.log:
-	./run.sh ffmpeg 1487 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 1487 > $@ 2> $@.err
 
 ffmpeg_1505.log:
-	./run.sh ffmpeg 1505 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 1505 > $@ 2> $@.err
 
 ffmpeg_1508.log:
-	./run.sh ffmpeg 1508 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 1508 > $@ 2> $@.err
 
 ffmpeg_1514.log:
-	./run.sh ffmpeg 1514 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 1514 > $@ 2> $@.err
 
 ffmpeg_1519.log:
-	./run.sh ffmpeg 1519 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 1519 > $@ 2> $@.err
 
 ffmpeg_1557.log:
-	./run.sh ffmpeg 1557 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 1557 > $@ 2> $@.err
 
 ffmpeg_1569.log:
-	./run.sh ffmpeg 1569 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 1569 > $@ 2> $@.err
 
 ffmpeg_1604.log:
-	./run.sh ffmpeg 1604 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 1604 > $@ 2> $@.err
 
 ffmpeg_1630.log:
-	./run.sh ffmpeg 1630 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 1630 > $@ 2> $@.err
 
 ffmpeg_1643.log:
-	./run.sh ffmpeg 1643 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 1643 > $@ 2> $@.err
 
 ffmpeg_1656.log:
-	./run.sh ffmpeg 1656 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 1656 > $@ 2> $@.err
 
 ffmpeg_1669.log:
-	./run.sh ffmpeg 1669 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 1669 > $@ 2> $@.err
 
 ffmpeg_1671.log:
-	./run.sh ffmpeg 1671 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 1671 > $@ 2> $@.err
 
 ffmpeg_1681.log:
-	./run.sh ffmpeg 1681 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 1681 > $@ 2> $@.err
 
 ffmpeg_1706.log:
-	./run.sh ffmpeg 1706 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 1706 > $@ 2> $@.err
 
 ffmpeg_1723.log:
-	./run.sh ffmpeg 1723 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 1723 > $@ 2> $@.err
 
 ffmpeg_1727.log:
-	./run.sh ffmpeg 1727 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 1727 > $@ 2> $@.err
 
 ffmpeg_1735.log:
-	./run.sh ffmpeg 1735 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 1735 > $@ 2> $@.err
 
 ffmpeg_1738.log:
-	./run.sh ffmpeg 1738 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 1738 > $@ 2> $@.err
 
 ffmpeg_1764.log:
-	./run.sh ffmpeg 1764 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 1764 > $@ 2> $@.err
 
 ffmpeg_1766.log:
-	./run.sh ffmpeg 1766 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 1766 > $@ 2> $@.err
 
 ffmpeg_1778.log:
-	./run.sh ffmpeg 1778 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 1778 > $@ 2> $@.err
 
 ffmpeg_1781.log:
-	./run.sh ffmpeg 1781 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 1781 > $@ 2> $@.err
 
 ffmpeg_1825.log:
-	./run.sh ffmpeg 1825 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 1825 > $@ 2> $@.err
 
 ffmpeg_1832.log:
-	./run.sh ffmpeg 1832 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 1832 > $@ 2> $@.err
 
 ffmpeg_1874.log:
-	./run.sh ffmpeg 1874 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 1874 > $@ 2> $@.err
 
 ffmpeg_1875.log:
-	./run.sh ffmpeg 1875 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 1875 > $@ 2> $@.err
 
 ffmpeg_1891.log:
-	./run.sh ffmpeg 1891 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 1891 > $@ 2> $@.err
 
 ffmpeg_1892.log:
-	./run.sh ffmpeg 1892 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 1892 > $@ 2> $@.err
 
 ffmpeg_1902.log:
-	./run.sh ffmpeg 1902 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 1902 > $@ 2> $@.err
 
 ffmpeg_1906.log:
-	./run.sh ffmpeg 1906 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 1906 > $@ 2> $@.err
 
 ffmpeg_1908.log:
-	./run.sh ffmpeg 1908 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 1908 > $@ 2> $@.err
 
 ffmpeg_1922.log:
-	./run.sh ffmpeg 1922 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 1922 > $@ 2> $@.err
 
 ffmpeg_1925.log:
-	./run.sh ffmpeg 1925 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 1925 > $@ 2> $@.err
 
 ffmpeg_1967.log:
-	./run.sh ffmpeg 1967 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 1967 > $@ 2> $@.err
 
 ffmpeg_2005.log:
-	./run.sh ffmpeg 2005 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 2005 > $@ 2> $@.err
 
 ffmpeg_2014.log:
-	./run.sh ffmpeg 2014 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 2014 > $@ 2> $@.err
 
 ffmpeg_2038.log:
-	./run.sh ffmpeg 2038 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 2038 > $@ 2> $@.err
 
 ffmpeg_2065.log:
-	./run.sh ffmpeg 2065 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 2065 > $@ 2> $@.err
 
 ffmpeg_2071.log:
-	./run.sh ffmpeg 2071 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 2071 > $@ 2> $@.err
 
 ffmpeg_2100.log:
-	./run.sh ffmpeg 2100 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 2100 > $@ 2> $@.err
 
 ffmpeg_2106.log:
-	./run.sh ffmpeg 2106 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 2106 > $@ 2> $@.err
 
 ffmpeg_2113.log:
-	./run.sh ffmpeg 2113 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 2113 > $@ 2> $@.err
 
 ffmpeg_2143.log:
-	./run.sh ffmpeg 2143 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 2143 > $@ 2> $@.err
 
 ffmpeg_2159.log:
-	./run.sh ffmpeg 2159 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 2159 > $@ 2> $@.err
 
 ffmpeg_2164.log:
-	./run.sh ffmpeg 2164 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 2164 > $@ 2> $@.err
 
 ffmpeg_2175.log:
-	./run.sh ffmpeg 2175 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 2175 > $@ 2> $@.err
 
 ffmpeg_2176.log:
-	./run.sh ffmpeg 2176 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 2176 > $@ 2> $@.err
 
 ffmpeg_2224.log:
-	./run.sh ffmpeg 2224 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 2224 > $@ 2> $@.err
 
 ffmpeg_2225.log:
-	./run.sh ffmpeg 2225 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 2225 > $@ 2> $@.err
 
 ffmpeg_2233.log:
-	./run.sh ffmpeg 2233 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 2233 > $@ 2> $@.err
 
 ffmpeg_2234.log:
-	./run.sh ffmpeg 2234 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 2234 > $@ 2> $@.err
 
 ffmpeg_2249.log:
-	./run.sh ffmpeg 2249 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 2249 > $@ 2> $@.err
 
 ffmpeg_2263.log:
-	./run.sh ffmpeg 2263 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 2263 > $@ 2> $@.err
 
 ffmpeg_2271.log:
-	./run.sh ffmpeg 2271 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 2271 > $@ 2> $@.err
 
 ffmpeg_2272.log:
-	./run.sh ffmpeg 2272 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 2272 > $@ 2> $@.err
 
 ffmpeg_2291.log:
-	./run.sh ffmpeg 2291 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 2291 > $@ 2> $@.err
 
 ffmpeg_2299.log:
-	./run.sh ffmpeg 2299 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 2299 > $@ 2> $@.err
 
 ffmpeg_2306.log:
-	./run.sh ffmpeg 2306 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 2306 > $@ 2> $@.err
 
 ffmpeg_2331.log:
-	./run.sh ffmpeg 2331 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 2331 > $@ 2> $@.err
 
 ffmpeg_2351.log:
-	./run.sh ffmpeg 2351 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 2351 > $@ 2> $@.err
 
 ffmpeg_2365.log:
-	./run.sh ffmpeg 2365 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 2365 > $@ 2> $@.err
 
 ffmpeg_2377.log:
-	./run.sh ffmpeg 2377 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 2377 > $@ 2> $@.err
 
 ffmpeg_2385.log:
-	./run.sh ffmpeg 2385 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 2385 > $@ 2> $@.err
 
 ffmpeg_2395.log:
-	./run.sh ffmpeg 2395 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 2395 > $@ 2> $@.err
 
 ffmpeg_2408.log:
-	./run.sh ffmpeg 2408 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 2408 > $@ 2> $@.err
 
 ffmpeg_2422.log:
-	./run.sh ffmpeg 2422 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 2422 > $@ 2> $@.err
 
 ffmpeg_2451.log:
-	./run.sh ffmpeg 2451 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 2451 > $@ 2> $@.err
 
 ffmpeg_2456.log:
-	./run.sh ffmpeg 2456 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 2456 > $@ 2> $@.err
 
 ffmpeg_2467.log:
-	./run.sh ffmpeg 2467 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 2467 > $@ 2> $@.err
 
 ffmpeg_2515.log:
-	./run.sh ffmpeg 2515 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 2515 > $@ 2> $@.err
 
 ffmpeg_2527.log:
-	./run.sh ffmpeg 2527 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 2527 > $@ 2> $@.err
 
 ffmpeg_2568.log:
-	./run.sh ffmpeg 2568 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 2568 > $@ 2> $@.err
 
 ffmpeg_2674.log:
-	./run.sh ffmpeg 2674 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 2674 > $@ 2> $@.err
 
 ffmpeg_2698.log:
-	./run.sh ffmpeg 2698 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 2698 > $@ 2> $@.err
 
 ffmpeg_2702.log:
-	./run.sh ffmpeg 2702 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 2702 > $@ 2> $@.err
 
 ffmpeg_2707.log:
-	./run.sh ffmpeg 2707 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 2707 > $@ 2> $@.err
 
 ffmpeg_2710.log:
-	./run.sh ffmpeg 2710 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 2710 > $@ 2> $@.err
 
 ffmpeg_2729.log:
-	./run.sh ffmpeg 2729 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 2729 > $@ 2> $@.err
 
 ffmpeg_2739.log:
-	./run.sh ffmpeg 2739 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 2739 > $@ 2> $@.err
 
 ffmpeg_2764.log:
-	./run.sh ffmpeg 2764 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 2764 > $@ 2> $@.err
 
 ffmpeg_2815.log:
-	./run.sh ffmpeg 2815 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 2815 > $@ 2> $@.err
 
 ffmpeg_2818.log:
-	./run.sh ffmpeg 2818 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 2818 > $@ 2> $@.err
 
 ffmpeg_2819.log:
-	./run.sh ffmpeg 2819 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 2819 > $@ 2> $@.err
 
 ffmpeg_2826.log:
-	./run.sh ffmpeg 2826 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 2826 > $@ 2> $@.err
 
 ffmpeg_2834.log:
-	./run.sh ffmpeg 2834 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 2834 > $@ 2> $@.err
 
 ffmpeg_2861.log:
-	./run.sh ffmpeg 2861 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 2861 > $@ 2> $@.err
 
 ffmpeg_2873.log:
-	./run.sh ffmpeg 2873 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 2873 > $@ 2> $@.err
 
 ffmpeg_2879.log:
-	./run.sh ffmpeg 2879 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 2879 > $@ 2> $@.err
 
 ffmpeg_2893.log:
-	./run.sh ffmpeg 2893 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 2893 > $@ 2> $@.err
 
 ffmpeg_3013.log:
-	./run.sh ffmpeg 3013 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 3013 > $@ 2> $@.err
 
 ffmpeg_3051.log:
-	./run.sh ffmpeg 3051 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 3051 > $@ 2> $@.err
 
 ffmpeg_3091.log:
-	./run.sh ffmpeg 3091 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 3091 > $@ 2> $@.err
 
 ffmpeg_3202.log:
-	./run.sh ffmpeg 3202 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 3202 > $@ 2> $@.err
 
 ffmpeg_3203.log:
-	./run.sh ffmpeg 3203 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 3203 > $@ 2> $@.err
 
 ffmpeg_3279.log:
-	./run.sh ffmpeg 3279 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 3279 > $@ 2> $@.err
 
 ffmpeg_3416.log:
-	./run.sh ffmpeg 3416 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 3416 > $@ 2> $@.err
 
 ffmpeg_3453.log:
-	./run.sh ffmpeg 3453 > $@ 2> $@.err
+	./scripts/run.sh ffmpeg 3453 > $@ 2> $@.err
 
 libarchive: libarchive_15.log  libarchive_16.log  libarchive_1627.log  libarchive_220.log  libarchive_232.log  libarchive_237.log  libarchive_2394.log  libarchive_286.log  libarchive_335.log  libarchive_422.log  libarchive_453.log  libarchive_497.log  libarchive_504.log  libarchive_527.log  libarchive_538.log  libarchive_551.log  libarchive_552.log  libarchive_556.log  libarchive_573.log  libarchive_577.log  libarchive_806.log  libarchive_862.log  
 
 libarchive_15.log:
-	./run.sh libarchive 15 > $@ 2> $@.err
+	./scripts/run.sh libarchive 15 > $@ 2> $@.err
 
 libarchive_16.log:
-	./run.sh libarchive 16 > $@ 2> $@.err
+	./scripts/run.sh libarchive 16 > $@ 2> $@.err
 
 libarchive_1627.log:
-	./run.sh libarchive 1627 > $@ 2> $@.err
+	./scripts/run.sh libarchive 1627 > $@ 2> $@.err
 
 libarchive_220.log:
-	./run.sh libarchive 220 > $@ 2> $@.err
+	./scripts/run.sh libarchive 220 > $@ 2> $@.err
 
 libarchive_232.log:
-	./run.sh libarchive 232 > $@ 2> $@.err
+	./scripts/run.sh libarchive 232 > $@ 2> $@.err
 
 libarchive_237.log:
-	./run.sh libarchive 237 > $@ 2> $@.err
+	./scripts/run.sh libarchive 237 > $@ 2> $@.err
 
 libarchive_2394.log:
-	./run.sh libarchive 2394 > $@ 2> $@.err
+	./scripts/run.sh libarchive 2394 > $@ 2> $@.err
 
 libarchive_286.log:
-	./run.sh libarchive 286 > $@ 2> $@.err
+	./scripts/run.sh libarchive 286 > $@ 2> $@.err
 
 libarchive_335.log:
-	./run.sh libarchive 335 > $@ 2> $@.err
+	./scripts/run.sh libarchive 335 > $@ 2> $@.err
 
 libarchive_422.log:
-	./run.sh libarchive 422 > $@ 2> $@.err
+	./scripts/run.sh libarchive 422 > $@ 2> $@.err
 
 libarchive_453.log:
-	./run.sh libarchive 453 > $@ 2> $@.err
+	./scripts/run.sh libarchive 453 > $@ 2> $@.err
 
 libarchive_497.log:
-	./run.sh libarchive 497 > $@ 2> $@.err
+	./scripts/run.sh libarchive 497 > $@ 2> $@.err
 
 libarchive_504.log:
-	./run.sh libarchive 504 > $@ 2> $@.err
+	./scripts/run.sh libarchive 504 > $@ 2> $@.err
 
 libarchive_527.log:
-	./run.sh libarchive 527 > $@ 2> $@.err
+	./scripts/run.sh libarchive 527 > $@ 2> $@.err
 
 libarchive_538.log:
-	./run.sh libarchive 538 > $@ 2> $@.err
+	./scripts/run.sh libarchive 538 > $@ 2> $@.err
 
 libarchive_551.log:
-	./run.sh libarchive 551 > $@ 2> $@.err
+	./scripts/run.sh libarchive 551 > $@ 2> $@.err
 
 libarchive_552.log:
-	./run.sh libarchive 552 > $@ 2> $@.err
+	./scripts/run.sh libarchive 552 > $@ 2> $@.err
 
 libarchive_556.log:
-	./run.sh libarchive 556 > $@ 2> $@.err
+	./scripts/run.sh libarchive 556 > $@ 2> $@.err
 
 libarchive_573.log:
-	./run.sh libarchive 573 > $@ 2> $@.err
+	./scripts/run.sh libarchive 573 > $@ 2> $@.err
 
 libarchive_577.log:
-	./run.sh libarchive 577 > $@ 2> $@.err
+	./scripts/run.sh libarchive 577 > $@ 2> $@.err
 
 libarchive_806.log:
-	./run.sh libarchive 806 > $@ 2> $@.err
+	./scripts/run.sh libarchive 806 > $@ 2> $@.err
 
 libarchive_862.log:
-	./run.sh libarchive 862 > $@ 2> $@.err
+	./scripts/run.sh libarchive 862 > $@ 2> $@.err
 
 openjpeg: openjpeg_2485.log  openjpeg_2487.log  openjpeg_2494.log  openjpeg_2495.log  openjpeg_2496.log  openjpeg_2506.log  openjpeg_2516.log  openjpeg_2558.log  openjpeg_2785.log  openjpeg_2786.log  openjpeg_2787.log  openjpeg_2795.log  openjpeg_2799.log  openjpeg_2851.log  openjpeg_3068.log  openjpeg_3115.log  openjpeg_3255.log  openjpeg_3297.log  openjpeg_3305.log  openjpeg_3331.log  
 
 openjpeg_2485.log:
-	./run.sh openjpeg 2485 > $@ 2> $@.err
+	./scripts/run.sh openjpeg 2485 > $@ 2> $@.err
 
 openjpeg_2487.log:
-	./run.sh openjpeg 2487 > $@ 2> $@.err
+	./scripts/run.sh openjpeg 2487 > $@ 2> $@.err
 
 openjpeg_2494.log:
-	./run.sh openjpeg 2494 > $@ 2> $@.err
+	./scripts/run.sh openjpeg 2494 > $@ 2> $@.err
 
 openjpeg_2495.log:
-	./run.sh openjpeg 2495 > $@ 2> $@.err
+	./scripts/run.sh openjpeg 2495 > $@ 2> $@.err
 
 openjpeg_2496.log:
-	./run.sh openjpeg 2496 > $@ 2> $@.err
+	./scripts/run.sh openjpeg 2496 > $@ 2> $@.err
 
 openjpeg_2506.log:
-	./run.sh openjpeg 2506 > $@ 2> $@.err
+	./scripts/run.sh openjpeg 2506 > $@ 2> $@.err
 
 openjpeg_2516.log:
-	./run.sh openjpeg 2516 > $@ 2> $@.err
+	./scripts/run.sh openjpeg 2516 > $@ 2> $@.err
 
 openjpeg_2558.log:
-	./run.sh openjpeg 2558 > $@ 2> $@.err
+	./scripts/run.sh openjpeg 2558 > $@ 2> $@.err
 
 openjpeg_2785.log:
-	./run.sh openjpeg 2785 > $@ 2> $@.err
+	./scripts/run.sh openjpeg 2785 > $@ 2> $@.err
 
 openjpeg_2786.log:
-	./run.sh openjpeg 2786 > $@ 2> $@.err
+	./scripts/run.sh openjpeg 2786 > $@ 2> $@.err
 
 openjpeg_2787.log:
-	./run.sh openjpeg 2787 > $@ 2> $@.err
+	./scripts/run.sh openjpeg 2787 > $@ 2> $@.err
 
 openjpeg_2795.log:
-	./run.sh openjpeg 2795 > $@ 2> $@.err
+	./scripts/run.sh openjpeg 2795 > $@ 2> $@.err
 
 openjpeg_2799.log:
-	./run.sh openjpeg 2799 > $@ 2> $@.err
+	./scripts/run.sh openjpeg 2799 > $@ 2> $@.err
 
 openjpeg_2851.log:
-	./run.sh openjpeg 2851 > $@ 2> $@.err
+	./scripts/run.sh openjpeg 2851 > $@ 2> $@.err
 
 openjpeg_3068.log:
-	./run.sh openjpeg 3068 > $@ 2> $@.err
+	./scripts/run.sh openjpeg 3068 > $@ 2> $@.err
 
 openjpeg_3115.log:
-	./run.sh openjpeg 3115 > $@ 2> $@.err
+	./scripts/run.sh openjpeg 3115 > $@ 2> $@.err
 
 openjpeg_3255.log:
-	./run.sh openjpeg 3255 > $@ 2> $@.err
+	./scripts/run.sh openjpeg 3255 > $@ 2> $@.err
 
 openjpeg_3297.log:
-	./run.sh openjpeg 3297 > $@ 2> $@.err
+	./scripts/run.sh openjpeg 3297 > $@ 2> $@.err
 
 openjpeg_3305.log:
-	./run.sh openjpeg 3305 > $@ 2> $@.err
+	./scripts/run.sh openjpeg 3305 > $@ 2> $@.err
 
 openjpeg_3331.log:
-	./run.sh openjpeg 3331 > $@ 2> $@.err
+	./scripts/run.sh openjpeg 3331 > $@ 2> $@.err
 
 proj4: proj4_1787.log  proj4_1789.log  proj4_1791.log  proj4_1793.log  proj4_1794.log  proj4_1795.log  proj4_1797.log  proj4_1799.log  proj4_1800.log  proj4_1801.log  proj4_1809.log  proj4_1836.log  proj4_1873.log  proj4_1923.log  proj4_1927.log  proj4_1950.log  proj4_1956.log  proj4_2000.log  proj4_2167.log  proj4_2230.log  proj4_2723.log  proj4_3204.log  proj4_3235.log  proj4_3274.log  proj4_3276.log  proj4_3288.log  proj4_3321.log  proj4_3573.log  proj4_3620.log  proj4_3630.log  proj4_3641.log  proj4_3643.log  proj4_3645.log  proj4_3940.log  proj4_3944.log  proj4_3947.log  proj4_3955.log  proj4_3960.log  proj4_4404.log  proj4_4658.log  proj4_4667.log  proj4_4695.log  
 
 proj4_1787.log:
-	./run.sh proj4 1787 > $@ 2> $@.err
+	./scripts/run.sh proj4 1787 > $@ 2> $@.err
 
 proj4_1789.log:
-	./run.sh proj4 1789 > $@ 2> $@.err
+	./scripts/run.sh proj4 1789 > $@ 2> $@.err
 
 proj4_1791.log:
-	./run.sh proj4 1791 > $@ 2> $@.err
+	./scripts/run.sh proj4 1791 > $@ 2> $@.err
 
 proj4_1793.log:
-	./run.sh proj4 1793 > $@ 2> $@.err
+	./scripts/run.sh proj4 1793 > $@ 2> $@.err
 
 proj4_1794.log:
-	./run.sh proj4 1794 > $@ 2> $@.err
+	./scripts/run.sh proj4 1794 > $@ 2> $@.err
 
 proj4_1795.log:
-	./run.sh proj4 1795 > $@ 2> $@.err
+	./scripts/run.sh proj4 1795 > $@ 2> $@.err
 
 proj4_1797.log:
-	./run.sh proj4 1797 > $@ 2> $@.err
+	./scripts/run.sh proj4 1797 > $@ 2> $@.err
 
 proj4_1799.log:
-	./run.sh proj4 1799 > $@ 2> $@.err
+	./scripts/run.sh proj4 1799 > $@ 2> $@.err
 
 proj4_1800.log:
-	./run.sh proj4 1800 > $@ 2> $@.err
+	./scripts/run.sh proj4 1800 > $@ 2> $@.err
 
 proj4_1801.log:
-	./run.sh proj4 1801 > $@ 2> $@.err
+	./scripts/run.sh proj4 1801 > $@ 2> $@.err
 
 proj4_1809.log:
-	./run.sh proj4 1809 > $@ 2> $@.err
+	./scripts/run.sh proj4 1809 > $@ 2> $@.err
 
 proj4_1836.log:
-	./run.sh proj4 1836 > $@ 2> $@.err
+	./scripts/run.sh proj4 1836 > $@ 2> $@.err
 
 proj4_1873.log:
-	./run.sh proj4 1873 > $@ 2> $@.err
+	./scripts/run.sh proj4 1873 > $@ 2> $@.err
 
 proj4_1923.log:
-	./run.sh proj4 1923 > $@ 2> $@.err
+	./scripts/run.sh proj4 1923 > $@ 2> $@.err
 
 proj4_1927.log:
-	./run.sh proj4 1927 > $@ 2> $@.err
+	./scripts/run.sh proj4 1927 > $@ 2> $@.err
 
 proj4_1950.log:
-	./run.sh proj4 1950 > $@ 2> $@.err
+	./scripts/run.sh proj4 1950 > $@ 2> $@.err
 
 proj4_1956.log:
-	./run.sh proj4 1956 > $@ 2> $@.err
+	./scripts/run.sh proj4 1956 > $@ 2> $@.err
 
 proj4_2000.log:
-	./run.sh proj4 2000 > $@ 2> $@.err
+	./scripts/run.sh proj4 2000 > $@ 2> $@.err
 
 proj4_2167.log:
-	./run.sh proj4 2167 > $@ 2> $@.err
+	./scripts/run.sh proj4 2167 > $@ 2> $@.err
 
 proj4_2230.log:
-	./run.sh proj4 2230 > $@ 2> $@.err
+	./scripts/run.sh proj4 2230 > $@ 2> $@.err
 
 proj4_2723.log:
-	./run.sh proj4 2723 > $@ 2> $@.err
+	./scripts/run.sh proj4 2723 > $@ 2> $@.err
 
 proj4_3204.log:
-	./run.sh proj4 3204 > $@ 2> $@.err
+	./scripts/run.sh proj4 3204 > $@ 2> $@.err
 
 proj4_3235.log:
-	./run.sh proj4 3235 > $@ 2> $@.err
+	./scripts/run.sh proj4 3235 > $@ 2> $@.err
 
 proj4_3274.log:
-	./run.sh proj4 3274 > $@ 2> $@.err
+	./scripts/run.sh proj4 3274 > $@ 2> $@.err
 
 proj4_3276.log:
-	./run.sh proj4 3276 > $@ 2> $@.err
+	./scripts/run.sh proj4 3276 > $@ 2> $@.err
 
 proj4_3288.log:
-	./run.sh proj4 3288 > $@ 2> $@.err
+	./scripts/run.sh proj4 3288 > $@ 2> $@.err
 
 proj4_3321.log:
-	./run.sh proj4 3321 > $@ 2> $@.err
+	./scripts/run.sh proj4 3321 > $@ 2> $@.err
 
 proj4_3573.log:
-	./run.sh proj4 3573 > $@ 2> $@.err
+	./scripts/run.sh proj4 3573 > $@ 2> $@.err
 
 proj4_3620.log:
-	./run.sh proj4 3620 > $@ 2> $@.err
+	./scripts/run.sh proj4 3620 > $@ 2> $@.err
 
 proj4_3630.log:
-	./run.sh proj4 3630 > $@ 2> $@.err
+	./scripts/run.sh proj4 3630 > $@ 2> $@.err
 
 proj4_3641.log:
-	./run.sh proj4 3641 > $@ 2> $@.err
+	./scripts/run.sh proj4 3641 > $@ 2> $@.err
 
 proj4_3643.log:
-	./run.sh proj4 3643 > $@ 2> $@.err
+	./scripts/run.sh proj4 3643 > $@ 2> $@.err
 
 proj4_3645.log:
-	./run.sh proj4 3645 > $@ 2> $@.err
+	./scripts/run.sh proj4 3645 > $@ 2> $@.err
 
 proj4_3940.log:
-	./run.sh proj4 3940 > $@ 2> $@.err
+	./scripts/run.sh proj4 3940 > $@ 2> $@.err
 
 proj4_3944.log:
-	./run.sh proj4 3944 > $@ 2> $@.err
+	./scripts/run.sh proj4 3944 > $@ 2> $@.err
 
 proj4_3947.log:
-	./run.sh proj4 3947 > $@ 2> $@.err
+	./scripts/run.sh proj4 3947 > $@ 2> $@.err
 
 proj4_3955.log:
-	./run.sh proj4 3955 > $@ 2> $@.err
+	./scripts/run.sh proj4 3955 > $@ 2> $@.err
 
 proj4_3960.log:
-	./run.sh proj4 3960 > $@ 2> $@.err
+	./scripts/run.sh proj4 3960 > $@ 2> $@.err
 
 proj4_4404.log:
-	./run.sh proj4 4404 > $@ 2> $@.err
+	./scripts/run.sh proj4 4404 > $@ 2> $@.err
 
 proj4_4658.log:
-	./run.sh proj4 4658 > $@ 2> $@.err
+	./scripts/run.sh proj4 4658 > $@ 2> $@.err
 
 proj4_4667.log:
-	./run.sh proj4 4667 > $@ 2> $@.err
+	./scripts/run.sh proj4 4667 > $@ 2> $@.err
 
 proj4_4695.log:
-	./run.sh proj4 4695 > $@ 2> $@.err
+	./scripts/run.sh proj4 4695 > $@ 2> $@.err
 
 wireshark: wireshark_1149.log  wireshark_1151.log  wireshark_1152.log  wireshark_1153.log  wireshark_1154.log  wireshark_1156.log  wireshark_1167.log  wireshark_1172.log  wireshark_1179.log  wireshark_1183.log  wireshark_1200.log  wireshark_1206.log  wireshark_1212.log  wireshark_1221.log  wireshark_1232.log  wireshark_1243.log  wireshark_1268.log  wireshark_1302.log  wireshark_1303.log  wireshark_1307.log  wireshark_1329.log  wireshark_1359.log  wireshark_1363.log  wireshark_1550.log  wireshark_1678.log  wireshark_1979.log  wireshark_2163.log  wireshark_2198.log  wireshark_2736.log  wireshark_3372.log  wireshark_3408.log  
 
 wireshark_1149.log:
-	./run.sh wireshark 1149 > $@ 2> $@.err
+	./scripts/run.sh wireshark 1149 > $@ 2> $@.err
 
 wireshark_1151.log:
-	./run.sh wireshark 1151 > $@ 2> $@.err
+	./scripts/run.sh wireshark 1151 > $@ 2> $@.err
 
 wireshark_1152.log:
-	./run.sh wireshark 1152 > $@ 2> $@.err
+	./scripts/run.sh wireshark 1152 > $@ 2> $@.err
 
 wireshark_1153.log:
-	./run.sh wireshark 1153 > $@ 2> $@.err
+	./scripts/run.sh wireshark 1153 > $@ 2> $@.err
 
 wireshark_1154.log:
-	./run.sh wireshark 1154 > $@ 2> $@.err
+	./scripts/run.sh wireshark 1154 > $@ 2> $@.err
 
 wireshark_1156.log:
-	./run.sh wireshark 1156 > $@ 2> $@.err
+	./scripts/run.sh wireshark 1156 > $@ 2> $@.err
 
 wireshark_1167.log:
-	./run.sh wireshark 1167 > $@ 2> $@.err
+	./scripts/run.sh wireshark 1167 > $@ 2> $@.err
 
 wireshark_1172.log:
-	./run.sh wireshark 1172 > $@ 2> $@.err
+	./scripts/run.sh wireshark 1172 > $@ 2> $@.err
 
 wireshark_1179.log:
-	./run.sh wireshark 1179 > $@ 2> $@.err
+	./scripts/run.sh wireshark 1179 > $@ 2> $@.err
 
 wireshark_1183.log:
-	./run.sh wireshark 1183 > $@ 2> $@.err
+	./scripts/run.sh wireshark 1183 > $@ 2> $@.err
 
 wireshark_1200.log:
-	./run.sh wireshark 1200 > $@ 2> $@.err
+	./scripts/run.sh wireshark 1200 > $@ 2> $@.err
 
 wireshark_1206.log:
-	./run.sh wireshark 1206 > $@ 2> $@.err
+	./scripts/run.sh wireshark 1206 > $@ 2> $@.err
 
 wireshark_1212.log:
-	./run.sh wireshark 1212 > $@ 2> $@.err
+	./scripts/run.sh wireshark 1212 > $@ 2> $@.err
 
 wireshark_1221.log:
-	./run.sh wireshark 1221 > $@ 2> $@.err
+	./scripts/run.sh wireshark 1221 > $@ 2> $@.err
 
 wireshark_1232.log:
-	./run.sh wireshark 1232 > $@ 2> $@.err
+	./scripts/run.sh wireshark 1232 > $@ 2> $@.err
 
 wireshark_1243.log:
-	./run.sh wireshark 1243 > $@ 2> $@.err
+	./scripts/run.sh wireshark 1243 > $@ 2> $@.err
 
 wireshark_1268.log:
-	./run.sh wireshark 1268 > $@ 2> $@.err
+	./scripts/run.sh wireshark 1268 > $@ 2> $@.err
 
 wireshark_1302.log:
-	./run.sh wireshark 1302 > $@ 2> $@.err
+	./scripts/run.sh wireshark 1302 > $@ 2> $@.err
 
 wireshark_1303.log:
-	./run.sh wireshark 1303 > $@ 2> $@.err
+	./scripts/run.sh wireshark 1303 > $@ 2> $@.err
 
 wireshark_1307.log:
-	./run.sh wireshark 1307 > $@ 2> $@.err
+	./scripts/run.sh wireshark 1307 > $@ 2> $@.err
 
 wireshark_1329.log:
-	./run.sh wireshark 1329 > $@ 2> $@.err
+	./scripts/run.sh wireshark 1329 > $@ 2> $@.err
 
 wireshark_1359.log:
-	./run.sh wireshark 1359 > $@ 2> $@.err
+	./scripts/run.sh wireshark 1359 > $@ 2> $@.err
 
 wireshark_1363.log:
-	./run.sh wireshark 1363 > $@ 2> $@.err
+	./scripts/run.sh wireshark 1363 > $@ 2> $@.err
 
 wireshark_1550.log:
-	./run.sh wireshark 1550 > $@ 2> $@.err
+	./scripts/run.sh wireshark 1550 > $@ 2> $@.err
 
 wireshark_1678.log:
-	./run.sh wireshark 1678 > $@ 2> $@.err
+	./scripts/run.sh wireshark 1678 > $@ 2> $@.err
 
 wireshark_1979.log:
-	./run.sh wireshark 1979 > $@ 2> $@.err
+	./scripts/run.sh wireshark 1979 > $@ 2> $@.err
 
 wireshark_2163.log:
-	./run.sh wireshark 2163 > $@ 2> $@.err
+	./scripts/run.sh wireshark 2163 > $@ 2> $@.err
 
 wireshark_2198.log:
-	./run.sh wireshark 2198 > $@ 2> $@.err
+	./scripts/run.sh wireshark 2198 > $@ 2> $@.err
 
 wireshark_2736.log:
-	./run.sh wireshark 2736 > $@ 2> $@.err
+	./scripts/run.sh wireshark 2736 > $@ 2> $@.err
 
 wireshark_3372.log:
-	./run.sh wireshark 3372 > $@ 2> $@.err
+	./scripts/run.sh wireshark 3372 > $@ 2> $@.err
 
 wireshark_3408.log:
-	./run.sh wireshark 3408 > $@ 2> $@.err
+	./scripts/run.sh wireshark 3408 > $@ 2> $@.err
 
 clean:
 	rm -rf projects/ffmpeg_1298/ffmpeg_1298_codes  
