@@ -2,7 +2,7 @@
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-cd $SCRIPT_DIR
+pushd $SCRIPT_DIR/..
 
 PROJECTS="ffmpeg libarchive openjpeg proj4 wireshark"
 
@@ -109,3 +109,4 @@ echo realclean: clean remove_exited_containers remove_images >> Makefile
 
 echo >> Makefile
 
+popd
