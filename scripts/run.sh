@@ -29,14 +29,14 @@ make_ffmpeg_project() {
 	    X264_HASH=`echo -n $LINE | cut --delimiter=, --fields=3`
 	    break;
 	fi
-    done < $SCRIPT_DIR/all_issue_ids_ffmpeg.txt
+    done < $SCRIPT_DIR/../all_issue_ids_ffmpeg.txt
 
     if [ x$FFMPEG_HASH != x ] ; then
-	cd $SCRIPT_DIR/projects/ffmpeg_$BUG_NUMBER
+	cd $SCRIPT_DIR/../projects/ffmpeg_$BUG_NUMBER
 	git clone https://github.com/FFmpeg/FFmpeg.git "ffmpeg_$BUG_NUMBER"_codes
 	cd "ffmpeg_$BUG_NUMBER"_codes
 	git reset --hard $FFMPEG_HASH
-	cd $SCRIPT_DIR/projects/ffmpeg_$BUG_NUMBER
+	cd $SCRIPT_DIR/../projects/ffmpeg_$BUG_NUMBER
 	git clone https://github.com/mirror/x264.git x264_prev
 	cd x264_prev
 	git reset --hard $X264_HASH
@@ -63,10 +63,10 @@ make_libarchive_project() {
 	    LIBARCHIVE_HASH=`echo -n $LINE | cut --delimiter=, --fields=2`
 	    break;
 	fi
-    done < $SCRIPT_DIR/all_issue_ids_libarchive.txt
+    done < $SCRIPT_DIR/../all_issue_ids_libarchive.txt
 
     if [ x$LIBARCHIVE_HASH != x ] ; then
-	cd $SCRIPT_DIR/projects/libarchive_$BUG_NUMBER
+	cd $SCRIPT_DIR/../projects/libarchive_$BUG_NUMBER
 	git clone https://github.com/libarchive/libarchive.git "libarchive_$BUG_NUMBER"_codes
 	cd "libarchive_$BUG_NUMBER"_codes
 	git reset --hard $LIBARCHIVE_HASH
@@ -93,10 +93,10 @@ make_openjpeg_project() {
 	    OPENJPEG_HASH=`echo -n $LINE | cut --delimiter=, --fields=2`
 	    break;
 	fi
-    done < $SCRIPT_DIR/all_issue_ids_openjpeg.txt
+    done < $SCRIPT_DIR/../all_issue_ids_openjpeg.txt
 
     if [ x$OPENJPEG_HASH != x ] ; then
-	cd $SCRIPT_DIR/projects/openjpeg_$BUG_NUMBER
+	cd $SCRIPT_DIR/../projects/openjpeg_$BUG_NUMBER
 	git clone https://github.com/uclouvain/openjpeg.git openjpeg_$BUG_NUMBER
 	cd openjpeg_$BUG_NUMBER
 	git reset --hard $OPENJPEG_HASH
@@ -123,10 +123,10 @@ make_proj4_project() {
 	    PROJ4_HASH=`echo -n $LINE | cut --delimiter=, --fields=2`
 	    break;
 	fi
-    done < $SCRIPT_DIR/all_issue_ids_proj4.txt
+    done < $SCRIPT_DIR/../all_issue_ids_proj4.txt
 
     if [ x$PROJ4_HASH != x ] ; then
-	cd $SCRIPT_DIR/projects/proj4_$BUG_NUMBER
+	cd $SCRIPT_DIR/../projects/proj4_$BUG_NUMBER
 	git clone https://github.com/OSGeo/proj.4.git proj4_$BUG_NUMBER
 	cd proj4_$BUG_NUMBER
 	git reset --hard $PROJ4_HASH
@@ -153,10 +153,10 @@ make_wireshark_project() {
 	    WIRESHARK_HASH=`echo -n $LINE | cut --delimiter=, --fields=2`
 	    break;
 	fi
-    done < $SCRIPT_DIR/all_issue_ids_wireshark.txt
+    done < $SCRIPT_DIR/../all_issue_ids_wireshark.txt
 
     if [ x$WIRESHARK_HASH != x ] ; then
-	cd $SCRIPT_DIR/projects/wireshark_$BUG_NUMBER
+	cd $SCRIPT_DIR/../projects/wireshark_$BUG_NUMBER
 	git clone https://github.com/wireshark/wireshark.git wireshark_$BUG_NUMBER
 	cd wireshark_$BUG_NUMBER
 	git reset --hard $WIRESHARK_HASH
