@@ -70,6 +70,9 @@ make_libarchive_project() {
 	git clone https://github.com/libarchive/libarchive.git "libarchive_$BUG_NUMBER"_codes
 	cd "libarchive_$BUG_NUMBER"_codes
 	git reset --hard $LIBARCHIVE_HASH
+	pushd $SCRIPT_DIR/..
+	zip -r projects/libarchive_$BUG_NUMBER/f1x.zip f1x
+	popd
     fi
 
     # Restore the supposedly original state
