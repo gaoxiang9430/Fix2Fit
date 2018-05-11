@@ -58,6 +58,8 @@ do
 		echo -en "\t" >> Makefile
 		echo "rm -rf projects/$PROJECT_NAME"_"$BUG_NUMBER/x264_prev" >> Makefile
             fi
+            echo -en "\t" >> Makefile
+            echo "rm -f projects/$PROJECT_NAME"_"$BUG_NUMBER/f1x.zip" >> Makefile
 	    echo -en "\t" >> Makefile
 	    echo "rm -f $PROJECT_NAME"_"$BUG_NUMBER".log "$PROJECT_NAME"_"$BUG_NUMBER".log.err >> Makefile	    
 	fi
