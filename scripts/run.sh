@@ -189,10 +189,10 @@ build_project() {
     elif [ x$PROJECT_NAME = xwireshark ] ; then
 	make_wireshark_project $BUG_NUMBER
     fi
-    sudo python $SCRIPT_DIR/../infra/helper.py build_image $PROJECT_NAME $BUG_NUMBER
-    sudo python $SCRIPT_DIR/../infra/helper.py build_fuzzers --no_tty --sanitizer address $PROJECT_NAME $BUG_NUMBER
+    python $SCRIPT_DIR/../infra/helper.py build_image $PROJECT_NAME $BUG_NUMBER
+    python $SCRIPT_DIR/../infra/helper.py build_fuzzers --no_tty --sanitizer address $PROJECT_NAME $BUG_NUMBER
     # For running the fuzzer
-    # sudo python $SCRIPT_DIR/../infra/helper.py run_fuzzer "$PROJECT_NAME"_$BUG_NUMBER "$PROJECT_NAME"_fuzzer
+    # python $SCRIPT_DIR/../infra/helper.py run_fuzzer "$PROJECT_NAME"_$BUG_NUMBER "$PROJECT_NAME"_fuzzer
 
     cd $INITIAL_DIR
 }
