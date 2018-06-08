@@ -1,1 +1,1 @@
-/out/fuzzshark_tcp_port-bgp -rss_limit_mb=2048 -timeout=25 -runs=100 /wireshark_2736_testcase
+/out/fuzzshark_tcp_port-bgp < /wireshark_2736_testcase

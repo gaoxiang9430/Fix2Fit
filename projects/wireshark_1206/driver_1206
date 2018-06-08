@@ -1,1 +1,1 @@
-/out/fuzzshark_udp_port-bootp -rss_limit_mb=2048 -timeout=25 -runs=100 /wireshark_1206_testcase
+/out/fuzzshark_udp_port-bootp < /wireshark_1206_testcase

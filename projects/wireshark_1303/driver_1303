@@ -1,1 +1,1 @@
-/out/fuzzshark_ip_proto-udp -rss_limit_mb=2048 -timeout=25 -runs=100 /wireshark_1303_testcase
+/out/fuzzshark_ip_proto-udp < /wireshark_1303_testcase
