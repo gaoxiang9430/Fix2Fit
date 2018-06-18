@@ -15,6 +15,141 @@
 #
 ################################################################################
 
+pushd $SRC > /dev/null
+
+export INITIAL_CC=$CC
+export INITIAL_CXX=$CXX
+export INITIAL_CFLAGS=$CFLAGS
+export INITIAL_CXXFLAGS=$CXXFLAGS
+
+# Build LLVM 3.8.1 for building f1x
+CC=gcc
+CXX=g++
+CFLAGS=
+CXXFLAGS=
+
+if [ -x "llvm-3.8.1/install/bin/clang" ] ; then
+    echo LLVM 3.8.1 built
+    exit 1
+fi
+
+mkdir -p llvm-3.8.1
+pushd llvm-3.8.1 > /dev/null
+if [ ! -e llvm-3.8.1.src.tar.xz ] ; then
+	wget http://releases.llvm.org/3.8.1/llvm-3.8.1.src.tar.xz
+	tar xf llvm-3.8.1.src.tar.xz
+	mv llvm-3.8.1.src src
+	rm -f llvm-3.8.1.src.tar.xz
+fi
+if [ ! -e cfe-3.8.1.src.tar.xz ] ; then
+	wget http://releases.llvm.org/3.8.1/cfe-3.8.1.src.tar.xz
+	tar xf cfe-3.8.1.src.tar.xz
+	mv cfe-3.8.1.src src/tools/clang
+	rm -f cfe-3.8.1.src.tar.xz
+fi
+if [ ! -e compiler-rt-3.8.1.src.tar.xz ] ; then
+	wget http://releases.llvm.org/3.8.1/compiler-rt-3.8.1.src.tar.xz
+	tar xf compiler-rt-3.8.1.src.tar.xz
+	mv compiler-rt-3.8.1.src src/projects/compiler-rt
+	rm -f compierl-rt-3.8.1.src.tar.xz
+fi
+mkdir -p install
+LLVM_INSTALL_DIR=$PWD/install
+mkdir -p build
+pushd build > /dev/null
+cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX=$LLVM_INSTALL_DIR -DCMAKE_BUILD_TYPE=Release -DLLVM_ENABLE_ASSERTIONS=Off ../src
+make -j$(nproc) install
+popd > /dev/null
+popd > /dev/null
+
+# Build f1x
+unzip f1x.zip
+pushd f1x > /dev/null
+mkdir -p build
+pushd build > /dev/null
+cmake -DF1X_LLVM=/src/llvm-3.8.1/install ..
+make
+popd > /dev/null
+popd > /dev/null
+
+export CC=$INITIAL_CC
+export CXX=$INITIAL_CXX
+export CFLAGS=$INITIAL_CFLAGS
+export CXXFLAGS=$INITIAL_CXXFLAGS
+
+export PATH=/src/f1x/build/tools:$PATH
+
+# Build AFL
+# This is where we want to replace OSS-Fuzz afl with our specialized afl engine
+# This code is based on infra/base-images/base-builder/compile_afl
+echo -n "Compiling afl to $LIB_FUZZING_ENGINE ..."
+
+# First, we remove existing fuzzing engine and afl
+rm -f $LIB_FUZZING_ENGINE
+rm -rf afl
+
+# This should download our new afl engine
+git clone https://github.com/mirrorer/afl.git
+
+# afl needs its special coverage flags
+export COVERAGE_FLAGS="-fsanitize-coverage=trace-pc-guard"
+
+INITIAL_CC=$CC
+INITIAL_CXX=$CXX
+CC=clang
+CXX=clang++
+mkdir -p $WORK/afl
+pushd $WORK/afl > /dev/null
+# Add -Wno-pointer-sign to silence warning (AFL is compiled this way).
+$CC $CFLAGS -Wno-pointer-sign -c $SRC/afl/llvm_mode/afl-llvm-rt.o.c
+$CXX $CXXFLAGS -std=c++11 -O2 -c $SRC/libfuzzer/afl/*.cpp -I$SRC/libfuzzer
+ar r $LIB_FUZZING_ENGINE $WORK/afl/*.o
+popd > /dev/null
+rm -rf $WORK/afl
+
+# Build and copy afl tools necessary for fuzzing.
+pushd $SRC/afl > /dev/null
+
+# Unset CFLAGS and CXXFLAGS while building AFL since we don't want to slow it
+# down with sanitizers.
+INITIAL_CXXFLAGS=$CXXFLAGS
+INITIAL_CFLAGS=$CFLAGS
+unset CXXFLAGS
+unset CFLAGS
+make clean && make
+CFLAGS=$INITIAL_CFLAGS
+CXXFLAGS=$INITIAL_CXXFLAGS
+CC=$INITIAL_CC
+CXX=$INITIAL_CXX
+
+find . -name 'afl-*' -executable -type f | xargs cp -t $OUT
+popd > /dev/null
+
+echo " done compiling afl."
+
+popd > /dev/null
+
+#########################################################################
+# For building the target subject
+#########################################################################
+
+# Redefinition to emphasize that we crash the sanitizer upon catching bug
+export CFLAGS="$CFLAGS  -fsanitize-undefined-trap-on-error"
+export CXXFLAGS="$CXXFLAGS  -fsanitize-undefined-trap-on-error"
+
+# Note that we need to use libstdc++ for afl
+export CXXFLAGS=${CXXFLAGS/libc++/libstdc++}
+
+# Reset these two
+export F1X_PROJECT_CFLAGS=
+export F1X_PROJECT_CXXFLAGS=
+
+# Set the compilers
+export F1X_PROJECT_CC=$SRC/afl/afl-clang
+export F1X_PROJECT_CXX=$SRC/afl/afl-clang++
+export CC=f1x-cc
+export CXX=f1x-cxx
+
 # Wireshark build.sh script inspired from projects/ffmpeg/build.sh
 
 FUZZ_DISSECTORS="ip \
