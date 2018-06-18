@@ -137,9 +137,6 @@ popd > /dev/null
 export CFLAGS="$CFLAGS  -fsanitize-undefined-trap-on-error"
 export CXXFLAGS="$CXXFLAGS  -fsanitize-undefined-trap-on-error"
 
-# Note that we need to use libstdc++ for afl
-export CXXFLAGS=${CXXFLAGS/libc++/libstdc++}
-
 # Reset these two
 export F1X_PROJECT_CFLAGS=
 export F1X_PROJECT_CXXFLAGS=
