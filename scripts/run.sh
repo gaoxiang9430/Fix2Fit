@@ -40,6 +40,9 @@ make_ffmpeg_project() {
 	git clone https://github.com/mirror/x264.git x264_prev
 	cd x264_prev
 	git reset --hard $X264_HASH
+	pushd $SCRIPT_DIR/..
+	zip -r projects/ffmpeg_$BUG_NUMBER/f1x.zip f1x
+	popd
     fi
 
     # Restore the supposedly original state
@@ -99,6 +102,9 @@ make_openjpeg_project() {
 	git clone https://github.com/uclouvain/openjpeg.git openjpeg_$BUG_NUMBER
 	cd openjpeg_$BUG_NUMBER
 	git reset --hard $OPENJPEG_HASH
+	pushd $SCRIPT_DIR/..
+	zip -r projects/openjpeg_$BUG_NUMBER/f1x.zip f1x
+	popd
     fi
 
     # Restore the supposedly original state
@@ -129,6 +135,9 @@ make_proj4_project() {
 	git clone https://github.com/OSGeo/proj.4.git proj4_$BUG_NUMBER
 	cd proj4_$BUG_NUMBER
 	git reset --hard $PROJ4_HASH
+	pushd $SCRIPT_DIR/..
+	zip -r projects/proj4_$BUG_NUMBER/f1x.zip f1x
+	popd
     fi
 
     # Restore the supposedly original state
@@ -159,6 +168,9 @@ make_wireshark_project() {
 	git clone https://github.com/wireshark/wireshark.git wireshark_$BUG_NUMBER
 	cd wireshark_$BUG_NUMBER
 	git reset --hard $WIRESHARK_HASH
+	pushd $SCRIPT_DIR/..
+	zip -r projects/wireshark_$BUG_NUMBER/f1x.zip f1x
+	popd
     fi
 
     # Restore the supposedly original state
