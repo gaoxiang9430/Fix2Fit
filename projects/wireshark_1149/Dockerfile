@@ -26,7 +26,7 @@ RUN apt-get install -y make vim autoconf automake libtool libtool-bin \
 #RUN git clone --depth=1 https://bitbucket.org/jwzawadzki/wireshark-fuzzdb.git
 
 WORKDIR wireshark
-COPY build.sh $SRC/
+COPY f1x.zip build.sh $SRC/
 COPY wireshark_1149_testcase /wireshark_1149_testcase
 COPY driver_1149 /driver_1149
 COPY wireshark_1149 $SRC/wireshark
