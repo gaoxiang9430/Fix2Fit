@@ -89,7 +89,7 @@ rm -f $LIB_FUZZING_ENGINE
 rm -rf afl
 
 # This should download our new afl engine
-git clone https://github.com/mirrorer/afl.git
+git clone https://github.com/aflgo/aflgo.git afl
 
 # afl needs its special coverage flags
 export COVERAGE_FLAGS="-fsanitize-coverage=trace-pc-guard"
