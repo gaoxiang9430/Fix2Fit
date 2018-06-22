@@ -134,8 +134,13 @@ popd > /dev/null
 #########################################################################
 
 # Redefinition to emphasize that we crash the sanitizer upon catching bug
-export CFLAGS="$CFLAGS  -fsanitize-undefined-trap-on-error"
-export CXXFLAGS="$CXXFLAGS  -fsanitize-undefined-trap-on-error"
+# Redefinition to emphasize that we crash the sanitizer upon catching bug
+if [ x$SANITIZER = xundefined ] ; then
+    export CFLAGS=${CFLAGS/\,vptr/}
+    export CXXFLAGS=${CXXFLAGS/\,vptr/}
+    export CFLAGS="$CFLAGS  -fsanitize-undefined-trap-on-error"
+    export CXXFLAGS="$CXXFLAGS  -fsanitize-undefined-trap-on-error"
+fi
 
 # Reset these two
 export F1X_PROJECT_CFLAGS=
@@ -196,4 +201,4 @@ for dissector in $FUZZ_DISSECTORS; do
   echo -en "[libfuzzer]\nmax_len = 1024\n" > $OUT/${fuzzer_name}.options
 done
 
-#exec "/bin/bash"
+exec "/bin/bash"
