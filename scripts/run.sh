@@ -27,6 +27,7 @@ make_ffmpeg_project() {
 	if [ x$BUG_NUMBER = x$FILED_BUG_NUMBER ] ; then
 	    FFMPEG_HASH=`echo -n $LINE | cut --delimiter=, --fields=2`
 	    X264_HASH=`echo -n $LINE | cut --delimiter=, --fields=3`
+	    SANITIZER_TYPE=`echo -n $LINE | cut --delimiter=, --fields=4`
 	    break;
 	fi
     done < $SCRIPT_DIR/../all_issue_ids_ffmpeg.txt
@@ -64,6 +65,7 @@ make_libarchive_project() {
 	FILED_BUG_NUMBER=`echo -n $LINE | cut --delimiter=, --fields=1`
 	if [ x$BUG_NUMBER = x$FILED_BUG_NUMBER ] ; then
 	    LIBARCHIVE_HASH=`echo -n $LINE | cut --delimiter=, --fields=2`
+	    SANITIZER_TYPE=`echo -n $LINE | cut --delimiter=, --fields=3`
 	    break;
 	fi
     done < $SCRIPT_DIR/../all_issue_ids_libarchive.txt
@@ -93,6 +95,7 @@ make_openjpeg_project() {
 	FILED_BUG_NUMBER=`echo -n $LINE | cut --delimiter=, --fields=1`
 	if [ x$BUG_NUMBER = x$FILED_BUG_NUMBER ] ; then
 	    OPENJPEG_HASH=`echo -n $LINE | cut --delimiter=, --fields=2`
+	    SANITIZER_TYPE=`echo -n $LINE | cut --delimiter=, --fields=3`
 	    break;
 	fi
     done < $SCRIPT_DIR/../all_issue_ids_openjpeg.txt
@@ -126,6 +129,7 @@ make_proj4_project() {
 	FILED_BUG_NUMBER=`echo -n $LINE | cut --delimiter=, --fields=1`
 	if [ x$BUG_NUMBER = x$FILED_BUG_NUMBER ] ; then
 	    PROJ4_HASH=`echo -n $LINE | cut --delimiter=, --fields=2`
+	    SANITIZER_TYPE=`echo -n $LINE | cut --delimiter=, --fields=3`
 	    break;
 	fi
     done < $SCRIPT_DIR/../all_issue_ids_proj4.txt
@@ -159,6 +163,7 @@ make_wireshark_project() {
 	FILED_BUG_NUMBER=`echo -n $LINE | cut --delimiter=, --fields=1`
 	if [ x$BUG_NUMBER = x$FILED_BUG_NUMBER ] ; then
 	    WIRESHARK_HASH=`echo -n $LINE | cut --delimiter=, --fields=2`
+	    SANITIZER_TYPE=`echo -n $LINE | cut --delimiter=, --fields=3`
 	    break;
 	fi
     done < $SCRIPT_DIR/../all_issue_ids_wireshark.txt
@@ -185,7 +190,8 @@ build_project() {
     PROJECT_NAME=$1
     BUG_NUMBER=$2
     INITIAL_DIR=`pwd`
-    
+    SANITIZER_TYPE=address
+   
     if [ x$PROJECT_NAME = xffmpeg ] ; then
 	make_ffmpeg_project $BUG_NUMBER
     elif [ x$PROJECT_NAME = xlibarchive ] ; then
@@ -202,7 +208,7 @@ build_project() {
 	make_wireshark_project $BUG_NUMBER
     fi
     python $SCRIPT_DIR/../infra/helper.py build_image $PROJECT_NAME $BUG_NUMBER
-    python $SCRIPT_DIR/../infra/helper.py build_fuzzers --no_tty --sanitizer address $PROJECT_NAME $BUG_NUMBER
+    python $SCRIPT_DIR/../infra/helper.py build_fuzzers --no_tty --engine afl --sanitizer $SANITIZER_TYPE $PROJECT_NAME $BUG_NUMBER
     # For running the fuzzer
     # python $SCRIPT_DIR/../infra/helper.py run_fuzzer "$PROJECT_NAME"_$BUG_NUMBER "$PROJECT_NAME"_fuzzer
 
