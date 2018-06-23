@@ -18,6 +18,7 @@
 FROM f1x-oss-fuzz
 MAINTAINER Jakub Zawadzki <darkjames-ws@darkjames.pl>
 
+RUN apt-get update
 RUN apt-get install -y make vim autoconf automake libtool libtool-bin \
                        flex bison \
                        libglib2.0-dev libgcrypt20-dev
