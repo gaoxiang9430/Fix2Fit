@@ -42,7 +42,7 @@ make_ffmpeg_project() {
 	cd x264_prev
 	git reset --hard $X264_HASH
 	pushd $SCRIPT_DIR/..
-	zip -r projects/ffmpeg_$BUG_NUMBER/f1x.zip f1x
+	#zip -r projects/ffmpeg_$BUG_NUMBER/f1x.zip f1x
 	popd
     fi
 
@@ -72,7 +72,7 @@ make_libarchive_project() {
 
     if [ x$LIBARCHIVE_HASH != x ] ; then
 	pushd $SCRIPT_DIR/..
-	zip -r projects/libarchive_$BUG_NUMBER/f1x.zip f1x
+	#zip -r projects/libarchive_$BUG_NUMBER/f1x.zip f1x
 	popd
     fi
 
@@ -106,7 +106,7 @@ make_openjpeg_project() {
 	cd openjpeg_$BUG_NUMBER
 	git reset --hard $OPENJPEG_HASH
 	pushd $SCRIPT_DIR/..
-	zip -r projects/openjpeg_$BUG_NUMBER/f1x.zip f1x
+	#zip -r projects/openjpeg_$BUG_NUMBER/f1x.zip f1x
 	popd
     fi
 
@@ -140,7 +140,7 @@ make_proj4_project() {
 	cd proj4_$BUG_NUMBER
 	git reset --hard $PROJ4_HASH
 	pushd $SCRIPT_DIR/..
-	zip -r projects/proj4_$BUG_NUMBER/f1x.zip f1x
+	#zip -r projects/proj4_$BUG_NUMBER/f1x.zip f1x
 	popd
     fi
 
@@ -174,7 +174,7 @@ make_wireshark_project() {
 	cd wireshark_$BUG_NUMBER
 	git reset --hard $WIRESHARK_HASH
 	pushd $SCRIPT_DIR/..
-	zip -r projects/wireshark_$BUG_NUMBER/f1x.zip f1x
+	#zip -r projects/wireshark_$BUG_NUMBER/f1x.zip f1x
 	popd
     fi
 
@@ -208,7 +208,7 @@ build_project() {
 	make_wireshark_project $BUG_NUMBER
     fi
     python $SCRIPT_DIR/../infra/helper.py build_image $PROJECT_NAME $BUG_NUMBER
-    python $SCRIPT_DIR/../infra/helper.py build_fuzzers --no_tty --engine afl --sanitizer $SANITIZER_TYPE $PROJECT_NAME $BUG_NUMBER
+    python $SCRIPT_DIR/../infra/helper.py build_fuzzers --engine afl --sanitizer $SANITIZER_TYPE $PROJECT_NAME $BUG_NUMBER
     # For running the fuzzer
     # python $SCRIPT_DIR/../infra/helper.py run_fuzzer "$PROJECT_NAME"_$BUG_NUMBER "$PROJECT_NAME"_fuzzer
 

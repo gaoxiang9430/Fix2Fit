@@ -19,7 +19,7 @@ FROM base-builder-3.8.1
 MAINTAINER mechtaev@gmail.com
 ENV DEBIAN_FRONTEND noninteractive
 
-RUN apt-get update && apt-get upgrade -y && apt-get autoremove -y
+RUN apt-get update --fix-missing && apt-get autoremove -y
 
 RUN apt-get install -y build-essential cmake zlib1g-dev libtinfo-dev python
 RUN apt-get install -y libboost-filesystem-dev libboost-program-options-dev libboost-log-dev
@@ -34,6 +34,7 @@ ADD infra	f1x-oss-fuzz/infra
 ADD projects	f1x-oss-fuzz/projects
 ADD f1x/demo	f1x-oss-fuzz/f1x/demo
 ADD IntPTI	f1x-oss-fuzz/IntPTI
+ADD scripts/build_aflgo.sh $SRC/build_aflgo.sh
 
 RUN ls $SRC/f1x-oss-fuzz/IntPTI/
 
@@ -42,6 +43,11 @@ RUN mkdir f1x-oss-fuzz/f1x/build && cd f1x-oss-fuzz/f1x/build \
     && make
 
 ENV PATH="$SRC/f1x-oss-fuzz/f1x/build/tools:${PATH}"
+
+RUN chmod u+x $SRC/build_aflgo.sh
+RUN $SRC/build_aflgo.sh
+ENV PATH="$SRC/llvm-4.0.0/install/bin/:${PATH}"
+ENV AFLGO="$SRC/aflgo"
 
 #Installing IntPTI
 RUN apt-get install -y ant software-properties-common python-software-properties
