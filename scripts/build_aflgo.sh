@@ -37,12 +37,13 @@ if [ ! -e compiler-rt-4.0.0.src.tar.xz ] ; then
         wget http://releases.llvm.org/4.0.0/compiler-rt-4.0.0.src.tar.xz
         tar xf compiler-rt-4.0.0.src.tar.xz
         mv compiler-rt-4.0.0.src src/projects/compiler-rt
-        rm -f compierl-rt-4.0.0.src.tar.xz
+        rm -f compiler-rt-4.0.0.src.tar.xz
 fi
 mkdir -p install
 LLVM_INSTALL_DIR=$PWD/install
 mkdir -p build
 LLVM_BUILD_DIR=$PWD/build
+LLVM_SRC_DIR=$PWD/src
 pushd build > /dev/null
 cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX=$LLVM_INSTALL_DIR -DCMAKE_BUILD_TYPE=Release -DLLVM_ENABLE_ASSERTIONS=Off -DLLVM_BINUTILS_INCDIR=/usr/include ../src
 make -j$(nproc) install
@@ -55,6 +56,8 @@ mkdir /usr/lib/bfd-plugins
 cp /usr/local/lib/libLTO.so /usr/lib/bfd-plugins
 cp /usr/local/lib/LLVMgold.so /usr/lib/bfd-plugins
 
+rm -rf $LLVM_BUILD_DIR
+rm -rf $LLVM_SRC_DIR
 export PATH=$LLVM_INSTALL_DIR/bin:$PATH
 
 #build aflgo

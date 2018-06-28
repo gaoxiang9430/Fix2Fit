@@ -32,5 +32,6 @@ COPY wireshark_1149_testcase /wireshark_1149_testcase
 COPY driver_1149 /driver_1149
 COPY wireshark_1149 $SRC/wireshark
 COPY build_f1x.sh $SRC/
+COPY build_wireshark_aflgo.sh $SRC/
 COPY build_no_config.sh $SRC/
 COPY f1xcmd_1149 $SRC/wireshark/f1xcmd_1149
