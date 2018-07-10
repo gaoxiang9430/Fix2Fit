@@ -1,3 +1,4 @@
+#!/bin/bash -eu
 # Copyright 2016 Google Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,16 +15,8 @@
 #
 ################################################################################
 
-#FROM gcr.io/oss-fuzz-base/base-builder
-FROM f1x-oss-fuzz
-MAINTAINER even.rouault@spatialys.com
-RUN apt-get update && apt-get install -y make vim autoconf automake libtool g++
-RUN git clone --depth 1 https://github.com/OSGeo/proj.4 proj4
-WORKDIR proj4
-COPY scripts $SRC/scripts
-COPY build.sh $SRC/
-COPY proj4_testcase /proj4_testcase
-COPY driver /driver
-COPY proj4 $SRC/proj4
-COPY project_build.sh $SRC/proj4/project_build.sh
-COPY project_config.sh $SRC/proj4/project_config.sh
+rm -f *.gcda
+rm -f src/*.gcda
+./autogen.sh
+./configure
+make clean -s

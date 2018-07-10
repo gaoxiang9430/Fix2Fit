@@ -73,13 +73,14 @@ pip3 install pydot
 pip3 install pydotplus
 
 git clone https://github.com/aflgo/aflgo.git
+mv /afl-fuzz.c /src/aflgo/afl-fuzz.c
 export AFLGO=$PWD/aflgo
 
 # Compile source code
 pushd $AFLGO
-make clean all
+CFLAGS=-lrt CXXFLAGS=-lrt make clean all
 cd llvm_mode
-make clean all
+CFLAGS=-lrt CXXFLAGS=-lrt make clean all
 popd
 
 export CC=$INITIAL_CC

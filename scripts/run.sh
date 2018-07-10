@@ -30,7 +30,7 @@ make_ffmpeg_project() {
 	    SANITIZER_TYPE=`echo -n $LINE | cut --delimiter=, --fields=4`
 	    break;
 	fi
-    done < $SCRIPT_DIR/../all_issue_ids_ffmpeg.txt
+    done < $SCRIPT_DIR/../projects/all_issue_ids_ffmpeg.txt
 
     if [ x$FFMPEG_HASH != x ] ; then
 	cd $SCRIPT_DIR/../projects/ffmpeg_$BUG_NUMBER
@@ -68,7 +68,7 @@ make_libarchive_project() {
 	    SANITIZER_TYPE=`echo -n $LINE | cut --delimiter=, --fields=3`
 	    break;
 	fi
-    done < $SCRIPT_DIR/../all_issue_ids_libarchive.txt
+    done < $SCRIPT_DIR/../projects/all_issue_ids_libarchive.txt
 
     if [ x$LIBARCHIVE_HASH != x ] ; then
 	pushd $SCRIPT_DIR/..
@@ -98,7 +98,7 @@ make_openjpeg_project() {
 	    SANITIZER_TYPE=`echo -n $LINE | cut --delimiter=, --fields=3`
 	    break;
 	fi
-    done < $SCRIPT_DIR/../all_issue_ids_openjpeg.txt
+    done < $SCRIPT_DIR/../projects/all_issue_ids_openjpeg.txt
 
     if [ x$OPENJPEG_HASH != x ] ; then
 	cd $SCRIPT_DIR/../projects/openjpeg_$BUG_NUMBER
@@ -132,12 +132,12 @@ make_proj4_project() {
 	    SANITIZER_TYPE=`echo -n $LINE | cut --delimiter=, --fields=3`
 	    break;
 	fi
-    done < $SCRIPT_DIR/../all_issue_ids_proj4.txt
+    done < $SCRIPT_DIR/../projects/all_issue_ids_proj4.txt
 
     if [ x$PROJ4_HASH != x ] ; then
 	cd $SCRIPT_DIR/../projects/proj4_$BUG_NUMBER
-	git clone https://github.com/OSGeo/proj.4.git proj4_$BUG_NUMBER
-	cd proj4_$BUG_NUMBER
+	git clone https://github.com/OSGeo/proj.4.git proj4
+	cd proj4
 	git reset --hard $PROJ4_HASH
 	pushd $SCRIPT_DIR/..
 	#zip -r projects/proj4_$BUG_NUMBER/f1x.zip f1x
@@ -166,7 +166,7 @@ make_wireshark_project() {
 	    SANITIZER_TYPE=`echo -n $LINE | cut --delimiter=, --fields=3`
 	    break;
 	fi
-    done < $SCRIPT_DIR/../all_issue_ids_wireshark.txt
+    done < $SCRIPT_DIR/../projects/all_issue_ids_wireshark.txt
 
     if [ x$WIRESHARK_HASH != x ] ; then
 	cd $SCRIPT_DIR/../projects/wireshark_$BUG_NUMBER

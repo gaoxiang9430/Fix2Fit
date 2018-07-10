@@ -1,0 +1,28 @@
+#!/bin/bash
+usage="Usage: ./executeAFLGO.sh PATCH_LOCATION WORKINGDIR"
+
+if [[ $# > 0 ]]; then
+    location="$1"
+    shift
+else
+    echo "$usage"
+    exit 1
+fi
+
+if [[ $# > 0 ]]; then
+    workingDir="$1"
+    shift
+else
+    echo "$usage"
+    exit 1
+fi
+
+INITIAL_LD_LIBRARY_PATH=$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=/out:$LD_LIBRARY_PATH
+
+time_out=30m
+echo "executing:"
+echo "timeout timeout -k 9 $time_out /src/aflgo/afl-fuzz -S ef709ce2 -z exp -c 45m -i /in -o /out2 -R $workingDir -L $location /out/standard_fuzzer_profile @@"
+timeout -k 9 $time_out /src/aflgo/afl-fuzz -S ef709ce2 -z exp -c 45m -i /in -o /out2 -R $workingDir -L $location /out/standard_fuzzer_profile @@
+
+export LD_LIBRARY_PATH=$INITIAL_LD_LIBRARY_PATH

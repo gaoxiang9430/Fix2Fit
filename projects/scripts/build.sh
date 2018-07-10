@@ -35,9 +35,8 @@ export AFL_I_DONT_CARE_ABOUT_MISSING_CRASHES=core_pattern
 export AFL_SKIP_CPUFREQ=
 
 export SUBJECT=proj4
-export BUGGY_FILE
-export DRIVER=/driver
-#export TESTCASE=proj4_testcase
+export BUGGY_FILE=src/PJ_stere.c
+export DRIVER=/driver_1797
 
 export F1X_PROJECT_CC=/src/aflgo/afl-clang-fast
 export F1X_PROJECT_CXX=/src/aflgo/afl-clang-fast++
@@ -55,6 +54,5 @@ popd > /dev/null
 mkdir /in
 cp /proj4_testcase /in/
 mkdir /out2
-
 
 exec "/bin/bash"

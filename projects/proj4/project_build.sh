@@ -1,3 +1,4 @@
+#!/bin/bash -eu
 # Copyright 2016 Google Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,16 +15,20 @@
 #
 ################################################################################
 
-#FROM gcr.io/oss-fuzz-base/base-builder
-FROM f1x-oss-fuzz
-MAINTAINER even.rouault@spatialys.com
-RUN apt-get update && apt-get install -y make vim autoconf automake libtool g++
-RUN git clone --depth 1 https://github.com/OSGeo/proj.4 proj4
-WORKDIR proj4
-COPY scripts $SRC/scripts
-COPY build.sh $SRC/
-COPY proj4_testcase /proj4_testcase
-COPY driver /driver
-COPY proj4 $SRC/proj4
-COPY project_build.sh $SRC/proj4/project_build.sh
-COPY project_config.sh $SRC/proj4/project_config.sh
+rm -f $LIB_FUZZING_ENGINE
+echo "Compiling aflgo to $LIB_FUZZING_ENGINE ..." 
+mkdir -p $WORK/afl
+pushd $WORK/afl > /dev/null
+#$CC $CFLAGS -c $SRC/aflgo/llvm_mode/afl-llvm-rt.o.c 
+$CXX $CXXFLAGS -std=c++11 -O2 -c $SRC/libfuzzer/afl/afl_driver.cpp -I$SRC/libfuzzer
+ar r $LIB_FUZZING_ENGINE $WORK/afl/*.o
+popd > /dev/null
+rm -rf $WORK/afl
+
+#./autogen.sh
+#./configure
+#make clean -s
+make -j$(nproc) -s
+
+./test/fuzzers/build_google_oss_fuzzers.sh
+./test/fuzzers/build_seed_corpus.sh
