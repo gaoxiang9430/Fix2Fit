@@ -2,7 +2,10 @@
 
 usage="Usage: source afl-generateDistance.sh PATCH_LOCATION"
 
+rm -rf temp
+mkdir temp
 export TMP_DIR=$PWD/temp
+
 if [ -f $TMP_DIR/BBtargets.txt ]; then
   rm $TMP_DIR/BBtargets.txt
 fi
@@ -20,16 +23,38 @@ do
     shift
 done
 
-INSTALL_CFLAGS=$CFLAGS
-INSTALL_CXXFLAGS=$CXXFLAGS
+export INITIAL_CC=$CC
+export INITIAL_CXX=$CXX
+export INITIAL_CFLAGS=$CFLAGS
+export INITIAL_CXXFLAGS=$CXXFLAGS
+export INITIAL_PATH=$PATH
 
-#echo "src/PJ_stere.c:56" > $TMP_DIR/BBtargets.txt
+# Set aflgo-instrumenter
+export CC=$AFLGO/afl-clang-fast
+export CXX=$AFLGO/afl-clang-fast++
+export ADDITIONAL="-targets=$TMP_DIR/BBtargets.txt -outdir=$TMP_DIR -flto -fuse-ld=gold -Wl,-plugin-opt=save-temps"
+export CFLAGS="$CFLAGS $ADDITIONAL"
+export CXXFLAGS="$CXXFLAGS $ADDITIONAL"
+
+pushd ../$SUBJECT > /dev/null
+  ./project_config.sh
+  ./project_build.sh
+popd > /dev/null
+
+# Clean up
+cat $TMP_DIR/BBnames.txt | rev | cut -d: -f2- | rev | sort | uniq > $TMP_DIR/BBnames2.txt && mv $TMP_DIR/BBnames2.txt $TMP_DIR/BBnames.txt
+cat $TMP_DIR/BBcalls.txt | sort | uniq > $TMP_DIR/BBcalls2.txt && mv $TMP_DIR/BBcalls2.txt $TMP_DIR/BBcalls.txt
+
+export LDFLAGS=
+export CC=$INITIAL_CC
+export CXX=$INITIAL_CXX
+export CFLAGS=$INITIAL_CFLAGS
+export CXXFLAGS=$INITIAL_CXXFLAGS
+export PATH=$INITIAL_PATH
 
 # Generate distance
 $AFLGO/scripts/genDistance.sh $OUT $TMP_DIR standard_fuzzer
 
 cp $TMP_DIR/distance.cfg.txt $OUT
-rm -rf $TMP_DIR
+#rm -rf $TMP_DIR
 
-export CFLAGS="$CFLAGS -distance=$OUT/distance.cfg.txt"
-export CXXFLAGS="$CXXFLAGS -distance=$OUT/distance.cfg.txt"

@@ -26,15 +26,16 @@ for d in proj4_*; do
   buggy_number=`echo $directory_name | cut -d'_' -f 2`
   echo $buggy_number
   buggy_file=$(get_buggy_file $buggy_number)
-  echo $buggy_file
+  #echo $buggy_file
   rm -rf driver*
-  mv proj4_*_testcase proj4_testcase
+  mv proj4_*_testcase proj4_testcase 2> /dev/null
   cp ../proj4/* .
   cp -r ../scripts .
-  rm scripts/build.sh
   sed "s|BUGGY_FILE|BUGGY_FILE=${buggy_file}|" build.sh > build1.sh
+  sed "s|SUBJECT_TAG|${directory_name}|" build1.sh > build2.sh
   rm -rf build.sh
-  mv build1.sh build.sh
+  rm -rf build1.sh
+  mv build2.sh build.sh
   chmod u+x build.sh
   popd > /dev/null
 done

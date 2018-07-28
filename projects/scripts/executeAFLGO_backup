@@ -1,0 +1,31 @@
+#!/bin/bash
+usage="Usage: ./executeAFLGO.sh"
+
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+TIME_OUT=5h
+
+INITIAL_LD_LIBRARY_PATH=$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=/out:$LD_LIBRARY_PATH
+
+f1x_cmd="f1x -f $BUGGY_FILE -t proj4_testcase -T 1000 -d $DRIVER -b ./project_build.sh --output-one-per-loc -a -P /out -N standard_fuzzer"
+echo $f1x_cmd > $SCRIPT_DIR/f1xcmd.sh
+
+pushd $SCRIPT_DIR/../$SUBJECT/ >/dev/null
+  echo "executing:"
+  echo "timeout -k 9 $TIME_OUT /src/aflgo/afl-fuzz -S ef709ce2 -z exp -c 45m -i /in -o /out1 -C -t 1000 -R $SCRIPT_DIR/f1xcmd.sh /out/standard_fuzzer_profile @@"
+  timeout -k 9 $TIME_OUT /src/aflgo/afl-fuzz -S ef709ce2 -z exp -c 45m -i /in -o /out1 -C -t 1000 -R $SCRIPT_DIR/f1xcmd.sh /out/standard_fuzzer_profile @@ | tee $SCRIPT_DIR/aflgo.txt
+popd > /dev/null
+
+pushd $SCRIPT_DIR/../$SUBJECT/ >/dev/null
+  echo "executing:"
+  echo "timeout -k 9 $TIME_OUT /src/aflgo/afl-fuzz -S ef709ce2 -z exp -c 45m -i /in -o /out2 -s pat -C -t 1000 -R $SCRIPT_DIR/f1xcmd.sh /out/standard_fuzzer_profile @@"
+  timeout -k 9 $TIME_OUT /src/aflgo/afl-fuzz -S ef709ce2 -z exp -c 45m -i /in -o /out2 -s pat -C -t 1000 -R $SCRIPT_DIR/f1xcmd.sh /out/standard_fuzzer_profile @@ | tee $SCRIPT_DIR/aflgo_pat.txt
+popd > /dev/null
+
+pushd $SCRIPT_DIR/../$SUBJECT/ >/dev/null
+  echo "executing:"
+  echo "timeout -k 9 $TIME_OUT /src/aflgo/afl-fuzz -S ef709ce2 -z exp -c 45m -i /in -o /out3 -s par -C -t 1000 -R $SCRIPT_DIR/f1xcmd.sh /out/standard_fuzzer_profile @@"
+  timeout -k 9 $TIME_OUT /src/aflgo/afl-fuzz -S ef709ce2 -z exp -c 45m -i /in -o /out3 -s par -C -t 1000 -R $SCRIPT_DIR/f1xcmd.sh /out/standard_fuzzer_profile @@ | tee $SCRIPT_DIR/aflgo_par.txt
+popd > /dev/null
+
+export LD_LIBRARY_PATH=$INITIAL_LD_LIBRARY_PATH

@@ -57,6 +57,9 @@
 #include <sys/file.h>
 #include <math.h>
 
+#include "F1X.h"
+#include "SearchEngine.h"
+
 #if defined(__APPLE__) || defined(__FreeBSD__) || defined (__OpenBSD__)
 #  include <sys/sysctl.h>
 #endif /* __APPLE__ || __FreeBSD__ || __OpenBSD__ */
@@ -79,11 +82,25 @@
 
 /* Lots of globals, but mostly for the status UI and other things where it
    really makes no sense to haul them around as function parameters. */
+typedef int bool;
+#define true 1
+#define false 0
 
+bool is_first = true;
+int fuzz_for_repair = 0;                   /* mode for validating plausible patches                              */
+int max_broken_par = 1;
+int max_reduced_pat = 1;
+EXP_ST u8 *trace_path = NULL;              /* the profiling trace path                                           */
+char *locations = NULL;                    /* all target locations                                               */
+struct C_SearchEngine * engine;            /* plausible patch search engine                                      */
+EXP_ST u64 num_test_reach_target = 0;      /* collect the number of test case that can reach the target location */
+EXP_ST u64 total_num_test = 0;             /* total number of newly generated test case                          */
 
-EXP_ST u8 *trace_path,                /*the profiling trace path*/
-          *locations,                 /*all target locations*/
-          *in_dir,                    /* Input directory with test cases  */
+int num_plausible_patch;                   /* current number if plausible patches                                */
+int cur_reduced_num_plausible_patch;       /* the number of plausible patch filted by current execution          */
+int cur_num_broken_partition;              /* the number of partition that is broken by current execution        */
+
+EXP_ST u8 *in_dir,                    /* Input directory with test cases  */
           *out_file,                  /* File to fuzz, if any             */
           *out_dir,                   /* Working & output directory       */
           *sync_dir,                  /* Synchronization directory        */
@@ -106,7 +123,16 @@ enum {
   /* 00 */ SAN_EXP,                   /* Exponential schedule             */
   /* 01 */ SAN_LOG,                   /* Logarithmical schedule           */
   /* 02 */ SAN_LIN,                   /* Linear schedule                  */
-  /* 03 */ SAN_QUAD                   /* Quadratic schedule               */
+  /* 03 */ SAN_QUAD,                  /* Quadratic schedule               */
+  /* 04 */ SAN_NO
+};
+
+static u8 repair_schedule = 0;        /* repair schedule                  */
+enum{
+  /* 00 */ SAN_NONE,                  /* without repair schedule          */
+  /* 01 */ SAN_PAR,                   /* patch-based repair schedule      */
+  /* 02 */ SAN_PAT,                   /* partition-based repair schedule  */
+  /* 03 */ SAN_PART                   /* patch and partition based repair schedule*/
 };
 
 EXP_ST u8  skip_deterministic,        /* Skip deterministic stages?       */
@@ -180,6 +206,7 @@ EXP_ST u64 total_crashes,             /* Total number of crashes          */
            unique_tmouts,             /* Timeouts with unique signatures  */
            unique_hangs,              /* Hangs with unique signatures     */
            total_execs,               /* Total execve() calls             */
+           last_stage_execs,          /* last number of execution         */
            start_time,                /* Unix start time (ms)             */
            last_path_time,            /* Time for most recent path (ms)   */
            last_crash_time,           /* Time for most recent crash (ms)  */
@@ -257,6 +284,8 @@ struct queue_entry {
   u32 tc_ref;                         /* Trace bytes ref count            */
 
   double distance;                    /* Distance to targets              */
+  int num_broken_partition;           /* the number of broken partition   */
+  int reduced_num_plausible_patch;        /* reduced plausible patches        */
 
   struct queue_entry *next,           /* Next element, if any             */
                      *next_100;       /* 100 elements ahead               */
@@ -492,7 +521,11 @@ static void bind_to_free_cpu(void) {
 
   closedir(d);
 
-  for (i = 0; i < cpu_core_count; i++) if (!cpu_used[i]) break;
+  if(getenv("IS_DOCKER_SINGLE_CORE_MODE")){
+    for (i = 0; i < cpu_core_count; i++) if (cpu_used[i]) break;
+  }else{
+    for (i = 0; i < cpu_core_count; i++) if (!cpu_used[i]) break;
+  }
 
   if (i == cpu_core_count) {
 
@@ -799,6 +832,9 @@ static void add_to_queue(u8* fname, u32 len, u8 passed_det) {
   q->passed_det   = passed_det;
 
   q->distance = cur_distance;
+  q->num_broken_partition = cur_num_broken_partition;
+  q->reduced_num_plausible_patch = cur_reduced_num_plausible_patch;
+
   if (cur_distance > 0) {
 
     if (max_distance <= 0) {
@@ -2036,7 +2072,6 @@ EXP_ST void init_forkserver(char** argv) {
   if (forksrv_pid < 0) PFATAL("fork() failed");
 
   if (!forksrv_pid) {
-
     struct rlimit r;
 
     /* Umpf. On OpenBSD, the default fd limit for root users is set to
@@ -3174,19 +3209,108 @@ static void write_crash_readme(void) {
 
 }
 
-char* join(char *s1, char *s2)
-{
-    char *result = malloc(strlen(s1)+strlen(s2)+1);//+1 for the zero-terminator
-    //in real code you would check for errors in malloc here
-    if (result == NULL){ 
-      FATAL("malloc failed");
-      exit (1);
+//add to record target test cases
+bool evaluate_if_reach(void* mem, u32 len){
+  bool ret = false;
+  cur_reduced_num_plausible_patch = -1;
+  cur_num_broken_partition = -1;
+  if (is_first){
+    is_first = false;
+    u8* trace_file = alloc_printf("%s/trace.txt", trace_path); //remove existing trace data
+    fclose(fopen(trace_file, "w"));
+    ck_free(trace_file);
+  }
+  else if (fuzz_for_repair && trace_path != NULL && locations != NULL){
+    total_num_test++;
+
+    FILE * fp;
+    char * line = NULL;
+    size_t rlen = 0; ssize_t read;
+    char * reachedLocs = alloc_printf("");
+    bool isReachTargetLoc = false;
+
+    //profiling result will be saved into thr trace.txt file
+    u8* trace_file = alloc_printf("%s/trace.txt", trace_path);
+    fp = fopen(trace_file, "rw");
+    if (fp == NULL){
+      ck_free(trace_file);
+      FATAL("unable to open trace file %s\n", trace_file);
+      exit(EXIT_FAILURE);
     }
- 
-    strcpy(result, s1);
-    strcat(result, s2);
- 
-    return result;
+
+    //check current test case can reach the target location or not
+    while ((read = getline(&line, &rlen, fp)) != -1) {
+      //char *bl = strtok (line, " ");
+      //bl = strtok(NULL," "); //the second value is the line number
+      //u8* _bl_ = alloc_printf("\"%s\"", bl);
+      line[strlen(line)-1] = '\0';
+      if(strstr(locations, line) != NULL && strstr(reachedLocs, line) == NULL){
+        u8* temp = alloc_printf("%s#%s", reachedLocs, line);
+        ck_free(reachedLocs);
+        reachedLocs = temp;
+
+        isReachTargetLoc = true;
+      }
+      //ck_free(_bl_);
+    }
+    fclose(fp);
+    fclose(fopen(trace_file, "w"));
+    ck_free(trace_file);
+
+    //if current test case can reach the target location, save this test case and invoke the F1X
+    if(isReachTargetLoc){
+      num_test_reach_target++; //update statistic
+
+      /*struct timeval unit_start_time;
+      gettimeofday(&unit_start_time, NULL);
+      long elapsed = unit_start_time.tv_sec*1000000 + unit_start_time.tv_usec;
+      u8* fileName = alloc_printf("%s/interestedTest/file_%ld", out_dir, elapsed);
+
+      s32 f_it = open(fileName, O_WRONLY | O_CREAT | O_EXCL, 0600);
+      if (f_it < 0) PFATAL("Unable to create '%s'", fileName);
+      ck_write(f_it, mem, len, fileName);
+      close(f_it);*/
+
+      u8* fileName = alloc_printf("%s/.cur_input", out_dir);
+      //exeucte new test case based on meta-program
+      struct C_ExecutionStat executionStat;
+      int executionState = c_fuzzPatch(engine, fileName, reachedLocs, &executionStat);
+
+      //set global values
+      int new_num_plausible_patch = executionStat.numPlausiblePatch;
+      cur_reduced_num_plausible_patch = num_plausible_patch - new_num_plausible_patch;
+      cur_num_broken_partition = executionStat.numBrokenPartition;
+      num_plausible_patch = new_num_plausible_patch;
+
+      if( (repair_schedule == SAN_PAT && cur_reduced_num_plausible_patch > 0) || 
+          ( repair_schedule == SAN_PAR && cur_num_broken_partition > 8)  ||
+          ( repair_schedule == SAN_PART && (cur_num_broken_partition > 8 || cur_reduced_num_plausible_patch > 0)) ){
+        ret = true;
+        OKF("find test break %d partition, reduced plausible patches: %d", cur_num_broken_partition, cur_reduced_num_plausible_patch);
+      }
+
+      if(cur_num_broken_partition > max_broken_par)
+        max_broken_par = cur_num_broken_partition;
+      if(cur_reduced_num_plausible_patch > max_reduced_pat)
+        max_reduced_pat = cur_reduced_num_plausible_patch;
+
+      ck_free(fileName);
+      if(num_test_reach_target % 100 == 0){
+        OKF("current(%llu) number of plausible patches is: %d", num_test_reach_target, num_plausible_patch);
+        OKF("current number of broken parition(totally) is : %d", executionStat.totalNumBrokenPartition);
+      }
+      if(num_plausible_patch<=0){
+        OKF("the number of broken parition(totally) is : %d", executionStat.totalNumBrokenPartition);
+        OKF("Total number of generated test is %llu, the number of test reaching target location is %llu", total_num_test, num_test_reach_target);
+        FATAL("There is no plausible patch any more!");
+      }
+    }
+    ck_free(reachedLocs);
+  }
+  if(total_num_test % 100 == 0)
+    OKF("Total number of generated test is %llu, the number of test reaching target location is %llu", total_num_test, num_test_reach_target);
+  return ret;
+//end
 }
 
 /* Check if the result of an execve() during routine fuzzing is interesting,
@@ -3195,67 +3319,18 @@ char* join(char *s1, char *s2)
 
 static u8 save_if_interesting(char** argv, void* mem, u32 len, u8 fault) {
 
-//add to record target test cases
-  if (strlen(trace_path) != 0 && strlen(locations) != 0){
-    FILE * fp;
-    char * line = NULL;
-    size_t rlen = 0; ssize_t read;
-    char* trace_file = join(trace_path, "/trace.txt");
-    fp = fopen(trace_file, "rw");
-    if (fp == NULL){
-      free(trace_file);
-      FATAL("unable to open trace file %s\n", trace_file);
-      exit(EXIT_FAILURE);
-    }
-
-    while ((read = getline(&line, &rlen, fp)) != -1) {
-      char *bl = strtok (line, " ");
-      bl = strtok(NULL," "); //the second value is the line number
-      char *_bl = join("\"", bl);
-      char *_bl_ = join(_bl, "\"");
-      if(strstr(locations, _bl_) != NULL){
-        u8* directoryName = "";
-        u8* fileName = "";
-        struct timeval unit_start_time;
-        gettimeofday(&unit_start_time, NULL);
-        long elapsed = unit_start_time.tv_sec*1000000 + unit_start_time.tv_usec;
-        directoryName = alloc_printf("%s/interestedTest", out_dir);
-        fileName = alloc_printf("%s/interestedTest/file_%ld", out_dir, elapsed);
-        struct stat st = {0};
-        if (stat(directoryName, &st) == -1) {
-          mkdir(directoryName, 0700);
-        }
-        s32 f_it = open(fileName, O_WRONLY | O_CREAT | O_EXCL, 0600);
-        if (f_it < 0) PFATAL("Unable to create '%s'", fileName);
-        ck_write(f_it, mem, len, fileName);
-        close(f_it);
-        printf("finding test reaching location %s, saved to %s\n", bl, fileName);
-        break;
-        free(_bl);
-        free(_bl_);
-      }
-      else{
-        free(_bl);
-        free(_bl_);
-      }
-    }
-    fclose(fp);
-    fclose(fopen(trace_file, "w"));
-    free(trace_file);
-  }
-//end
-
+  bool intersting_for_repair = evaluate_if_reach(mem, len);
   u8  *fn = "";
   u8  hnb;
   s32 fd;
   u8  keeping = 0, res;
 
-  if (fault == crash_mode) {
+  if (fault == crash_mode || intersting_for_repair) {
 
     /* Keep only if there are new bits in the map, add to queue for
        future fuzzing, etc. */
 
-    if (!(hnb = has_new_bits(virgin_bits))) {
+    if (!(hnb = has_new_bits(virgin_bits)) && !intersting_for_repair) {
       if (crash_mode) total_crashes++;
       return 0;
     }    
@@ -3270,7 +3345,6 @@ static u8 save_if_interesting(char** argv, void* mem, u32 len, u8 fault) {
     fn = alloc_printf("%s/queue/id_%06u", out_dir, queued_paths);
 
 #endif /* ^!SIMPLE_FILES */
-
     add_to_queue(fn, len, 0);
 
     if (hnb == 2) {
@@ -4736,7 +4810,11 @@ EXP_ST u8 common_fuzz_stuff(char** argv, u8* out_buf, u32 len) {
 
   /* This handles FAULT_ERROR for us: */
 
-  queued_discovered += save_if_interesting(argv, out_buf, len, fault);
+  int temp= save_if_interesting(argv, out_buf, len, fault);
+
+  queued_discovered += temp;
+
+  //queued_discovered += save_if_interesting(argv, out_buf, len, fault);
 
   if (!(stage_cur % stats_update_freq) || stage_cur + 1 == stage_max)
     show_stats();
@@ -4785,8 +4863,8 @@ static u32 choose_block_len(u32 limit) {
   if (min_value >= limit) min_value = 1;
 
   return min_value + UR(MIN(max_value, limit) - min_value + 1);
-
 }
+
 
 
 /* Calculate case desirability score to adjust the length of havoc fuzzing.
@@ -4885,7 +4963,8 @@ static u32 calculate_score(struct queue_entry* q) {
       break;
 
     default:
-      PFATAL ("Unkown Power Schedule for Directed Fuzzing");
+      T = 1;
+//      PFATAL ("Unkown Power Schedule for Directed Fuzzing");
   }
 
   double power_factor = 1.0;
@@ -4904,7 +4983,41 @@ static u32 calculate_score(struct queue_entry* q) {
 
   }
 
-  perf_score *= power_factor;
+  double power_part = 1.0;
+  if(repair_schedule == SAN_PAT){
+    if(q->reduced_num_plausible_patch > 0){
+      double normalized_pat = q->reduced_num_plausible_patch/(double)max_reduced_pat;
+      double p = normalized_pat * (1.0 - T);
+      power_part = (double)MAX_FACTOR/2 + log2(p);
+    }
+    else
+      power_part = 0.2;
+  }else if(repair_schedule == SAN_PAR){
+    if(q->num_broken_partition > 0){
+      double normalized_par = q->num_broken_partition/(double)max_broken_par;
+      double p = normalized_par * (1.0 - T);
+      power_part = (double)MAX_FACTOR/2 + log2(p);
+    }
+    else
+      power_part = 0.2;
+  }else if(repair_schedule == SAN_PART){
+    if(q->num_broken_partition > 0 || q->reduced_num_plausible_patch > 0){
+      double normalized_pat = q->reduced_num_plausible_patch/(double)max_reduced_pat;
+      double normalized_par = q->num_broken_partition/(double)max_broken_par;
+      if(normalized_pat > normalized_par)
+        normalized_par = normalized_pat;
+      double p = normalized_par * (1.0 - T);
+      power_part = (double)MAX_FACTOR/2 + log2(p);
+    }
+    else
+      power_part = 0.2;
+  }
+  
+  power_factor *= power_part;
+  OKF("FUZZING NEW SEED,reduced num plausible patch: %d, num broken partition: %d, power_part: %lf, power_factor: %lf", q->reduced_num_plausible_patch, q->num_broken_partition, power_part, power_factor);
+ 
+  if(cooling_schedule != SAN_NO)
+    perf_score *= power_factor;
 
   /* Make sure that we don't go over limit. */
 
@@ -6902,7 +7015,9 @@ static void sync_fuzzers(char** argv) {
         if (stop_soon) return;
 
         syncing_party = sd_ent->d_name;
-        queued_imported += save_if_interesting(argv, mem, st.st_size, fault);
+        int temp= save_if_interesting(argv, mem, st.st_size, fault);
+
+        queued_imported += temp;
         syncing_party = 0;
 
         munmap(mem, st.st_size);
@@ -7225,6 +7340,7 @@ static void usage(u8* argv0) {
        "                  {exp, log, lin, quad} (Default: exp)\n"
        "  -c min        - time from start when SA enters exploitation\n"
        "                  in secs (s), mins (m), hrs (h), or days (d)\n\n"
+       "  -s schedule   - power schedules for program repair"
 
        "Execution control settings:\n\n"
 
@@ -7243,8 +7359,8 @@ static void usage(u8* argv0) {
 
        "  -T text       - text banner to show on the screen\n"
        "  -M / -S id    - distributed mode (see parallel_fuzzing.txt)\n"
-       "  -C            - crash exploration mode (the peruvian rabbit thing)\n\n"
-
+       "  -C            - crash exploration mode (the peruvian rabbit thing)\n"
+       "  -R f1x_cmd    - fuzzing to validate plausible patches (specify f1x command path)\n\n"
        "For additional tips, please consult %s/README.\n\n",
 
        argv0, EXEC_TIMEOUT, MEM_LIMIT, doc_path);
@@ -7879,6 +7995,78 @@ int stricmp(char const *a, char const *b) {
   }
 }
 
+//add by gaoxiang: invoke f1x to generate search space and patch location
+void f1x_init(char* f1x_cmd_path){
+  //read f1x cmd
+  FILE *f = fopen(f1x_cmd_path, "rb");
+  fseek(f, 0, SEEK_END);
+  long fsize = ftell(f);
+  fseek(f, 0, SEEK_SET);  //same as rewind(f);
+  char *f1x_cmd = malloc(fsize + 1);
+  fread(f1x_cmd, fsize, 1, f);
+  fclose(f);
+  f1x_cmd[fsize] = 0;
+  OKF("f1x command : %s", f1x_cmd);
+
+  //parse f1x command
+  int argc = 0;  
+  char * argv[100]; //100 should be enough
+  char *ch;
+  ch = strtok(f1x_cmd, " \n");
+  while (ch != NULL) {
+    char *temp = (char*)malloc(strlen(ch)+1);
+    strcpy(temp, ch);
+    argv[argc++] = temp;
+    ch = strtok(NULL, " \n");
+  }
+  free(f1x_cmd);
+
+  if(argc <= 0){
+    FATAL("No f1x command is specified!");
+    exit(3);
+  }
+
+  //invoke original f1x
+  c_repair_main(argc, argv, &engine);
+
+  for(int i=0; i<argc; i++){
+    char * temp = argv[i];
+    free(temp);
+  }
+
+  if(engine != NULL){
+    //get all the locations of plausible patches
+    int length;
+    c_getPatchLoc(engine, &length, &locations);
+    if(length == 0){
+      FATAL("No patch found by f1x");
+      exit(1);
+    }
+
+    trace_path = alloc_printf("%s", c_getWorkingDir(engine));
+
+    OKF("locations of plausible patches are : %s\n", locations);
+    OKF("the working directory is : %s\n", trace_path);
+  }else{
+    FATAL("Fail to execute f1x and generate search space");
+    exit(2);
+  }
+
+  //create a path to save the interested test cases
+  u8* directoryName = alloc_printf("%s/interestedTest", out_dir);
+  OKF("the interesting inputs are saved to %s", directoryName);
+  struct stat st = {0};
+  if (stat(out_dir, &st) == -1) {
+    mkdir(out_dir, 0700);
+  }
+  if (stat(directoryName, &st) == -1) {
+    mkdir(directoryName, 0700);
+  }
+  ck_free(directoryName);
+}
+//end
+
+
 /* Main entry point */
 
 int main(int argc, char** argv) {
@@ -7890,6 +8078,7 @@ int main(int argc, char** argv) {
   u8  mem_limit_given = 0;
   u8  exit_1 = !!getenv("AFL_BENCH_JUST_ONE");
   char** use_argv;
+  char* f1x_cmd_path;
 
   struct timeval tv;
   struct timezone tz;
@@ -7901,11 +8090,24 @@ int main(int argc, char** argv) {
   gettimeofday(&tv, &tz);
   srandom(tv.tv_sec ^ tv.tv_usec ^ getpid());
 
-  while ((opt = getopt(argc, argv, "+i:o:f:m:t:T:dnCB:S:M:x:Qz:c:R:L:")) > 0)
+  while ((opt = getopt(argc, argv, "+i:o:f:m:t:T:dnCB:S:M:x:Qz:c:R:s:")) > 0)
 
     switch (opt) {
 
+      case 's':
+        if (!stricmp(optarg, "pat"))
+          repair_schedule = SAN_PAT;
+        else if (!stricmp(optarg, "par"))
+          repair_schedule = SAN_PAR;
+        else if (!stricmp(optarg, "part"))
+          repair_schedule = SAN_PART;
       case 'R':
+
+      fuzz_for_repair = 1;
+      f1x_cmd_path = optarg;
+      //OKF("Fuzzing for evaluating the plausible patches generated by F1X (https://github.com/mechtaev/f1x)");
+      break;
+/*      case 'R':
 
       trace_path = optarg;
       printf("the trace directory is : %s\n", trace_path);
@@ -7916,7 +8118,7 @@ int main(int argc, char** argv) {
       locations = optarg;
       printf("the target location is : %s\n", locations);
       break;
-
+*/
       case 'i': /* input dir */
 
         if (in_dir) FATAL("Multiple -i options not supported");
@@ -8091,6 +8293,8 @@ int main(int argc, char** argv) {
           cooling_schedule = SAN_LIN;
         else if (!stricmp(optarg, "quad"))
           cooling_schedule = SAN_QUAD;
+        else if (!stricmp(optarg, "no"))
+          cooling_schedule = SAN_NO;
         else
           PFATAL ("Unknown value for option -z");
 
@@ -8134,10 +8338,18 @@ int main(int argc, char** argv) {
       t_x
   );
 
+  if (sync_id) fix_up_sync();
+
+//add by gaoxiang: invoke f1x to generate search space and patch location
+  if(fuzz_for_repair){
+    f1x_init(f1x_cmd_path);
+  }
+//end
+
   setup_signal_handlers();
   check_asan_opts();
 
-  if (sync_id) fix_up_sync();
+//  if (sync_id) fix_up_sync();
 
   if (!strcmp(in_dir, out_dir))
     FATAL("Input and output directories can't be the same");
@@ -8320,8 +8532,13 @@ stop_fuzzing:
   ck_free(target_path);
   ck_free(sync_id);
 
-  alloc_report();
+  if(trace_path != NULL)
+    ck_free(trace_path);
+  if(locations != NULL)
+    ck_free(locations);
 
+  alloc_report();
+  OKF("Total number of generated test is %llu, the number of test reaching target location is %llu", total_num_test, num_test_reach_target);
   OKF("We're done here. Have a nice day!\n");
 
   exit(0);

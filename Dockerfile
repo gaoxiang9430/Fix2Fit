@@ -37,7 +37,7 @@ ADD IntPTI	f1x-oss-fuzz/IntPTI
 ADD scripts/build_aflgo.sh /src/build_aflgo.sh
 #ADD scripts/afl_driver.cpp /src/libfuzzer/afl/afl_driver.cpp
 ADD scripts/afl-fuzz.c /afl-fuzz.c
-ADD scripts/SharedMemorySetter.h /usr/include/SharedMemorySetter.h
+#ADD scripts/SharedMemorySetter.h /usr/include/SharedMemorySetter.h
 
 RUN ls $SRC/f1x-oss-fuzz/IntPTI/
 RUN rm -rf /src/f1x-oss-fuzz/f1x/llvm

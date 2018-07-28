@@ -65,6 +65,7 @@ def main():
   build_fuzzers_parser = subparsers.add_parser(
       'build_fuzzers', help='Build fuzzers for a project.')
   _add_engine_args(build_fuzzers_parser)
+  _add_core_args(build_fuzzers_parser)
   _add_sanitizer_args(build_fuzzers_parser)
   _add_environment_args(build_fuzzers_parser)
   build_fuzzers_parser.add_argument('project_name')
@@ -77,6 +78,7 @@ def main():
   run_fuzzer_parser = subparsers.add_parser(
       'run_fuzzer', help='Run a fuzzer.')
   _add_engine_args(run_fuzzer_parser)
+  _add_core_args(run_fuzzer_parser)
   run_fuzzer_parser.add_argument('project_name', help='name of the project')
   run_fuzzer_parser.add_argument('fuzzer_name', help='name of the fuzzer')
   run_fuzzer_parser.add_argument('fuzzer_args', help='arguments to pass to the fuzzer',
@@ -106,6 +108,7 @@ def main():
       'shell', help='Run /bin/bash in an image.')
   shell_parser.add_argument('project_name', help='name of the project')
   _add_engine_args(shell_parser)
+  _add_core_args(shell_parser)
   _add_sanitizer_args(shell_parser)
   _add_environment_args(shell_parser)
 
@@ -184,6 +187,10 @@ def _add_engine_args(parser):
   parser.add_argument('--engine', default='libfuzzer',
                       choices=['libfuzzer', 'afl', 'honggfuzz'])
 
+def _add_core_args(parser):
+  """Specify the core on which the container run"""
+  parser.add_argument('--core', default='0', 
+                      help="Specify the core on which the container run")
 
 def _add_sanitizer_args(parser):
   """Add common sanitizer args."""
@@ -317,6 +324,10 @@ def build_fuzzers(args):
       ['docker', 'run', '-i', '--cap-add', 'SYS_PTRACE'] +
       sum([['-e', v] for v in env], [])
   )
+  
+  if args.core:
+    command += [ "--cpuset-cpus", args.core]
+
   if args.source_path:
     command += [
         '-v',

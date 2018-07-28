@@ -189,6 +189,7 @@ build_project() {
     
     PROJECT_NAME=$1
     BUG_NUMBER=$2
+    ASSIGNED_CORE=$3
     INITIAL_DIR=`pwd`
     SANITIZER_TYPE=address
    
@@ -208,7 +209,7 @@ build_project() {
 	make_wireshark_project $BUG_NUMBER
     fi
     python $SCRIPT_DIR/../infra/helper.py build_image $PROJECT_NAME $BUG_NUMBER
-    python $SCRIPT_DIR/../infra/helper.py build_fuzzers --engine afl --sanitizer $SANITIZER_TYPE $PROJECT_NAME $BUG_NUMBER
+    python $SCRIPT_DIR/../infra/helper.py build_fuzzers --engine afl --core $ASSIGNED_CORE --sanitizer $SANITIZER_TYPE $PROJECT_NAME $BUG_NUMBER
     # For running the fuzzer
     # python $SCRIPT_DIR/../infra/helper.py run_fuzzer "$PROJECT_NAME"_$BUG_NUMBER "$PROJECT_NAME"_fuzzer
 
@@ -220,6 +221,8 @@ build_project() {
 PROJECT_NAME=$1
 
 BUG_NUMBER=$2
+
+ASSIGNED_CORE=$3
 
 if [ x$PROJECT_NAME != x ] ; then
     PROJECT_DIR_LIST=`ls "projects/$PROJECT_NAME"_*`
@@ -233,12 +236,12 @@ if [ x$PROJECT_NAME != x ] ; then
 		echo Project $PROJECT_NAME with bug number $BUG_NUMBER not found.
 		exit 1
 	    else
-		build_project $PROJECT_NAME $BUG_NUMBER
+		build_project $PROJECT_NAME $BUG_NUMBER $ASSIGNED_CORE
 	    fi
 	else
 	    for BUG_NUMBER in `ls -d "projects/$PROJECT_NAME"_* | sed s/[^[:digit:]]/\ /g`
 	    do
-		build_project $PROJECT_NAME $BUG_NUMBER
+		build_project $PROJECT_NAME $BUG_NUMBER $ASSIGNED_CORE
 	    done
 	fi
     fi
@@ -247,10 +250,20 @@ else
     do
 	for BUG_NUMBER in `ls -d "projects/$PROJECT_NAME"_* | sed s/[^[:digit:]]/\ /g`
 	do
-	    build_project $PROJECT_NAME $BUG_NUMBER
+	    build_project $PROJECT_NAME $BUG_NUMBER $ASSIGNED_CORE
 	done
     done
 fi
 
 popd
+
+container_name=gcr.io/oss-fuzz/${PROJECT_NAME}_${BUG_NUMBER}
+container_id=`docker ps --all | grep ${PROJECT_NAME}_${BUG_NUMBER} | awk '{print $1}'`
+output_dir=$SCRIPT_DIR/../output/${PROJECT_NAME}_${BUG_NUMBER}
+mkdir $output_dir
+docker cp $container_id:/src/scripts/original.txt $output_dir
+docker cp $container_id:/src/scripts/afl.txt $output_dir
+docker cp $container_id:/src/scripts/aflgo.txt $output_dir
+docker cp $container_id:/src/scripts/aflgo_pat.txt $output_dir
+docker cp $container_id:/src/scripts/aflgo_par.txt $output_dir
 
