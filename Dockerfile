@@ -14,7 +14,8 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-FROM base-builder-3.8.1
+#FROM base-builder-3.8.1
+FROM gcr.io/oss-fuzz-base/base-builder
 
 MAINTAINER mechtaev@gmail.com
 ENV DEBIAN_FRONTEND noninteractive
@@ -32,7 +33,7 @@ ADD docs 	f1x-oss-fuzz/docs
 ADD f1x 	f1x-oss-fuzz/f1x
 ADD infra	f1x-oss-fuzz/infra
 ADD projects	f1x-oss-fuzz/projects
-ADD f1x/demo	f1x-oss-fuzz/f1x/demo
+#ADD f1x/demo	f1x-oss-fuzz/f1x/demo
 ADD IntPTI	f1x-oss-fuzz/IntPTI
 ADD scripts/build_aflgo.sh /src/build_aflgo.sh
 #ADD scripts/afl_driver.cpp /src/libfuzzer/afl/afl_driver.cpp
