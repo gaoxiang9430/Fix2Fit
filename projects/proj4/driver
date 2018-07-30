@@ -1,1 +1,8 @@
-/out/standard_fuzzer /$1
+test=$1
+if [ $test = "test27" ]; then
+  /src/proj4/nad/test27 /src/proj4/src/proj
+elif [ $test = "test83" ]; then
+  /src/proj4/nad/test83 /src/proj4/src/proj
+else
+  /out/standard_fuzzer /$test
+fi

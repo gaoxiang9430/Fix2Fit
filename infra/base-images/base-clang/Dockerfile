@@ -16,7 +16,8 @@
 
 # Docker image with head clang installed.
 
-FROM base-image-3.8.1
+FROM gcr.io/oss-fuzz-base/base-image
+#FROM base-image-3.8.1
 
 MAINTAINER mike.aizatsky@gmail.com
 

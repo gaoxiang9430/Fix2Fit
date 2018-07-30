@@ -28,7 +28,7 @@ rm -rf $WORK/afl
 #./autogen.sh
 #./configure
 #make clean -s
-make -j$(nproc) -s
+make -j$(nproc) -s &> compile.log
 
 ./test/fuzzers/build_google_oss_fuzzers.sh
 ./test/fuzzers/build_seed_corpus.sh

@@ -14,7 +14,8 @@
 #
 ################################################################################
 
-FROM base-clang-3.8.1
+#FROM base-clang-3.8.1
+FROM gcr.io/oss-fuzz-base/base-clang
 MAINTAINER mike.aizatsky@gmail.com
 RUN apt-get update && apt-get install -y git subversion jq python3 zip make libunwind8-dev binutils-dev libblocksruntime-dev
 

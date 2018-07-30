@@ -17,6 +17,6 @@
 
 rm -f *.gcda
 rm -f src/*.gcda
-./autogen.sh
-./configure
-make clean -s
+./autogen.sh &> /dev/null
+./configure &> config.log
+make clean -s &> /dev/null
