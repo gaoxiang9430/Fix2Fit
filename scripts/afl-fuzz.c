@@ -3283,8 +3283,8 @@ bool evaluate_if_reach(void* mem, u32 len){
       num_plausible_patch = new_num_plausible_patch;
 
       if( (repair_schedule == SAN_PAT && cur_reduced_num_plausible_patch > 0) || 
-          ( repair_schedule == SAN_PAR && cur_num_broken_partition > 8)  ||
-          ( repair_schedule == SAN_PART && (cur_num_broken_partition > 8 || cur_reduced_num_plausible_patch > 0)) ){
+          ( repair_schedule == SAN_PAR && cur_num_broken_partition > 0)  ||
+          ( repair_schedule == SAN_PART && (cur_num_broken_partition > 0 || cur_reduced_num_plausible_patch > 0)) ){
         ret = true;
         OKF("find test break %d partition, reduced plausible patches: %d", cur_num_broken_partition, cur_reduced_num_plausible_patch);
       }
@@ -3298,6 +3298,7 @@ bool evaluate_if_reach(void* mem, u32 len){
       if(num_test_reach_target % 100 == 0){
         OKF("current(%llu) number of plausible patches is: %d", num_test_reach_target, num_plausible_patch);
         OKF("current number of broken parition(totally) is : %d", executionStat.totalNumBrokenPartition);
+        OKF("the number of test case that can reduce plausible patches is : %d", executionStat.numTestReducePlausiblePatches);
       }
       if(num_plausible_patch<=0){
         OKF("the number of broken parition(totally) is : %d", executionStat.totalNumBrokenPartition);
