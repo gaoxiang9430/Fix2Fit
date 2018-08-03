@@ -1,3 +1,4 @@
+#!/bin/bash -eu
 # Copyright 2016 Google Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,18 +15,15 @@
 #
 ################################################################################
 
-#FROM gcr.io/oss-fuzz-base/base-builder
-FROM f1x-oss-fuzz
-MAINTAINER even.rouault@spatialys.com
-RUN apt-get update && apt-get install -y make autoconf automake libtool pkg-config \
-        libbz2-dev liblzo2-dev liblzma-dev liblz4-dev libz-dev \
-        libxml2-dev libssl-dev libacl1-dev libattr1-dev vim
-WORKDIR libarchive
-COPY scripts $SRC/scripts
-COPY build.sh $SRC/
-COPY libarchive_testcase /libarchive_testcase
-COPY libarchive_fuzzer.cc $SRC/
-COPY driver /driver
-COPY libarchive $SRC/libarchive
-COPY project_build.sh $SRC/libarchive/project_build.sh
-COPY project_config.sh $SRC/libarchive/project_config.sh
+# build the project
+./build/autogen.sh
+./configure
+#make -j$(nproc) all
+
+# build fuzzer(s)
+#$CXX $CXXFLAGS -Ilibarchive \
+#    $SRC/libarchive_fuzzer.cc -o $OUT/libarchive_fuzzer \
+#    -lFuzzingEngine .libs/libarchive.a \
+#    -Wl,-Bstatic -lbz2 -llzo2  -lxml2 -llzma -lz -lcrypto -llz4 -licuuc \
+#    -licudata -Wl,-Bdynamic
+sed -i 's/-Werror/ /' Makefile

@@ -10,7 +10,7 @@ popd > /dev/null
 #original f1x execution
 rm -rf original.txt
 pushd ../$SUBJECT/ > /dev/null
-  /src/f1x-oss-fuzz/f1x/CInterface/main -f $BUGGY_FILE -t $TESTCASE -T 1000 -d $DRIVER -b ./project_build.sh --output-one-per-loc -a -P /out -N standard_fuzzer | tee $SCRIPT_DIR/original.txt
+  /src/f1x-oss-fuzz/f1x/CInterface/main -f $BUGGY_FILE -t $TESTCASE -T 1000 -d $DRIVER -b ./project_build.sh --output-one-per-loc -a -P /out -N $BINARY &> $SCRIPT_DIR/original.txt
   #generate distance to specific
   make clean
   make distclean
