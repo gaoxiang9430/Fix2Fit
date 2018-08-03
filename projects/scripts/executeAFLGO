@@ -7,7 +7,7 @@ TIME_OUT=8h
 INITIAL_LD_LIBRARY_PATH=$LD_LIBRARY_PATH
 export LD_LIBRARY_PATH=/out:$LD_LIBRARY_PATH
 
-f1x_cmd="f1x -f $BUGGY_FILE -t $TESTCASE test27 test83 -T 5000 -d $DRIVER -b ./project_build.sh -a -P /out -N standard_fuzzer -o $SCRIPT_DIR/patches"
+f1x_cmd="f1x -f $BUGGY_FILE -t $TESTCASE -T 5000 -d $DRIVER -b ./project_build.sh -a -P /out -N standard_fuzzer -o $SCRIPT_DIR/patches0"
 echo $f1x_cmd > $SCRIPT_DIR/f1xcmd.sh
 
 rm -rf /out0
@@ -18,6 +18,9 @@ pushd $SCRIPT_DIR/../$SUBJECT/ >/dev/null
   timeout $TIME_OUT /src/aflgo/afl-fuzz -S ef709ce2 -z no -c 45m -i /in -o /out0 -C -t 1000 -R $SCRIPT_DIR/f1xcmd.sh /out/standard_fuzzer_profile @@ | tee $SCRIPT_DIR/afl.txt
 popd > /dev/null
 
+f1x_cmd="f1x -f $BUGGY_FILE -t $TESTCASE -T 5000 -d $DRIVER -b ./project_build.sh -a -P /out -N standard_fuzzer -o $SCRIPT_DIR/patches1"
+echo $f1x_cmd > $SCRIPT_DIR/f1xcmd.sh
+
 rm -rf /out1
 mkdir /out1
 pushd $SCRIPT_DIR/../$SUBJECT/ >/dev/null
@@ -25,6 +28,9 @@ pushd $SCRIPT_DIR/../$SUBJECT/ >/dev/null
   echo "ctimeout $TIME_OUT /src/aflgo/afl-fuzz -S ef709ce2 -z exp -c 45m -i /in -o /out1 -C -t 1000 -R $SCRIPT_DIR/f1xcmd.sh /out/standard_fuzzer_profile @@"
   timeout $TIME_OUT /src/aflgo/afl-fuzz -S ef709ce2 -z exp -c 45m -i /in -o /out1 -C -t 1000 -R $SCRIPT_DIR/f1xcmd.sh /out/standard_fuzzer_profile @@ | tee $SCRIPT_DIR/aflgo.txt
 popd > /dev/null
+
+f1x_cmd="f1x -f $BUGGY_FILE -t $TESTCASE -T 5000 -d $DRIVER -b ./project_build.sh -a -P /out -N standard_fuzzer -o $SCRIPT_DIR/patches2"
+echo $f1x_cmd > $SCRIPT_DIR/f1xcmd.sh
 
 rm -rf /out2
 mkdir /out2
@@ -41,6 +47,9 @@ popd > /dev/null
 #  echo "ctimeout $TIME_OUT /src/aflgo/afl-fuzz -S ef709ce2 -z exp -c 45m -i /in -o /out3 -s par -C -t 1000 -R $SCRIPT_DIR/f1xcmd.sh /out/standard_fuzzer_profile @@"
   #timeout $TIME_OUT /src/aflgo/afl-fuzz -S ef709ce2 -z exp -c 45m -i /in -o /out3 -s par -C -t 1000 -R $SCRIPT_DIR/f1xcmd.sh /out/standard_fuzzer_profile @@ | tee $SCRIPT_DIR/aflgo_par.txt
 #popd > /dev/null
+
+f1x_cmd="f1x -f $BUGGY_FILE -t $TESTCASE -T 5000 -d $DRIVER -b ./project_build.sh -a -P /out -N standard_fuzzer -o $SCRIPT_DIR/patches4"
+echo $f1x_cmd > $SCRIPT_DIR/f1xcmd.sh
 
 rm -rf /out4
 mkdir /out4

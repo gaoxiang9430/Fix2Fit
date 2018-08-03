@@ -40,7 +40,7 @@ export IS_DOCKER_SINGLE_CORE_MODE=
 export SUBJECT=proj4
 export BUGGY_FILE
 export DRIVER=/driver
-export TESTCASE=proj4_testcase
+export TESTCASE="proj4_testcase test27 test83"
 
 export F1X_PROJECT_CC=/src/aflgo/afl-clang-fast
 export F1X_PROJECT_CXX=/src/aflgo/afl-clang-fast++
@@ -60,4 +60,10 @@ popd > /dev/null
 mkdir /in
 cp /proj4_testcase /in/
 
+#pushd /src/proj4
+#  ./project_config.sh
+#  ./project_build.sh
+#  /src/proj4/nad/testvarious /src/proj4/src/cs2cs
+#  cp tv_out nad/tv_out.dist
+#popd
 exec "/bin/bash"

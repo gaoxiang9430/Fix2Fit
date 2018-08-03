@@ -260,10 +260,11 @@ popd
 container_name=gcr.io/oss-fuzz/${PROJECT_NAME}_${BUG_NUMBER}
 container_id=`docker ps --all | grep ${PROJECT_NAME}_${BUG_NUMBER} | awk '{print $1}'`
 output_dir=$SCRIPT_DIR/../output/${PROJECT_NAME}_${BUG_NUMBER}
+rm -rf $output_dir
 mkdir $output_dir
 docker cp $container_id:/src/scripts/original.txt $output_dir
 docker cp $container_id:/src/scripts/afl.txt $output_dir
 docker cp $container_id:/src/scripts/aflgo.txt $output_dir
 docker cp $container_id:/src/scripts/aflgo_pat.txt $output_dir
-docker cp $container_id:/src/scripts/aflgo_par.txt $output_dir
-
+docker cp $container_id:/src/scripts/aflgo_part.txt $output_dir
+docker cp $container_id:/src/scripts/patch $output_dir

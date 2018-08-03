@@ -3297,7 +3297,7 @@ bool evaluate_if_reach(void* mem, u32 len){
       ck_free(fileName);
       if(num_test_reach_target % 100 == 0){
         OKF("current(%llu) number of plausible patches is: %d", num_test_reach_target, num_plausible_patch);
-        OKF("current(%llu) number of patches is: %d", executionStat.numPartition);
+        OKF("current number of partition is: %d", executionStat.numPartition);
         OKF("current number of broken parition(totally) is : %d", executionStat.totalNumBrokenPartition);
         OKF("the number of test case that can reduce plausible patches is : %d", executionStat.numTestReducePlausiblePatches);
         OKF("the number of test case that can break partition is : %d", executionStat.numTestBreakPartition);

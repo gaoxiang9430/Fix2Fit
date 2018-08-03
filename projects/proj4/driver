@@ -3,6 +3,9 @@ if [ $test = "test27" ]; then
   /src/proj4/nad/test27 /src/proj4/src/proj
 elif [ $test = "test83" ]; then
   /src/proj4/nad/test83 /src/proj4/src/proj
+elif [ $test = "testvarious" ]; then
+  /src/proj4/nad/testvarious /src/proj4/src/cs2cs
 else
   /out/standard_fuzzer /$test
 fi
+
