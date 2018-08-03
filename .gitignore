@@ -1,3 +1,7 @@
 .vscode/
 *.pyc
 build/
+output/
+projects/proj4_*
+projects/libarchive_*
+projects/openjpeg_*
