@@ -1,0 +1,11 @@
+#!/bin/bash
+test=$1
+re='^[0-9]+$'
+if [[ $test =~ $re ]]; then
+  pushd /src/libarchive > /dev/null
+  ./libarchive_test $test
+  popd > /dev/null
+else
+  $OUT/libarchive_fuzzer /$test
+fi
+

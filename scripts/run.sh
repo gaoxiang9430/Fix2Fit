@@ -71,9 +71,13 @@ make_libarchive_project() {
     done < $SCRIPT_DIR/../projects/all_issue_ids_libarchive.txt
 
     if [ x$LIBARCHIVE_HASH != x ] ; then
-	pushd $SCRIPT_DIR/..
+        cd $SCRIPT_DIR/../projects/libarchive_$BUG_NUMBER
+        git clone https://github.com/libarchive/libarchive.git libarchive
+        cd libarchive
+        git reset --hard $LIBARCHIVE_HASH
+	#pushd $SCRIPT_DIR/..
 	#zip -r projects/libarchive_$BUG_NUMBER/f1x.zip f1x
-	popd
+	#popd
     fi
 
     # Restore the supposedly original state

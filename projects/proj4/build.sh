@@ -40,6 +40,7 @@ export IS_DOCKER_SINGLE_CORE_MODE=
 export SUBJECT=proj4
 export BUGGY_FILE
 export DRIVER=/driver
+export BINARY=standard_fuzzer
 export TESTCASE="proj4_testcase test27 test83"
 
 export F1X_PROJECT_CC=/src/aflgo/afl-clang-fast

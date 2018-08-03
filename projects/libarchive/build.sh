@@ -15,14 +15,53 @@
 #
 ################################################################################
 
-# build the project
-./build/autogen.sh
-./configure
-make -j$(nproc) all
+#########################################################################
+# For building the target subject
+#########################################################################
 
-# build fuzzer(s)
-$CXX $CXXFLAGS -Ilibarchive \
-    $SRC/libarchive_fuzzer.cc -o $OUT/libarchive_fuzzer \
-    -lFuzzingEngine .libs/libarchive.a \
-    -Wl,-Bstatic -lbz2 -llzo2  -lxml2 -llzma -lz -lcrypto -llz4 -licuuc \
-    -licudata -Wl,-Bdynamic
+# Redefinition to emphasize that we crash the sanitizer upon catching bug
+if [ x$SANITIZER = xundefined ] ; then
+    export CFLAGS=${CFLAGS/\,vptr/}
+    export CXXFLAGS=${CXXFLAGS/\,vptr/}
+#   export CFLAGS="$CFLAGS  -fsanitize-undefined-trap-on-error"
+#   export CXXFLAGS="$CXXFLAGS  -fsanitize-undefined-trap-on-error"
+fi
+
+export CFLAGS="$CFLAGS  -fsanitize-undefined-trap-on-error"
+export CXXFLAGS="$CXXFLAGS  -fsanitize-undefined-trap-on-error"
+
+export CFLAGS="$CFLAGS -lrt"
+export CXXFLAGS="$CXXFLAGS -lrt -stdlib=libstdc++"
+
+export IS_DOCKER_SINGLE_CORE_MODE=
+#set some environmnent variables for aflgo
+#export AFL_I_DONT_CARE_ABOUT_MISSING_CRASHES=core_pattern
+#export AFL_SKIP_CPUFREQ=
+#export AFL_NO_AFFINITY=
+
+export SUBJECT=libarchive
+export BUGGY_FILE
+export DRIVER=/driver
+export TESTCASE="libarchive_testcase"
+export BINARY=libarchive_fuzzer
+
+export F1X_PROJECT_CC=/src/aflgo/afl-clang-fast
+export F1X_PROJECT_CXX=/src/aflgo/afl-clang-fast++
+export CC=f1x-cc
+export CXX=f1x-cxx
+#export LDFLAGS=-lpthread
+export LD_LIBRARY_PATH=/usr/local/lib
+export PATH=$PATH:/src/scripts
+
+export PS1='${debian_chroot:+($debian_chroot)}SUBJECT_TAG~\h:\w\$ '
+
+pushd /src/f1x-oss-fuzz/f1x/CInterface/ > /dev/null
+  make
+#  make f1x-aflgo
+popd > /dev/null
+
+mkdir /in
+cp /libarchive_testcase /in/
+touch /out/distance.cfg.txt
+
+exec "/bin/bash"
