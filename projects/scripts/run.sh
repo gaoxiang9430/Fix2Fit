@@ -31,4 +31,4 @@ pushd ../$SUBJECT/ > /dev/null
 popd > /dev/null
 rm -rf f1x_with_fuzzing.txt
 
-./executeAFLGO
+./executeAFLGO_address
