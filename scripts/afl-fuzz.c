@@ -3283,8 +3283,8 @@ bool evaluate_if_reach(void* mem, u32 len){
       num_plausible_patch = new_num_plausible_patch;
 
       if( (repair_schedule == SAN_PAT && cur_reduced_num_plausible_patch > 0) || 
-          ( repair_schedule == SAN_PAR && cur_num_broken_partition > 0)  ||
-          ( repair_schedule == SAN_PART && (cur_num_broken_partition > 0 || cur_reduced_num_plausible_patch > 0)) ){
+          ( repair_schedule == SAN_PAR && cur_num_broken_partition > 3)  ||
+          ( repair_schedule == SAN_PART && (cur_num_broken_partition > 3 || cur_reduced_num_plausible_patch > 0)) ){
         ret = true;
         OKF("find test break %d partition, reduced plausible patches: %d", cur_num_broken_partition, cur_reduced_num_plausible_patch);
       }
