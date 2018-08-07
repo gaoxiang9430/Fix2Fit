@@ -1,4 +1,4 @@
-#!/bin/bash -eux
+#!/bin/bash -eu
 # Copyright 2016 Google Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,202 +15,53 @@
 #
 ################################################################################
 
-# Disable UBSan vptr since several targets built with -fno-rtti.
-export CFLAGS="$CFLAGS -fno-sanitize=vptr"
-export CXXFLAGS="$CXXFLAGS -fno-sanitize=vptr"
-#export F1X_PROJECT_CC="$CC"
-#export F1X_PROJECT_CXX="$CXX"
-#export CC=f1x-cc
-#export CXX=f1x-cxx
+#########################################################################
+# For building the target subject
+#########################################################################
 
-# Build dependencies.
-export FFMPEG_DEPS_PATH=$SRC/ffmpeg_deps
-mkdir -p $FFMPEG_DEPS_PATH
+# Redefinition to emphasize that we crash the sanitizer upon catching bug
+if [ x$SANITIZER = xundefined ] ; then
+    export CFLAGS=${CFLAGS/\,vptr/}
+    export CXXFLAGS=${CXXFLAGS/\,vptr/}
+fi
 
-# Build latest nasm without memory instrumentation.
-cd $SRC
-tar xzf nasm-*
-cd nasm-*
-CFLAGS="" CXXFLAGS="" ./configure --prefix="$FFMPEG_DEPS_PATH"
-make clean
-make -j$(nproc)
-make install
+export CFLAGS="$CFLAGS  -fsanitize-undefined-trap-on-error"
+export CXXFLAGS="$CXXFLAGS  -fsanitize-undefined-trap-on-error"
 
+export FFMPEG_DEPS_PATH=/src/ffmpeg_deps
 export PATH="$FFMPEG_DEPS_PATH/bin:$PATH"
-export LD_LIBRARY_PATH="$FFMPEG_DEPS_PATH/lib"
 
-cd $SRC
-bzip2 -f -d alsa-lib-*
-tar xf alsa-lib-*
-cd alsa-lib-*
-./configure --prefix="$FFMPEG_DEPS_PATH" --enable-static --disable-shared
-make clean
-make -j$(nproc) all
-make install
+#export CFLAGS="$CFLAGS -lrt"
+#export CXXFLAGS="$CXXFLAGS -lrt -stdlib=libstdc++"
 
-cd $SRC/drm
-# Requires xutils-dev libpciaccess-dev
-./autogen.sh
-./configure --prefix="$FFMPEG_DEPS_PATH" --enable-static
-make clean
-make -j$(nproc)
-make install
+export IS_DOCKER_SINGLE_CORE_MODE=
+#set some environmnent variables for aflgo
+#export AFL_I_DONT_CARE_ABOUT_MISSING_CRASHES=core_pattern
+#export AFL_SKIP_CPUFREQ=
+#export AFL_NO_AFFINITY=
 
-cd $SRC/fdk-aac
-autoreconf -fiv
-./configure --prefix="$FFMPEG_DEPS_PATH" --disable-shared
-make clean
-make -j$(nproc) all
-make install
+export SUBJECT=ffmpeg
+export BUGGY_FILE
+export DRIVER=/driver
+export BINARY=ffmpeg_AV_CODEC_ID_AAC_fuzzer
+export TESTCASE="ffmpeg_testcase"
 
-cd $SRC
-tar xzf lame.tar.gz
-cd lame-*
-./configure --prefix="$FFMPEG_DEPS_PATH" --enable-static
-make clean
-make -j$(nproc)
-make install
+export F1X_PROJECT_CC=/src/aflgo/afl-clang-fast
+export F1X_PROJECT_CXX=/src/aflgo/afl-clang-fast++
+export CC=f1x-cc
+export CXX=f1x-cxx
+export LDFLAGS=-lpthread
+export LD_LIBRARY_PATH="/usr/local/lib:$FFMPEG_DEPS_PATH/lib"
+export PATH=$PATH:/src/scripts
 
-cd $SRC/libXext
-./autogen.sh
-./configure --prefix="$FFMPEG_DEPS_PATH" --enable-static
-make clean
-make -j$(nproc)
-make install
+export PS1='${debian_chroot:+($debian_chroot)}SUBJECT_TAG~\h:\w\$ '
 
-cd $SRC/libXfixes
-./autogen.sh
-./configure --prefix="$FFMPEG_DEPS_PATH" --enable-static
-make clean
-make -j$(nproc)
-make install
+pushd /src/f1x-oss-fuzz/f1x/CInterface/ > /dev/null
+  make
+#  make f1x-aflgo
+popd > /dev/null
 
-cd $SRC/libva
-./autogen.sh
-./configure --prefix="$FFMPEG_DEPS_PATH" --enable-static --disable-shared
-make clean
-make -j$(nproc) all
-make install
+mkdir /in
+cp /ffmpeg_testcase /in/
 
-cd $SRC/libvdpau
-./autogen.sh
-./configure --prefix="$FFMPEG_DEPS_PATH" --enable-static --disable-shared
-make clean
-make -j$(nproc) all
-make install
-
-cd $SRC/libvpx
-LDFLAGS="$CXXFLAGS" ./configure --prefix="$FFMPEG_DEPS_PATH" \
-    --disable-examples --disable-unit-tests
-make clean
-make -j$(nproc) all
-make install
-
-cd $SRC/ogg
-./autogen.sh
-./configure --prefix="$FFMPEG_DEPS_PATH" --enable-static
-make clean
-make -j$(nproc)
-make install
-
-cd $SRC/opus
-./autogen.sh
-./configure --prefix="$FFMPEG_DEPS_PATH" --enable-static
-make clean
-make -j$(nproc) all
-make install
-
-cd $SRC/libtheora
-# theora requires ogg, need to pass its location to the "configure" script.
-CFLAGS="$CFLAGS -fPIC" LDFLAGS="-L$FFMPEG_DEPS_PATH/lib/" \
-    CPPFLAGS="$CXXFLAGS -I$FFMPEG_DEPS_PATH/include/" \
-    LD_LIBRARY_PATH="$FFMPEG_DEPS_PATH/lib/" \
-    ./autogen.sh --prefix="$FFMPEG_DEPS_PATH" --enable-static --disable-examples
-#make clean
-make -j$(nproc)
-make install
-
-cd $SRC/vorbis
-./autogen.sh
-./configure --prefix="$FFMPEG_DEPS_PATH" --enable-static
-make clean
-make -j$(nproc)
-make install
-
-cd $SRC/x264
-LDFLAGS="$CXXFLAGS" ./configure --prefix="$FFMPEG_DEPS_PATH" \
-    --enable-static
-make clean
-make -j$(nproc)
-make install
-
-cd $SRC/x265/build/linux
-cmake -G "Unix Makefiles" \
-    -DCMAKE_C_COMPILER=$CC -DCMAKE_CXX_COMPILER=$CXX \
-    -DCMAKE_C_FLAGS="$CFLAGS" -DCMAKE_CXX_FLAGS="$CXXFLAGS" \
-    -DCMAKE_INSTALL_PREFIX="$FFMPEG_DEPS_PATH" -DENABLE_SHARED:bool=off \
-    ../../source
-make clean
-make -j$(nproc) x265-static
-make install
-
-# Remove shared libraries to avoid accidental linking against them.
-rm $FFMPEG_DEPS_PATH/lib/*.so
-rm $FFMPEG_DEPS_PATH/lib/*.so.*
-
-# Build ffmpeg.
-cd $SRC/ffmpeg
-PKG_CONFIG_PATH="$FFMPEG_DEPS_PATH/lib/pkgconfig" ./configure \
-    --cc=$CC --cxx=$CXX --ld="$CXX $CXXFLAGS -std=c++11" \
-    --extra-cflags="-I$FFMPEG_DEPS_PATH/include" \
-    --extra-ldflags="-L$FFMPEG_DEPS_PATH/lib" \
-    --prefix="$FFMPEG_DEPS_PATH" \
-    --pkg-config-flags="--static" \
-    --libfuzzer=-lFuzzingEngine \
-    #--optflags=-O1 \
-    #--enable-gpl \
-    --enable-libass \
-    --enable-libfdk-aac \
-    --enable-libfreetype \
-    --enable-libmp3lame \
-    --enable-libopus \
-    --enable-libtheora \
-    --enable-libvorbis \
-    --enable-libvpx \
-    --enable-libx264 \
-    --enable-libx265 \
-    --enable-nonfree \
-    --disable-shared
-make clean
-make -j$(nproc) install
-
-# Download test sampes, will be used as seed corpus.
-# DISABLED.
-# TODO: implement a better way to maintain a minimized seed corpora
-# for all targets. As of 2017-05-04 now the combined size of corpora
-# is too big for ClusterFuzz (over 10Gb compressed data).
-# export TEST_SAMPLES_PATH=$SRC/ffmpeg/fate-suite/
-# make fate-rsync SAMPLES=$TEST_SAMPLES_PATH
-
-# Build the fuzzers.
-cd $SRC/ffmpeg
-
-FUZZ_TARGET_SOURCE=$SRC/ffmpeg/tools/target_dec_fuzzer.c
-
-export TEMP_VAR_CODEC="AV_CODEC_ID_H264"
-export TEMP_VAR_CODEC_TYPE="VIDEO"
-
-# Build fuzzers for decoders.
-CONDITIONALS=`grep 'DECODER 1$' config.h | sed 's/#define CONFIG_\(.*\)_DECODER 1/\1/'`
-for c in $CONDITIONALS ; do
-  fuzzer_name=ffmpeg_AV_CODEC_ID_${c}_fuzzer
-  symbol=`git grep 'REGISTER_[A-Z]*DEC[A-Z ]*('"$c"' *,' libavcodec/allcodecs.c | sed 's/.*, *\([^) ]*\)).*/\1/'`
-  echo -en "[libfuzzer]\nmax_len = 1000000\n" > $OUT/${fuzzer_name}.options
-  make tools/target_dec_${symbol}_fuzzer
-  mv tools/target_dec_${symbol}_fuzzer $OUT/${fuzzer_name}
-done
-
-exec "/bin/bash";
-# Find relevant corpus in test samples and archive them for every fuzzer.
-#cd $SRC
-#python group_seed_corpus.py $TEST_SAMPLES_PATH $OUT/
+exec "/bin/bash"

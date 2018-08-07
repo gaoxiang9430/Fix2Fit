@@ -34,8 +34,8 @@ make_ffmpeg_project() {
 
     if [ x$FFMPEG_HASH != x ] ; then
 	cd $SCRIPT_DIR/../projects/ffmpeg_$BUG_NUMBER
-	git clone https://github.com/FFmpeg/FFmpeg.git "ffmpeg_$BUG_NUMBER"_codes
-	cd "ffmpeg_$BUG_NUMBER"_codes
+	git clone https://github.com/FFmpeg/FFmpeg.git ffmpeg
+	cd ffmpeg
 	git reset --hard $FFMPEG_HASH
 	cd $SCRIPT_DIR/../projects/ffmpeg_$BUG_NUMBER
 	git clone https://github.com/mirror/x264.git x264_prev
