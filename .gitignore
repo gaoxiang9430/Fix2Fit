@@ -5,3 +5,4 @@ output/
 projects/proj4_*
 projects/libarchive_*
 projects/openjpeg_*
+projects/ffmpeg/ffmpeg_deps

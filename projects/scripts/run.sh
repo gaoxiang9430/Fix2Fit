@@ -14,14 +14,11 @@ pushd ../$SUBJECT/ > /dev/null
   #generate distance to specific
   make clean
   make distclean
-  ./project_config.sh
+#  ./project_config.sh
 popd > /dev/null
 
 location=`cat ../$SUBJECT/location.txt`
 ./afl-generateDistance.sh $location
-
-export CFLAGS="$CFLAGS -distance=$OUT/distance.cfg.txt"
-export CXXFLAGS="$CXXFLAGS -distance=$OUT/distance.cfg.txt"
 
 #execute f1x with fuzzing
 pushd ../$SUBJECT/ > /dev/null

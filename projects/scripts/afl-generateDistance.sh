@@ -1,6 +1,6 @@
 #!/bin/bash
 
-usage="Usage: source afl-generateDistance.sh PATCH_LOCATION"
+usage="Usage: afl-generateDistance.sh PATCH_LOCATION"
 
 rm -rf temp
 mkdir temp
@@ -53,7 +53,7 @@ export CXXFLAGS=$INITIAL_CXXFLAGS
 export PATH=$INITIAL_PATH
 
 # Generate distance
-$AFLGO/scripts/genDistance.sh $OUT $TMP_DIR standard_fuzzer
+$AFLGO/scripts/genDistance.sh $OUT $TMP_DIR $BINARY
 
 cp $TMP_DIR/distance.cfg.txt $OUT
 #rm -rf $TMP_DIR
