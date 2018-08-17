@@ -25,10 +25,6 @@ ar r $LIB_FUZZING_ENGINE $WORK/afl/*.o
 popd > /dev/null
 rm -rf $WORK/afl
 
-# Disable UBSan vptr since several targets built with -fno-rtti.
-export CFLAGS="$CFLAGS -fno-sanitize=vptr"
-export CXXFLAGS="$CXXFLAGS -fno-sanitize=vptr"
-
 # Build ffmpeg.
 cd $SRC/ffmpeg
 #PKG_CONFIG_PATH="$FFMPEG_DEPS_PATH/lib/pkgconfig" ./configure \

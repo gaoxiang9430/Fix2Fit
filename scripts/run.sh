@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Usage: run.sh [project_name] [bug_number]
+# Usage: run.sh [project_name] [bug_number] [core_id]
 #
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"

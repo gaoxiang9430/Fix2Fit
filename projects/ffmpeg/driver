@@ -1,1 +1,1 @@
-/out/ffmpeg_AV_CODEC_ID_AAC_fuzzer < /$1
+/out/$BINARY /$1

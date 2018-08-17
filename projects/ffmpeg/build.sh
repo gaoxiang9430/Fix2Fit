@@ -25,8 +25,9 @@ if [ x$SANITIZER = xundefined ] ; then
     export CXXFLAGS=${CXXFLAGS/\,vptr/}
 fi
 
-export CFLAGS="$CFLAGS  -fsanitize-undefined-trap-on-error"
-export CXXFLAGS="$CXXFLAGS  -fsanitize-undefined-trap-on-error"
+# Disable UBSan vptr since several targets built with -fno-rtti.
+export CFLAGS="$CFLAGS  -fsanitize-undefined-trap-on-error -fno-sanitize=vptr"
+export CXXFLAGS="$CXXFLAGS  -fsanitize-undefined-trap-on-error -fno-sanitize=vptr"
 
 export FFMPEG_DEPS_PATH=/src/ffmpeg_deps
 export PATH="$FFMPEG_DEPS_PATH/bin:$PATH"
@@ -43,7 +44,7 @@ export IS_DOCKER_SINGLE_CORE_MODE=
 export SUBJECT=ffmpeg
 export BUGGY_FILE
 export DRIVER=/driver
-export BINARY=ffmpeg_AV_CODEC_ID_AAC_fuzzer
+export BINARY=
 export TESTCASE="ffmpeg_testcase"
 
 export F1X_PROJECT_CC=/src/aflgo/afl-clang-fast
@@ -63,5 +64,6 @@ popd > /dev/null
 
 mkdir /in
 cp /ffmpeg_testcase /in/
+touch /out/distance.cfg.txt
 
 exec "/bin/bash"

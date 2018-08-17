@@ -14,7 +14,7 @@ pushd ../$SUBJECT/ > /dev/null
   #generate distance to specific
   make clean
   make distclean
-  ./project_config.sh
+#  ./project_config.sh
 popd > /dev/null
 
 location=`cat ../$SUBJECT/location.txt`
@@ -31,4 +31,4 @@ pushd ../$SUBJECT/ > /dev/null
 popd > /dev/null
 rm -rf f1x_with_fuzzing.txt
 
-./executeAFLGO
+./executeAFLGO_address

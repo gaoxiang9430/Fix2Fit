@@ -33,23 +33,23 @@ COPY build_dependency.sh $SRC/
 COPY project_build.sh $SRC/ffmpeg/project_build.sh
 COPY project_config.sh $SRC/ffmpeg/project_config.sh
 COPY group_seed_corpus.py $SRC/
-COPY ffmpeg_deps $SRC
+#COPY ffmpeg_deps $SRC/ffmpeg_deps
 
-#RUN wget ftp://ftp.alsa-project.org/pub/lib/alsa-lib-1.1.0.tar.bz2
-#RUN wget http://www.nasm.us/pub/nasm/releasebuilds/2.13.01/nasm-2.13.01.tar.gz
-#RUN git clone git://anongit.freedesktop.org/mesa/drm
-#RUN git clone https://github.com/mstorsjo/fdk-aac.git
-#ADD https://sourceforge.net/projects/lame/files/latest/download lame.tar.gz
-#RUN git clone git://anongit.freedesktop.org/xorg/lib/libXext
-#RUN git clone git://anongit.freedesktop.org/git/xorg/lib/libXfixes
-#RUN git clone https://github.com/01org/libva
-#RUN git clone git://people.freedesktop.org/~aplattner/libvdpau
-#RUN git clone https://chromium.googlesource.com/webm/libvpx
-#RUN git clone https://github.com/xiph/ogg.git
-#RUN git clone git://git.xiph.org/opus.git
-#RUN git clone https://github.com/Distrotech/libtheora.git
-#RUN git clone git://git.xiph.org/vorbis.git
-#RUN git clone git://git.videolan.org/git/x264.git
-#RUN hg clone https://bitbucket.org/multicoreware/x265
+RUN wget ftp://ftp.alsa-project.org/pub/lib/alsa-lib-1.1.0.tar.bz2
+RUN wget http://www.nasm.us/pub/nasm/releasebuilds/2.13.01/nasm-2.13.01.tar.gz
+RUN git clone git://anongit.freedesktop.org/mesa/drm
+RUN git clone https://github.com/mstorsjo/fdk-aac.git
+ADD https://sourceforge.net/projects/lame/files/latest/download lame.tar.gz
+RUN git clone git://anongit.freedesktop.org/xorg/lib/libXext
+RUN git clone git://anongit.freedesktop.org/git/xorg/lib/libXfixes
+RUN git clone https://github.com/01org/libva
+RUN git clone git://people.freedesktop.org/~aplattner/libvdpau
+RUN git clone https://chromium.googlesource.com/webm/libvpx
+RUN git clone https://github.com/xiph/ogg.git
+RUN git clone git://git.xiph.org/opus.git
+RUN git clone https://github.com/Distrotech/libtheora.git
+RUN git clone git://git.xiph.org/vorbis.git
+RUN git clone git://git.videolan.org/git/x264.git
+RUN hg clone https://bitbucket.org/multicoreware/x265
 
-#COPY x264_prev x264
+COPY x264_prev x264

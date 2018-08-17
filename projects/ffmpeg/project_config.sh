@@ -19,9 +19,6 @@ rm -f *.gcda
 rm -f src/*.gcda
 
 export FFMPEG_DEPS_PATH=$SRC/ffmpeg_deps
-# Disable UBSan vptr since several targets built with -fno-rtti.
-export CFLAGS="$CFLAGS -fno-sanitize=vptr"
-export CXXFLAGS="$CXXFLAGS -fno-sanitize=vptr"
 
 # Build ffmpeg.
 cd $SRC/ffmpeg
@@ -29,6 +26,7 @@ PKG_CONFIG_PATH="$FFMPEG_DEPS_PATH/lib/pkgconfig" ./configure \
     --cc=$CC --cxx=$CXX --ld="$CXX $CXXFLAGS -std=c++11" \
     --extra-cflags="-I$FFMPEG_DEPS_PATH/include" \
     --extra-ldflags="-L$FFMPEG_DEPS_PATH/lib" \
+    --extra-libs=-lpthread \
     --prefix="$FFMPEG_DEPS_PATH" \
     --pkg-config-flags="--static" \
     --libfuzzer=-lFuzzingEngine \

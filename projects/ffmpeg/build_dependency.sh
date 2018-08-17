@@ -3,8 +3,6 @@
 # Disable UBSan vptr since several targets built with -fno-rtti.
 export CC=/usr/local/bin/clang
 export CXX=/usr/local/bin/clang++
-export CFLAGS="$CFLAGS -fno-sanitize=vptr"
-export CXXFLAGS="$CXXFLAGS -fno-sanitize=vptr"
 
 # Build dependencies.
 export FFMPEG_DEPS_PATH=$SRC/ffmpeg_deps
@@ -80,6 +78,7 @@ cd $SRC/libvdpau
 ./configure --prefix="$FFMPEG_DEPS_PATH" --enable-static --disable-shared
 make clean
 make -j$(nproc) all
+make install
 
 cd $SRC/libvpx
 LDFLAGS="$CXXFLAGS" ./configure --prefix="$FFMPEG_DEPS_PATH" \
@@ -124,6 +123,7 @@ LDFLAGS="$CXXFLAGS" ./configure --prefix="$FFMPEG_DEPS_PATH" \
     --enable-static
 make clean
 make -j$(nproc)
+make install
 
 cd $SRC/x265/build/linux
 cmake -G "Unix Makefiles" \
@@ -138,4 +138,3 @@ make install
 # Remove shared libraries to avoid accidental linking against them.
 rm $FFMPEG_DEPS_PATH/lib/*.so
 rm $FFMPEG_DEPS_PATH/lib/*.so.*
-
