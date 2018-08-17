@@ -106,8 +106,8 @@ make_openjpeg_project() {
 
     if [ x$OPENJPEG_HASH != x ] ; then
 	cd $SCRIPT_DIR/../projects/openjpeg_$BUG_NUMBER
-	git clone https://github.com/uclouvain/openjpeg.git openjpeg_$BUG_NUMBER
-	cd openjpeg_$BUG_NUMBER
+	git clone https://github.com/uclouvain/openjpeg.git openjpeg
+	cd openjpeg
 	git reset --hard $OPENJPEG_HASH
 	pushd $SCRIPT_DIR/..
 	#zip -r projects/openjpeg_$BUG_NUMBER/f1x.zip f1x
