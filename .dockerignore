@@ -3,3 +3,5 @@ projects/wireshark_*
 projects/libarchive_*
 projects/openjpeg_*
 projects/proj4_*
+build/
+output/
