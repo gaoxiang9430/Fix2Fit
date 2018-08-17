@@ -1,3 +1,4 @@
+#!/bin/bash -eu
 # Copyright 2016 Google Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,15 +15,21 @@
 #
 ################################################################################
 
-#FROM gcr.io/oss-fuzz-base/base-builder
-FROM f1x-oss-fuzz
-MAINTAINER even.rouault@spatialys.com
-RUN apt-get update && apt-get install -y make cmake g++ vim
-WORKDIR openjpeg
-COPY scripts $SRC/scripts
-COPY build.sh $SRC/
-COPY openjpeg_testcase /openjpeg_testcase
-COPY driver /driver
-COPY openjpeg $SRC/openjpeg
-COPY project_build.sh $SRC/openjpeg/project_build.sh
-COPY project_config.sh $SRC/openjpeg/project_config.sh
+rm -f $LIB_FUZZING_ENGINE
+echo "Compiling aflgo to $LIB_FUZZING_ENGINE ..." 
+mkdir -p $WORK/afl
+pushd $WORK/afl > /dev/null
+#$CC $CFLAGS -c $SRC/aflgo/llvm_mode/afl-llvm-rt.o.c 
+$CXX $CXXFLAGS -std=c++11 -O2 -c $SRC/libfuzzer/afl/afl_driver.cpp -I$SRC/libfuzzer
+ar r $LIB_FUZZING_ENGINE $WORK/afl/*.o
+popd > /dev/null
+rm -rf $WORK/afl
+
+cd build
+#cmake ..
+#make clean -s
+make -j$(nproc) -s &> compile.log
+cd ..
+
+./tests/fuzzers/build_google_oss_fuzzers.sh
+#./tests/fuzzers/build_seed_corpus.sh

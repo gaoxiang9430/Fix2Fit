@@ -1,4 +1,5 @@
-# Copyright 2016 Google Inc.
+#!/bin/bash -eu
+# Copyright 2017 Google Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,15 +15,12 @@
 #
 ################################################################################
 
-#FROM gcr.io/oss-fuzz-base/base-builder
-FROM f1x-oss-fuzz
-MAINTAINER even.rouault@spatialys.com
-RUN apt-get update && apt-get install -y make cmake g++ vim
-WORKDIR openjpeg
-COPY scripts $SRC/scripts
-COPY build.sh $SRC/
-COPY openjpeg_testcase /openjpeg_testcase
-COPY driver /driver
-COPY openjpeg $SRC/openjpeg
-COPY project_build.sh $SRC/openjpeg/project_build.sh
-COPY project_config.sh $SRC/openjpeg/project_config.sh
+mkdir build
+cd build
+cmake ..
+make clean -s
+make -j$(nproc) -s
+cd ..
+
+./tests/fuzzers/build_google_oss_fuzzers.sh
+./tests/fuzzers/build_seed_corpus.sh

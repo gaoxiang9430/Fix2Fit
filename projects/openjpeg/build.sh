@@ -1,5 +1,5 @@
 #!/bin/bash -eu
-# Copyright 2017 Google Inc.
+# Copyright 2016 Google Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,12 +15,51 @@
 #
 ################################################################################
 
-mkdir build
-cd build
-cmake ..
-make clean -s
-make -j$(nproc) -s
-cd ..
+#########################################################################
+# For building the target subject
+#########################################################################
 
-./tests/fuzzers/build_google_oss_fuzzers.sh
-./tests/fuzzers/build_seed_corpus.sh
+# Redefinition to emphasize that we crash the sanitizer upon catching bug
+if [ x$SANITIZER = xundefined ] ; then
+    export CFLAGS=${CFLAGS/\,vptr/}
+    export CXXFLAGS=${CXXFLAGS/\,vptr/}
+fi
+
+export CFLAGS="$CFLAGS  -fsanitize-undefined-trap-on-error"
+export CXXFLAGS="$CXXFLAGS  -fsanitize-undefined-trap-on-error"
+
+export CFLAGS="$CFLAGS -lrt"
+export CXXFLAGS="$CXXFLAGS -lrt -stdlib=libstdc++"
+
+export IS_DOCKER_SINGLE_CORE_MODE=
+#set some environmnent variables for aflgo
+#export AFL_I_DONT_CARE_ABOUT_MISSING_CRASHES=core_pattern
+#export AFL_SKIP_CPUFREQ=
+#export AFL_NO_AFFINITY=
+
+export SUBJECT=openjpeg
+export BUGGY_FILE
+export DRIVER=/driver
+export BINARY=opj_decompress_fuzzer
+export TESTCASE="openjpeg_testcase"
+
+export F1X_PROJECT_CC=/src/aflgo/afl-clang-fast
+export F1X_PROJECT_CXX=/src/aflgo/afl-clang-fast++
+export CC=f1x-cc
+export CXX=f1x-cxx
+export LDFLAGS=-lpthread
+export LD_LIBRARY_PATH=/usr/local/lib
+export PATH=$PATH:/src/scripts
+
+export PS1='${debian_chroot:+($debian_chroot)}SUBJECT_TAG~\h:\w\$ '
+
+pushd /src/f1x-oss-fuzz/f1x/CInterface/ > /dev/null
+  make
+#  make f1x-aflgo
+popd > /dev/null
+
+mkdir /in
+cp /openjpeg_testcase /in/
+touch /out/distance.cfg.txt
+
+exec "/bin/bash"
