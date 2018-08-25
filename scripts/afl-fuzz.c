@@ -86,6 +86,12 @@ typedef int bool;
 #define true 1
 #define false 0
 
+int num_fuzzed_test = 0;
+int num_fuzzed_interesting_test = 0;
+bool is_from_interesting_test = false;
+int num_test_bp = 0;
+int num_test_bp_from_interesting_test = 0;
+
 bool is_first = true;
 int fuzz_for_repair = 0;                   /* mode for validating plausible patches                              */
 int max_broken_par = 1;
@@ -3283,8 +3289,11 @@ bool evaluate_if_reach(void* mem, u32 len){
       num_plausible_patch = new_num_plausible_patch;
 
       if( (repair_schedule == SAN_PAT && cur_reduced_num_plausible_patch > 0) || 
-          ( repair_schedule == SAN_PAR && cur_num_broken_partition > 3)  ||
-          ( repair_schedule == SAN_PART && (cur_num_broken_partition > 3 || cur_reduced_num_plausible_patch > 0)) ){
+          ( repair_schedule == SAN_PAR && cur_num_broken_partition > 0)  ||
+          ( repair_schedule == SAN_PART && (cur_num_broken_partition > 0 || cur_reduced_num_plausible_patch > 0)) ){
+        if(is_from_interesting_test)
+          num_test_bp_from_interesting_test++;
+        num_test_bp++;
         ret = true;
         OKF("find test break %d partition, reduced plausible patches: %d", cur_num_broken_partition, cur_reduced_num_plausible_patch);
       }
@@ -3301,10 +3310,17 @@ bool evaluate_if_reach(void* mem, u32 len){
         OKF("current number of broken parition(totally) is : %d", executionStat.totalNumBrokenPartition);
         OKF("the number of test case that can reduce plausible patches is : %d", executionStat.numTestReducePlausiblePatches);
         OKF("the number of test case that can break partition is : %d", executionStat.numTestBreakPartition);
+        OKF("The number fuzzed tests is %d, %d of them break partitions", num_fuzzed_test, num_test_bp);
+        OKF("The number fuzzed interesting tests is %d, %d of them break partitions", num_fuzzed_interesting_test, num_test_bp_from_interesting_test);
       }
       if(num_plausible_patch<=0){
-        OKF("the number of broken parition(totally) is : %d", executionStat.totalNumBrokenPartition);
-        OKF("Total number of generated test is %llu, the number of test reaching target location is %llu", total_num_test, num_test_reach_target);
+        OKF("current(%llu) number of plausible patches is: %d", num_test_reach_target, num_plausible_patch);
+        OKF("current number of partition is: %d", executionStat.numPartition);
+        OKF("current number of broken parition(totally) is : %d", executionStat.totalNumBrokenPartition);
+        OKF("the number of test case that can reduce plausible patches is : %d", executionStat.numTestReducePlausiblePatches);
+        OKF("the number of test case that can break partition is : %d", executionStat.numTestBreakPartition);
+        OKF("The number fuzzed tests is %d, %d of them break partitions", num_fuzzed_test, num_test_bp);
+        OKF("The number fuzzed interesting tests is %d, %d of them break partitions", num_fuzzed_interesting_test, num_test_bp_from_interesting_test);
         FATAL("There is no plausible patch any more!");
       }
     }
@@ -5022,6 +5038,11 @@ static u32 calculate_score(struct queue_entry* q) {
   if(cooling_schedule != SAN_NO)
     perf_score *= power_factor;
 
+  num_fuzzed_test++;
+  if(q->num_broken_partition > 0 || q->reduced_num_plausible_patch > 0){
+    is_from_interesting_test = true;
+    num_fuzzed_interesting_test++;
+  }
   /* Make sure that we don't go over limit. */
 
   if (perf_score > HAVOC_MAX_MULT * 100) perf_score = HAVOC_MAX_MULT * 100;

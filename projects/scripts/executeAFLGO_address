@@ -2,7 +2,7 @@
 usage="Usage: ./executeAFLGO.sh"
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-TIME_OUT=6h
+TIME_OUT=12h
 
 INITIAL_LD_LIBRARY_PATH=$LD_LIBRARY_PATH
 export LD_LIBRARY_PATH=/out:$LD_LIBRARY_PATH
@@ -23,16 +23,6 @@ pushd $SCRIPT_DIR/../$SUBJECT/ >/dev/null
   timeout $TIME_OUT /src/aflgo/afl-fuzz -S ef709ce2 -z no -c 45m -i /in -o /out0  -m none -C -t 1000 -R $SCRIPT_DIR/f1xcmd.sh /out/${BINARY}_profile @@ | tee $SCRIPT_DIR/afl.txt
 popd > /dev/null
 
-f1x_cmd="$prefix_f1x_cmd -o $SCRIPT_DIR/patches1"
-echo $f1x_cmd > $SCRIPT_DIR/f1xcmd.sh
-
-rm -rf /out1
-mkdir /out1
-pushd $SCRIPT_DIR/../$SUBJECT/ >/dev/null
-  echo "executing:"
-  echo "ctimeout $TIME_OUT /src/aflgo/afl-fuzz -S ef709ce2 -z exp -c 45m -i /in -o /out1 -m none -C -t 1000 -R $SCRIPT_DIR/f1xcmd.sh /out/${BINARY}_profile @@"
-  timeout $TIME_OUT /src/aflgo/afl-fuzz -S ef709ce2 -z exp -c 45m -i /in -o /out1 -m none -C -t 1000 -R $SCRIPT_DIR/f1xcmd.sh /out/${BINARY}_profile @@ | tee $SCRIPT_DIR/aflgo.txt
-popd > /dev/null
 
 f1x_cmd="$prefix_f1x_cmd -o $SCRIPT_DIR/patches2"
 echo $f1x_cmd > $SCRIPT_DIR/f1xcmd.sh
@@ -62,6 +52,17 @@ pushd $SCRIPT_DIR/../$SUBJECT/ >/dev/null
   echo "executing:"
   echo "ctimeout $TIME_OUT /src/aflgo/afl-fuzz -S ef709ce2 -z exp -c 45m -i /in -o /out4 -s part  -m none -C -t 1000 -R $SCRIPT_DIR/f1xcmd.sh /out/${BINARY}_profile @@"
   timeout $TIME_OUT /src/aflgo/afl-fuzz -S ef709ce2 -z exp -c 45m -i /in -o /out4 -s part -m none -C -t 1000 -R $SCRIPT_DIR/f1xcmd.sh /out/${BINARY}_profile @@ | tee $SCRIPT_DIR/aflgo_part.txt
+popd > /dev/null
+
+f1x_cmd="$prefix_f1x_cmd -o $SCRIPT_DIR/patches1"
+echo $f1x_cmd > $SCRIPT_DIR/f1xcmd.sh
+
+rm -rf /out1
+mkdir /out1
+pushd $SCRIPT_DIR/../$SUBJECT/ >/dev/null
+  echo "executing:"
+  echo "ctimeout $TIME_OUT /src/aflgo/afl-fuzz -S ef709ce2 -z exp -c 45m -i /in -o /out1 -m none -C -t 1000 -R $SCRIPT_DIR/f1xcmd.sh /out/${BINARY}_profile @@"
+  timeout $TIME_OUT /src/aflgo/afl-fuzz -S ef709ce2 -z exp -c 45m -i /in -o /out1 -m none -C -t 1000 -R $SCRIPT_DIR/f1xcmd.sh /out/${BINARY}_profile @@ | tee $SCRIPT_DIR/aflgo.txt
 popd > /dev/null
 
 export LD_LIBRARY_PATH=$INITIAL_LD_LIBRARY_PATH
