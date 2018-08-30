@@ -89,6 +89,7 @@ typedef int bool;
 int num_fuzzed_test = 0;
 int num_fuzzed_interesting_test = 0;
 bool is_from_interesting_test = false;
+bool is_fuzz_first_seed = true;
 int num_test_bp = 0;
 int num_test_bp_from_interesting_test = 0;
 
@@ -1414,6 +1415,20 @@ static void cull_queue(void) {
       if (!top_rated[i]->was_fuzzed) pending_favored++;
 
     }
+ 
+  //regard the test cases that can break partition as favored case
+  q = queue;
+  while (q) {
+    if( (repair_schedule==SAN_PART && (q->num_broken_partition > 0 || q->reduced_num_plausible_patch > 0))
+       || (repair_schedule==SAN_PAT && q->reduced_num_plausible_patch > 0) ){
+      q->favored = 1;
+      queued_favored++;
+
+      if (!q->was_fuzzed) pending_favored++;
+
+    }
+    q = q->next;
+  }
 
   q = queue;
 
@@ -3267,16 +3282,6 @@ bool evaluate_if_reach(void* mem, u32 len){
     if(isReachTargetLoc){
       num_test_reach_target++; //update statistic
 
-      /*struct timeval unit_start_time;
-      gettimeofday(&unit_start_time, NULL);
-      long elapsed = unit_start_time.tv_sec*1000000 + unit_start_time.tv_usec;
-      u8* fileName = alloc_printf("%s/interestedTest/file_%ld", out_dir, elapsed);
-
-      s32 f_it = open(fileName, O_WRONLY | O_CREAT | O_EXCL, 0600);
-      if (f_it < 0) PFATAL("Unable to create '%s'", fileName);
-      ck_write(f_it, mem, len, fileName);
-      close(f_it);*/
-
       u8* fileName = alloc_printf("%s/.cur_input", out_dir);
       //exeucte new test case based on meta-program
       struct C_ExecutionStat executionStat;
@@ -3288,14 +3293,19 @@ bool evaluate_if_reach(void* mem, u32 len){
       cur_num_broken_partition = executionStat.numBrokenPartition;
       num_plausible_patch = new_num_plausible_patch;
 
+      //determine whether a test case is added to queue or not
       if( (repair_schedule == SAN_PAT && cur_reduced_num_plausible_patch > 0) || 
           ( repair_schedule == SAN_PAR && cur_num_broken_partition > 0)  ||
           ( repair_schedule == SAN_PART && (cur_num_broken_partition > 0 || cur_reduced_num_plausible_patch > 0)) ){
-        if(is_from_interesting_test)
-          num_test_bp_from_interesting_test++;
-        num_test_bp++;
         ret = true;
         OKF("find test break %d partition, reduced plausible patches: %d", cur_num_broken_partition, cur_reduced_num_plausible_patch);
+      }
+
+      //record how many test case that breaks partition is fuzzed from interesting test case (break partition)
+      if(cur_num_broken_partition > 0 || cur_reduced_num_plausible_patch > 0){
+        if(is_from_interesting_test || is_fuzz_first_seed)
+          num_test_bp_from_interesting_test++;
+        num_test_bp++;
       }
 
       if(cur_num_broken_partition > max_broken_par)
@@ -3304,6 +3314,8 @@ bool evaluate_if_reach(void* mem, u32 len){
         max_reduced_pat = cur_reduced_num_plausible_patch;
 
       ck_free(fileName);
+
+      //output statistic information
       if(num_test_reach_target % 100 == 0){
         OKF("current(%llu) number of plausible patches is: %d", num_test_reach_target, num_plausible_patch);
         OKF("current number of partition is: %d", executionStat.numPartition);
@@ -3326,6 +3338,7 @@ bool evaluate_if_reach(void* mem, u32 len){
     }
     ck_free(reachedLocs);
   }
+
   if(total_num_test % 100 == 0)
     OKF("Total number of generated test is %llu, the number of test reaching target location is %llu", total_num_test, num_test_reach_target);
   return ret;
@@ -5002,6 +5015,9 @@ static u32 calculate_score(struct queue_entry* q) {
 
   }
 
+  //using exp cooling schedule for repair
+  T = 1.0 / pow(20.0, progress_to_tx);
+
   double power_part = 1.0;
   if(repair_schedule == SAN_PAT){
     if(q->reduced_num_plausible_patch > 0){
@@ -5009,16 +5025,12 @@ static u32 calculate_score(struct queue_entry* q) {
       double p = normalized_pat * (1.0 - T);
       power_part = (double)MAX_FACTOR/2 + log2(p);
     }
-    else
-      power_part = 0.2;
   }else if(repair_schedule == SAN_PAR){
     if(q->num_broken_partition > 0){
       double normalized_par = q->num_broken_partition/(double)max_broken_par;
       double p = normalized_par * (1.0 - T);
       power_part = (double)MAX_FACTOR/2 + log2(p);
     }
-    else
-      power_part = 0.2;
   }else if(repair_schedule == SAN_PART){
     if(q->num_broken_partition > 0 || q->reduced_num_plausible_patch > 0){
       double normalized_pat = q->reduced_num_plausible_patch/(double)max_reduced_pat;
@@ -5028,21 +5040,30 @@ static u32 calculate_score(struct queue_entry* q) {
       double p = normalized_par * (1.0 - T);
       power_part = (double)MAX_FACTOR/2 + log2(p);
     }
-    else
-      power_part = 0.2;
   }
+
   
   power_factor *= power_part;
-  OKF("FUZZING NEW SEED,reduced num plausible patch: %d, num broken partition: %d, power_part: %lf, power_factor: %lf", q->reduced_num_plausible_patch, q->num_broken_partition, power_part, power_factor);
- 
-  if(cooling_schedule != SAN_NO)
-    perf_score *= power_factor;
+  OKF("FUZZING NEW SEED,reduced num plausible patch: %d, num broken partition: %d, power_part: %lf, power_factor: %lf power score: %d", q->reduced_num_plausible_patch, q->num_broken_partition, power_part, power_factor, perf_score);
+
+  //in case such cases are fuzzed infinitely 
+  //q->reduced_num_plausible_patch = q->reduced_num_plausible_patch/2;
+  //q->num_broken_partition = q->num_broken_partition/2;
+
+  //if(cooling_schedule != SAN_NO || repair_schedule!=0)
+  //  perf_score *= power_factor;
 
   num_fuzzed_test++;
-  if(q->num_broken_partition > 0 || q->reduced_num_plausible_patch > 0){
+
+  if(num_fuzzed_test>1)
+    is_fuzz_first_seed = false;
+
+  if(q->num_broken_partition > 0 || q->reduced_num_plausible_patch > 0 || num_fuzzed_test<=1){ 
     is_from_interesting_test = true;
     num_fuzzed_interesting_test++;
   }
+  else
+    is_from_interesting_test = false;
   /* Make sure that we don't go over limit. */
 
   if (perf_score > HAVOC_MAX_MULT * 100) perf_score = HAVOC_MAX_MULT * 100;
@@ -5328,7 +5349,9 @@ static u8 fuzz_one(char** argv) {
   /*******************************************
    * CALIBRATION (only if failed earlier on) *
    *******************************************/
+  OKF("queue_cur num_broken_partition: %d reduced_num_plausible_patch: %d", queue_cur->num_broken_partition, queue->reduced_num_plausible_patch);
 
+  if(repair_schedule==0 || (repair_schedule!=0 && queue_cur->num_broken_partition <= 0 && queue->reduced_num_plausible_patch <= 0)){
   if (queue_cur->cal_failed) {
 
     u8 res = FAULT_TMOUT;
@@ -5372,7 +5395,7 @@ static u8 fuzz_one(char** argv) {
     if (len != queue_cur->len) len = queue_cur->len;
 
   }
-
+  }
   memcpy(out_buf, in_buf, len);
 
   /*********************
@@ -8090,6 +8113,24 @@ void f1x_init(char* f1x_cmd_path){
 }
 //end
 
+//change the order of queue, put test that can break partition to the beginning of the queue
+void update_order(struct queue_entry* queue_cur){
+  struct queue_entry* q = queue_cur;
+  while (q->next) {
+    if( (repair_schedule==SAN_PART && (q->next->num_broken_partition > 0 || q->next->reduced_num_plausible_patch > 0))
+       || (repair_schedule==SAN_PAT && q->next->reduced_num_plausible_patch > 0) ){
+      struct queue_entry* temp_entry = q->next;
+      q->next = temp_entry->next;
+      temp_entry->next = queue_cur->next;
+      queue_cur->next = temp_entry;
+
+      temp_entry->favored=1;
+      pending_favored ++;
+      break;
+    }
+    q = q->next;
+  }
+}
 
 /* Main entry point */
 
@@ -8523,6 +8564,9 @@ int main(int argc, char** argv) {
     if (!stop_soon && exit_1) stop_soon = 2;
 
     if (stop_soon) break;
+
+//  if(repair_schedule != 0)
+//    update_order(queue_cur);
 
     queue_cur = queue_cur->next;
     current_entry++;

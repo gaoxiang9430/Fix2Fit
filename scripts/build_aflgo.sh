@@ -74,6 +74,7 @@ pip3 install pydotplus
 
 git clone https://github.com/aflgo/aflgo.git
 mv /afl-fuzz.c /src/aflgo/afl-fuzz.c
+mv /config.h /src/aflgo/config.h
 export AFLGO=$PWD/aflgo
 
 # Compile source code
