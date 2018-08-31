@@ -5047,11 +5047,11 @@ static u32 calculate_score(struct queue_entry* q) {
   OKF("FUZZING NEW SEED,reduced num plausible patch: %d, num broken partition: %d, power_part: %lf, power_factor: %lf power score: %d", q->reduced_num_plausible_patch, q->num_broken_partition, power_part, power_factor, perf_score);
 
   //in case such cases are fuzzed infinitely 
-  //q->reduced_num_plausible_patch = q->reduced_num_plausible_patch/2;
-  //q->num_broken_partition = q->num_broken_partition/2;
+  q->reduced_num_plausible_patch = q->reduced_num_plausible_patch/2;
+  q->num_broken_partition = q->num_broken_partition/2;
 
   //if(cooling_schedule != SAN_NO || repair_schedule!=0)
-  //  perf_score *= power_factor;
+    perf_score *= power_factor;
 
   num_fuzzed_test++;
 
