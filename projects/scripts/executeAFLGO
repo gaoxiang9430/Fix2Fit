@@ -6,8 +6,8 @@ TIME_OUT=8h
 
 INITIAL_LD_LIBRARY_PATH=$LD_LIBRARY_PATH
 
-export CFLAGS="$CFLAGS -distance=$OUT/distance.cfg.txt"
-export CXXFLAGS="$CXXFLAGS -distance=$OUT/distance.cfg.txt"
+#export CFLAGS="$CFLAGS -distance=$OUT/distance.cfg.txt"
+#export CXXFLAGS="$CXXFLAGS -distance=$OUT/distance.cfg.txt"
 
 export LD_LIBRARY_PATH=/out:$LD_LIBRARY_PATH
 prefix_f1x_cmd="f1x -f $BUGGY_FILE -t $TESTCASE -T 5000 -d $DRIVER -b ./project_build.sh -a -P /out -N ${BINARY} -M 16"
