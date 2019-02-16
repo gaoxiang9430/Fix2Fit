@@ -1,4 +1,0 @@
-cd /home/edwin/f1x-oss-fuzz
-export PROJECT_NAME=wireshark
-sudo python infra/helper.py build_image $PROJECT_NAME 1179
-sudo python infra/helper.py build_fuzzers --engine afl --sanitizer address $PROJECT_NAME 1179
