@@ -1,0 +1,12 @@
+nohup ./scripts/run.sh openjpeg 2487 41 > openjpeg_2487.log &
+nohup ./scripts/run.sh openjpeg 2496 42 > openjpeg_2496.log &
+nohup ./scripts/run.sh openjpeg 2506 43 > openjpeg_2506.log &
+nohup ./scripts/run.sh openjpeg 2516 44 > openjpeg_2516.log &
+nohup ./scripts/run.sh openjpeg 2558 45 > openjpeg_2558.log &
+nohup ./scripts/run.sh openjpeg 2785 46 > openjpeg_2785.log &
+nohup ./scripts/run.sh openjpeg 2787 47 > openjpeg_2787.log &
+nohup ./scripts/run.sh openjpeg 2795 48 > openjpeg_2795.log &
+nohup ./scripts/run.sh openjpeg 2851 49 > openjpeg_2851.log &
+nohup ./scripts/run.sh openjpeg 3068 50 > openjpeg_3068.log &
+nohup ./scripts/run.sh openjpeg 3305 51 > openjpeg_3305.log &
+nohup ./scripts/run.sh openjpeg 2485 52 > openjpeg_2485.log &

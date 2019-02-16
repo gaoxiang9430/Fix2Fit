@@ -13,7 +13,7 @@ get_buggy_file(){
     while read LINE ;  do
         FILED_BUG_NUMBER=`echo -n $LINE | cut --delimiter=, --fields=1`
         if [ x$BUG_NUMBER = x$FILED_BUG_NUMBER ] ; then
-            if [ $SUBJECT = "ffmpeg" ]; then
+            if [ $SUBJECT = "ffmpeg" ] || [ $SUBJECT = "libxml2" ] || [ $SUBJECT = "libchewing" ] || [ $SUBJECT = "libssh" ]; then
               BUGGY_FILE=`echo -n $LINE | cut --delimiter=, --fields=5`
             else
               BUGGY_FILE=`echo -n $LINE | cut --delimiter=, --fields=4`
@@ -34,7 +34,7 @@ get_binary_name(){
     while read LINE ;  do
         FILED_BUG_NUMBER=`echo -n $LINE | cut --delimiter=, --fields=1`
         if [ x$BUG_NUMBER = x$FILED_BUG_NUMBER ] ; then
-            if [ $SUBJECT = "ffmpeg" ]; then
+            if [ $SUBJECT = "ffmpeg" ] || [ $SUBJECT = "libxml2" ] || [ $SUBJECT = "libchewing" ] || [ $SUBJECT = "libssh" ]; then
               BINARY_NAME=`echo -n $LINE | cut --delimiter=, --fields=6`
             fi
             break;
@@ -62,7 +62,7 @@ for d in ${SUBJECT}_*; do
   cp -r ../scripts .
   sed "s|BUGGY_FILE|BUGGY_FILE=${buggy_file}|" build.sh > build1.sh
   sed "s|SUBJECT_TAG|${directory_name}|" build1.sh > build2.sh
-  if [ $SUBJECT = "ffmpeg" ]; then
+  if [ $SUBJECT = "ffmpeg" ] || [ $SUBJECT = "libxml2" ] || [ $SUBJECT = "libchewing" ] || [ $SUBJECT = "libssh" ]; then
     binary_name=$(get_binary_name $buggy_number)
     sed "s|BINARY=|BINARY=${binary_name}|" build2.sh > build3.sh
     mv build3.sh build2.sh

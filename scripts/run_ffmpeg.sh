@@ -1,0 +1,29 @@
+nohup ./scripts/run.sh ffmpeg 1345 10 > ffmpeg_1345.log &
+nohup ./scripts/run.sh ffmpeg 1352 11 > ffmpeg_1352.log &
+nohup ./scripts/run.sh ffmpeg 1353 12 > ffmpeg_1353.log &
+nohup ./scripts/run.sh ffmpeg 1378 13 > ffmpeg_1378.log &
+nohup ./scripts/run.sh ffmpeg 1390 14 > ffmpeg_1390.log &
+nohup ./scripts/run.sh ffmpeg 1399 15 > ffmpeg_1399.log &
+nohup ./scripts/run.sh ffmpeg 1407 16 > ffmpeg_1407.log &
+nohup ./scripts/run.sh ffmpeg 1418 17 > ffmpeg_1418.log &
+nohup ./scripts/run.sh ffmpeg 1419 18 > ffmpeg_1419.log &
+nohup ./scripts/run.sh ffmpeg 1425 19 > ffmpeg_1425.log &
+
+nohup ./scripts/run.sh ffmpeg 1427 20 > ffmpeg_1427.log &
+nohup ./scripts/run.sh ffmpeg 1438 21 > ffmpeg_1438.log &
+nohup ./scripts/run.sh ffmpeg 1473 22 > ffmpeg_1473.log &
+nohup ./scripts/run.sh ffmpeg 1508 23 > ffmpeg_1508.log &
+nohup ./scripts/run.sh ffmpeg 1630 24 > ffmpeg_1630.log &
+nohup ./scripts/run.sh ffmpeg 1643 25 > ffmpeg_1643.log &
+nohup ./scripts/run.sh ffmpeg 1656 26 > ffmpeg_1656.log &
+nohup ./scripts/run.sh ffmpeg 1669 27 > ffmpeg_1669.log &
+nohup ./scripts/run.sh ffmpeg 1681 28 > ffmpeg_1681.log &
+nohup ./scripts/run.sh ffmpeg 1706 29 > ffmpeg_1706.log &
+nohup ./scripts/run.sh ffmpeg 1723 30 > ffmpeg_1723.log &
+nohup ./scripts/run.sh ffmpeg 1825 31 > ffmpeg_1825.log &
+nohup ./scripts/run.sh ffmpeg 1832 32 > ffmpeg_1832.log &
+
+nohup ./scripts/run.sh ffmpeg 2100 33 > ffmpeg_2100.log &
+nohup ./scripts/run.sh ffmpeg 2106 34 > ffmpeg_2106.log &
+nohup ./scripts/run.sh ffmpeg 2306 35 > ffmpeg_2306.log &
+nohup ./scripts/run.sh ffmpeg 2365 36 > ffmpeg_2365.log &

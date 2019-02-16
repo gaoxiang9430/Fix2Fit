@@ -1,6 +1,7 @@
 .vscode/
 *.pyc
 build/
+logs/
 output/
 projects/proj4_*
 projects/libarchive_*

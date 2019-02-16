@@ -3230,7 +3230,7 @@ static void write_crash_readme(void) {
 
 }
 
-//add to record target test cases
+//added to save target test cases
 bool evaluate_if_reach(void* mem, u32 len){
   bool ret = false;
   cur_reduced_num_plausible_patch = -1;
@@ -3295,8 +3295,8 @@ bool evaluate_if_reach(void* mem, u32 len){
 
       //determine whether a test case is added to queue or not
       if( (repair_schedule == SAN_PAT && cur_reduced_num_plausible_patch > 0) || 
-          ( repair_schedule == SAN_PAR && cur_num_broken_partition > 0)  ||
-          ( repair_schedule == SAN_PART && (cur_num_broken_partition > 0 || cur_reduced_num_plausible_patch > 0)) ){
+          ( repair_schedule == SAN_PAR && cur_num_broken_partition > 3)  ||
+          ( repair_schedule == SAN_PART && (cur_num_broken_partition > 3 || cur_reduced_num_plausible_patch > 0)) ){
         ret = true;
         OKF("find test break %d partition, reduced plausible patches: %d", cur_num_broken_partition, cur_reduced_num_plausible_patch);
       }
@@ -3351,7 +3351,9 @@ bool evaluate_if_reach(void* mem, u32 len){
 
 static u8 save_if_interesting(char** argv, void* mem, u32 len, u8 fault) {
 
-  bool intersting_for_repair = evaluate_if_reach(mem, len);
+  bool intersting_for_repair = false;
+  //if (fault != FAULT_TMOUT && fault != FAULT_CRASH && fault != FAULT_ERROR)
+  intersting_for_repair = evaluate_if_reach(mem, len);
   u8  *fn = "";
   u8  hnb;
   s32 fd;
@@ -4963,7 +4965,7 @@ static u32 calculate_score(struct queue_entry* q) {
 
   u64 cur_ms = get_cur_time();
   u64 t = (cur_ms - start_time) / 1000;
-  double progress_to_tx = ((double) t) / ((double) t_x * 60.0);
+  double progress_to_tx = ((double) t) / ((double) t_x * 60.0 * 2);
 
   double T;
 
@@ -5022,14 +5024,16 @@ static u32 calculate_score(struct queue_entry* q) {
   if(repair_schedule == SAN_PAT){
     if(q->reduced_num_plausible_patch > 0){
       double normalized_pat = q->reduced_num_plausible_patch/(double)max_reduced_pat;
+      //double normalized_pat = 0.5;
       double p = normalized_pat * (1.0 - T);
-      power_part = (double)MAX_FACTOR/2 + log2(p);
+      power_part = pow(2, (double) MAX_PAR_FACTOR * p);
     }
   }else if(repair_schedule == SAN_PAR){
     if(q->num_broken_partition > 0){
       double normalized_par = q->num_broken_partition/(double)max_broken_par;
+      //double normalized_par = 0.5;
       double p = normalized_par * (1.0 - T);
-      power_part = (double)MAX_FACTOR/2 + log2(p);
+      power_part = pow(2, (double) MAX_PAR_FACTOR * p);
     }
   }else if(repair_schedule == SAN_PART){
     if(q->num_broken_partition > 0 || q->reduced_num_plausible_patch > 0){
@@ -5037,8 +5041,9 @@ static u32 calculate_score(struct queue_entry* q) {
       double normalized_par = q->num_broken_partition/(double)max_broken_par;
       if(normalized_pat > normalized_par)
         normalized_par = normalized_pat;
+      //double normalized_par = 0.5;
       double p = normalized_par * (1.0 - T);
-      power_part = (double)MAX_FACTOR/2 + log2(p);
+      power_part = pow(2, (double) MAX_PAR_FACTOR * p);
     }
   }
 
@@ -5046,12 +5051,8 @@ static u32 calculate_score(struct queue_entry* q) {
   power_factor *= power_part;
   OKF("FUZZING NEW SEED,reduced num plausible patch: %d, num broken partition: %d, power_part: %lf, power_factor: %lf power score: %d", q->reduced_num_plausible_patch, q->num_broken_partition, power_part, power_factor, perf_score);
 
-  //in case such cases are fuzzed infinitely 
-  q->reduced_num_plausible_patch = q->reduced_num_plausible_patch/2;
-  q->num_broken_partition = q->num_broken_partition/2;
-
   //if(cooling_schedule != SAN_NO || repair_schedule!=0)
-    perf_score *= power_factor;
+  perf_score *= power_factor;
 
   num_fuzzed_test++;
 
@@ -5065,6 +5066,12 @@ static u32 calculate_score(struct queue_entry* q) {
   else
     is_from_interesting_test = false;
   /* Make sure that we don't go over limit. */
+
+  //in case such cases are fuzzed infinitely 
+  q->reduced_num_plausible_patch = q->reduced_num_plausible_patch/2;
+  //q->reduced_num_plausible_patch = 0;
+  q->num_broken_partition = q->num_broken_partition/2;
+  //q->num_broken_partition = 0;
 
   if (perf_score > HAVOC_MAX_MULT * 100) perf_score = HAVOC_MAX_MULT * 100;
 

@@ -1,6 +1,0 @@
-homepage: "https://github.com/bblanchon/ArduinoJson"
-primary_contact: "benoit.blanchon@gmail.com"
-sanitizers:
-  - address
-  - memory
-  - undefined

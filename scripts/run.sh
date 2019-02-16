@@ -50,6 +50,98 @@ make_ffmpeg_project() {
     cd $INITIAL_DIR
 }
 
+make_libxml2_project() {
+    local LINE
+    local BUG_NUMBER
+    local FILED_BUG_NUMBER
+    local LIBXML2_HASH
+    local INITIAL_DIR
+
+    INITIAL_DIR=`pwd`
+
+    BUG_NUMBER=$1
+    while read LINE ;  do
+        FILED_BUG_NUMBER=`echo -n $LINE | cut --delimiter=, --fields=1`
+        if [ x$BUG_NUMBER = x$FILED_BUG_NUMBER ] ; then
+            LIBXML2_HASH=`echo -n $LINE | cut --delimiter=, --fields=2`
+            SANITIZER_TYPE=`echo -n $LINE | cut --delimiter=, --fields=4`
+            break;
+        fi
+    done < $SCRIPT_DIR/../projects/all_issue_ids_libxml2.txt
+
+    if [ x$LIBXML2_HASH != x ] ; then
+        cd $SCRIPT_DIR/../projects/libxml2_$BUG_NUMBER
+        git clone https://github.com/GNOME/libxml2.git
+        cd libxml2
+        git reset --hard $LIBXML2_HASH
+    fi
+
+    # Restore the supposedly original state
+    cd $INITIAL_DIR
+}
+
+make_libchewing_project() {
+    local LINE
+    local BUG_NUMBER
+    local FILED_BUG_NUMBER
+    local LIBCHEWING_HASH
+    local INITIAL_DIR
+
+    INITIAL_DIR=`pwd`
+
+    BUG_NUMBER=$1
+    while read LINE ;  do
+        FILED_BUG_NUMBER=`echo -n $LINE | cut --delimiter=, --fields=1`
+        if [ x$BUG_NUMBER = x$FILED_BUG_NUMBER ] ; then
+            LIBCHEWING_HASH=`echo -n $LINE | cut --delimiter=, --fields=2`
+            SANITIZER_TYPE=`echo -n $LINE | cut --delimiter=, --fields=4`
+            break;
+        fi
+    done < $SCRIPT_DIR/../projects/all_issue_ids_libchewing.txt
+
+    if [ x$LIBCHEWING_HASH != x ] ; then
+        cd $SCRIPT_DIR/../projects/libchewing_$BUG_NUMBER
+        git clone https://github.com/chewing/libchewing.git
+        cd libchewing
+        git reset --hard $LIBCHEWING_HASH
+    fi
+
+    # Restore the supposedly original state
+    cd $INITIAL_DIR
+}
+
+make_libssh_project() {
+    local LINE
+    local BUG_NUMBER
+    local FILED_BUG_NUMBER
+    local LIBSSH_HASH
+    local INITIAL_DIR
+
+    INITIAL_DIR=`pwd`
+
+    BUG_NUMBER=$1
+    while read LINE ;  do
+        FILED_BUG_NUMBER=`echo -n $LINE | cut --delimiter=, --fields=1`
+        if [ x$BUG_NUMBER = x$FILED_BUG_NUMBER ] ; then
+            LIBSSH_HASH=`echo -n $LINE | cut --delimiter=, --fields=2`
+            SANITIZER_TYPE=`echo -n $LINE | cut --delimiter=, --fields=4`
+            break;
+        fi
+    done < $SCRIPT_DIR/../projects/all_issue_ids_libssh.txt
+
+    if [ x$LIBSSH_HASH != x ] ; then
+        cd $SCRIPT_DIR/../projects/libssh_$BUG_NUMBER
+        git clone https://github.com/libssh/libssh-mirror.git libssh
+        cd libssh
+        git reset --hard $LIBSSH_HASH
+    fi
+
+    # Restore the supposedly original state
+    cd $INITIAL_DIR
+}
+
+
+
 make_libarchive_project() {
     local LINE
     local BUG_NUMBER
@@ -203,6 +295,12 @@ build_project() {
 	make_libarchive_project $BUG_NUMBER
     elif [ x$PROJECT_NAME = xopenjpeg ] ; then
 	make_openjpeg_project $BUG_NUMBER
+    elif [ x$PROJECT_NAME = xlibxml2 ] ; then
+        make_libxml2_project $BUG_NUMBER
+    elif [ x$PROJECT_NAME = xlibchewing ] ; then
+        make_libchewing_project $BUG_NUMBER
+    elif [ x$PROJECT_NAME = xlibssh ] ; then
+        make_libssh_project $BUG_NUMBER
     elif [ x$PROJECT_NAME = xproj4 ] ; then
         # In case the 4 in proj4 gets misinterpreted as the bug id
 	if [ x$BUG_NUMBER = x4 ] ; then
@@ -213,7 +311,7 @@ build_project() {
 	make_wireshark_project $BUG_NUMBER
     fi
     python $SCRIPT_DIR/../infra/helper.py build_image $PROJECT_NAME $BUG_NUMBER
-    python $SCRIPT_DIR/../infra/helper.py build_fuzzers --engine afl --core $ASSIGNED_CORE --sanitizer $SANITIZER_TYPE $PROJECT_NAME $BUG_NUMBER
+    python $SCRIPT_DIR/../infra/helper.py build_fuzzers --engine afl --core $ASSIGNED_CORE --sanitizer $SANITIZER_TYPE $PROJECT_NAME $BUG_NUMBER --no_tty
     # For running the fuzzer
     # python $SCRIPT_DIR/../infra/helper.py run_fuzzer "$PROJECT_NAME"_$BUG_NUMBER "$PROJECT_NAME"_fuzzer
 
@@ -271,4 +369,7 @@ docker cp $container_id:/src/scripts/afl.txt $output_dir
 docker cp $container_id:/src/scripts/aflgo.txt $output_dir
 docker cp $container_id:/src/scripts/aflgo_pat.txt $output_dir
 docker cp $container_id:/src/scripts/aflgo_part.txt $output_dir
-docker cp $container_id:/src/scripts/patch $output_dir
+docker cp $container_id:/src/scripts/patches0 $output_dir
+docker cp $container_id:/src/scripts/patches1 $output_dir
+docker cp $container_id:/src/scripts/patches2 $output_dir
+docker cp $container_id:/src/scripts/patches4 $output_dir

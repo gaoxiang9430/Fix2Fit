@@ -348,6 +348,7 @@
 // #define IGNORE_FINDS
 
 #define MAX_FACTOR 8
+#define MAX_PAR_FACTOR 5
 
 /* This enables tracing of the executed CG and CFG edges. In some cases, 
    the CG and CFGs are that LLVM produces are incomplete due to register-

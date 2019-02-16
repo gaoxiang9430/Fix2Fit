@@ -15,14 +15,65 @@
 #
 ################################################################################
 
-mkdir -p build
-pushd build
-cmake -DCMAKE_C_COMPILER="$CC" -DCMAKE_CXX_COMPILER="$CXX" \
-    -DCMAKE_C_FLAGS="$CFLAGS" -DCMAKE_CXX_FLAGS="$CXXFLAGS" \
-    -DWITH_STATIC_LIB=ON ..
-make "-j$(nproc)"
-popd
+#########################################################################
+# For building the target subject
+#########################################################################
 
-$CXX $CXXFLAGS -std=c++11 -Iinclude/ \
-    "$SRC/libssh_server_fuzzer.cc" -o "$OUT/libssh_server_fuzzer" \
-    -lFuzzingEngine ./build/src/libssh.a -Wl,-Bstatic -lcrypto -lz -Wl,-Bdynamic
+# Redefinition to emphasize that we crash the sanitizer upon catching bug
+if [ x$SANITIZER = xundefined ] ; then
+    export CFLAGS=${CFLAGS/\,vptr/}
+    export CXXFLAGS=${CXXFLAGS/\,vptr/}
+fi
+
+export CFLAGS="$CFLAGS  -fsanitize-undefined-trap-on-error"
+export CXXFLAGS="$CXXFLAGS  -fsanitize-undefined-trap-on-error"
+
+export CFLAGS="$CFLAGS -lrt"
+export CXXFLAGS="$CXXFLAGS -lrt -stdlib=libstdc++"
+
+export IS_DOCKER_SINGLE_CORE_MODE=
+#set some environmnent variables for aflgo
+#export AFL_I_DONT_CARE_ABOUT_MISSING_CRASHES=core_pattern
+#export AFL_SKIP_CPUFREQ=
+#export AFL_NO_AFFINITY=
+
+export SUBJECT=libssh
+export BUGGY_FILE=src/session.c
+export DRIVER=/driver
+export BINARY=libssh_server_fuzzer
+export TESTCASE="libssh_testcase"
+
+export F1X_PROJECT_CC=/src/aflgo/afl-clang-fast
+export F1X_PROJECT_CXX=/src/aflgo/afl-clang-fast++
+export CC=f1x-cc
+export CXX=f1x-cxx
+export LDFLAGS=-lpthread
+export LD_LIBRARY_PATH=/usr/local/lib
+export PATH=$PATH:/src/scripts
+
+export PS1='${debian_chroot:+($debian_chroot)}libssh_1182~\h:\w\$ '
+touch /out/distance.cfg.txt
+
+pushd /src/f1x-oss-fuzz/f1x/CInterface/ > /dev/null
+  make
+#  make f1x-aflgo
+popd > /dev/null
+
+export CPLUS_INCLUDE_PATH=/src/libssh/include/
+export C_INCLUDE_PATH=/src/libssh/include/
+export CFLAGS="$CFLAGS -Wno-error -Wno-gnu -Wno-gnu-statement-expression -Wno-gnu-include-next -Wno-incompatible-pointer-types-discards-qualifiers"
+export CXXFLAGS="$CXXFLAGS -Wno-error -Wno-gnu -Wno-gnu-statement-expression -Wno-gnu-include-next -Wno-incompatible-pointer-types-discards-qualifiers"
+
+mkdir /in
+cp /libssh_testcase /in/
+
+cd ../scripts
+if [ x$SANITIZER = xundefined ] ; then
+    echo "./executeAFLGO" >> run.sh
+fi
+if [ x$SANITIZER = xaddress ] ; then
+    echo "./executeAFLGO_address" >> run.sh
+fi
+#bash run.sh
+/bin/bash run.sh
+#exec /bin/bash

@@ -4,5 +4,5 @@ projects/libarchive_*
 projects/openjpeg_*
 projects/proj4_*
 build/
-output/
+output*/
 output_backup/

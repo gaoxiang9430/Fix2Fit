@@ -1,0 +1,12 @@
+nohup ./scripts/run.sh libarchive 806 9 > libarchive_806.log &
+nohup ./scripts/run.sh libarchive 15 10 > libarchive_15.log &
+nohup ./scripts/run.sh libarchive 1627 11 > libarchive_1627.log &
+nohup ./scripts/run.sh libarchive 220 12 > libarchive_220.log &
+nohup ./scripts/run.sh libarchive 237 13 > libarchive_237.log &
+nohup ./scripts/run.sh libarchive 2394 14 > libarchive_2394.log &
+nohup ./scripts/run.sh libarchive 504 15 > libarchive_504.log &
+nohup ./scripts/run.sh libarchive 538 16 > libarchive_538.log &
+nohup ./scripts/run.sh libarchive 551 17 > libarchive_551.log &
+nohup ./scripts/run.sh libarchive 552 18 > libarchive_552.log &
+nohup ./scripts/run.sh libarchive 556 19 > libarchive_556.log &
+nohup ./scripts/run.sh libarchive 577 20 > libarchive_577.log &

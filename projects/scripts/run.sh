@@ -1,5 +1,8 @@
 #/bin/bash
 
+CFLAGS_INSTALL=$CFLAGS
+CXXFLAGS_INSTALL=$CXXFLAGS
+
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 pushd ../$SUBJECT/ > /dev/null
   #make clean
@@ -20,8 +23,8 @@ popd > /dev/null
 location=`cat ../$SUBJECT/location.txt`
 ./afl-generateDistance.sh $location
 
-export CFLAGS="$CFLAGS -distance=$OUT/distance.cfg.txt"
-export CXXFLAGS="$CXXFLAGS -distance=$OUT/distance.cfg.txt"
+#export CFLAGS="$CFLAGS_INSTALL -distance=$OUT/distance.cfg.txt"
+#export CXXFLAGS="$CXXFLAGS_INSTALL -distance=$OUT/distance.cfg.txt"
 
 #execute f1x with fuzzing
 pushd ../$SUBJECT/ > /dev/null
@@ -31,4 +34,3 @@ pushd ../$SUBJECT/ > /dev/null
 popd > /dev/null
 rm -rf f1x_with_fuzzing.txt
 
-./executeAFLGO_address

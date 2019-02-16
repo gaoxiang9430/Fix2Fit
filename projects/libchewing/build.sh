@@ -15,31 +15,59 @@
 #
 ################################################################################
 
-# build the library.
-./autogen.sh
-./configure --disable-shared --enable-static --without-sqlite3
-make clean
-#make -j$(nproc) all
-make install
-cd test 
-make check
-cd ..
+#########################################################################
+# For building the target subject
+#########################################################################
 
-# build your fuzzer(s)
-#make -C test CFLAGS="$CFLAGS -Dmain=stress_main -Drand=get_fuzz_input" stress.o
+# Redefinition to emphasize that we crash the sanitizer upon catching bug
+if [ x$SANITIZER = xundefined ] ; then
+    export CFLAGS=${CFLAGS/\,vptr/}
+    export CXXFLAGS=${CXXFLAGS/\,vptr/}
+fi
 
-#$CC $CFLAGS -c $SRC/chewing_fuzzer_common.c -o $WORK/chewing_fuzzer_common.o
+export CFLAGS="$CFLAGS  -fsanitize-undefined-trap-on-error"
+export CXXFLAGS="$CXXFLAGS  -fsanitize-undefined-trap-on-error"
 
-#for variant in default random_init dynamic_config; do
-#    $CC $CFLAGS -c $SRC/chewing_${variant}_fuzzer.c -o $WORK/chewing_${variant}_fuzzer.o
-#    $CXX $CXXFLAGS \
-#      -o $OUT/chewing_${variant}_fuzzer \
-#      $WORK/chewing_${variant}_fuzzer.o $WORK/chewing_fuzzer_common.o \
-#      test/stress.o test/.libs/libtesthelper.a src/.libs/libchewing.a \
-#      -lFuzzingEngine
-#done
+export CFLAGS="$CFLAGS -lrt"
+export CXXFLAGS="$CXXFLAGS -lrt -stdlib=libstdc++"
 
-# install data files
-#make -j$(nproc) -C data pkgdatadir=$OUT install
+export IS_DOCKER_SINGLE_CORE_MODE=
+#set some environmnent variables for aflgo
+#export AFL_I_DONT_CARE_ABOUT_MISSING_CRASHES=core_pattern
+#export AFL_SKIP_CPUFREQ=
+#export AFL_NO_AFFINITY=
 
-exec "/bin/bash";
+export SUBJECT=libchewing
+export BUGGY_FILE=src/bopomofo.c
+export DRIVER=/driver
+export BINARY=chewing_dynamic_config_fuzzer
+export TESTCASE="libchewing_testcase"
+
+export F1X_PROJECT_CC=/src/aflgo/afl-clang-fast
+export F1X_PROJECT_CXX=/src/aflgo/afl-clang-fast++
+export CC=f1x-cc
+export CXX=f1x-cxx
+export LDFLAGS=-lpthread
+export LD_LIBRARY_PATH=/usr/local/lib
+export PATH=$PATH:/src/scripts
+
+export PS1='${debian_chroot:+($debian_chroot)}libchewing_119~\h:\w\$ '
+touch /out/distance.cfg.txt
+
+pushd /src/f1x-oss-fuzz/f1x/CInterface/ > /dev/null
+  make
+#  make f1x-aflgo
+popd > /dev/null
+
+mkdir /in
+cp /libchewing_testcase /in/
+
+cd ../scripts
+if [ x$SANITIZER = xundefined ] ; then
+    echo "./executeAFLGO" >> run.sh
+fi
+if [ x$SANITIZER = xaddress ] ; then
+    echo "./executeAFLGO_address" >> run.sh
+fi
+#bash run.sh
+/bin/bash run.sh
