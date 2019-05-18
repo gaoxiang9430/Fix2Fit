@@ -64,4 +64,13 @@ mkdir /in
 cp /libarchive_testcase /in/
 touch /out/distance.cfg.txt
 
-exec "/bin/bash"
+cd ../scripts
+if [ x$SANITIZER = xundefined ] ; then
+    echo "./executeAFLGO" >> run.sh
+fi
+if [ x$SANITIZER = xaddress ] ; then
+    echo "./executeAFLGO_address" >> run.sh
+fi
+#bash run.sh
+/bin/bash run.sh
+#exec "/bin/bash"

@@ -2,8 +2,11 @@
 *.pyc
 build/
 logs/
-output/
+output*
 projects/proj4_*
 projects/libarchive_*
 projects/ffmpeg_*
 projects/openjpeg_*
+projects/libxml2_*
+projects/libchewing_*
+projects/libssh_*

@@ -38,9 +38,9 @@ export IS_DOCKER_SINGLE_CORE_MODE=
 #export AFL_NO_AFFINITY=
 
 export SUBJECT=libchewing
-export BUGGY_FILE=src/bopomofo.c
+export BUGGY_FILE
 export DRIVER=/driver
-export BINARY=chewing_dynamic_config_fuzzer
+export BINARY=
 export TESTCASE="libchewing_testcase"
 
 export F1X_PROJECT_CC=/src/aflgo/afl-clang-fast
