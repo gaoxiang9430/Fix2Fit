@@ -66,4 +66,11 @@ mkdir /in
 cp /ffmpeg_testcase /in/
 touch /out/distance.cfg.txt
 
-exec "/bin/bash"
+cd /src/scripts
+if [ x$SANITIZER = xundefined ] ; then
+    echo "./executeAFLGO" >> run.sh
+elif [ x$SANITIZER = xaddress ] ; then
+    echo "./executeAFLGO_address" >> run.sh
+fi
+/bin/bash run.sh
+#exec "/bin/bash"

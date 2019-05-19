@@ -2,7 +2,7 @@
 usage="Usage: ./executeAFLGO.sh"
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-TIME_OUT=24h
+TIME_OUT=8h
 
 INITIAL_LD_LIBRARY_PATH=$LD_LIBRARY_PATH
 

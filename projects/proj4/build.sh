@@ -41,7 +41,7 @@ export SUBJECT=proj4
 export BUGGY_FILE
 export DRIVER=/driver
 export BINARY=standard_fuzzer
-export TESTCASE="proj4_testcase test27 test83"
+export TESTCASE="proj4_testcase"
 
 export F1X_PROJECT_CC=/src/aflgo/afl-clang-fast
 export F1X_PROJECT_CXX=/src/aflgo/afl-clang-fast++
@@ -67,4 +67,11 @@ cp /proj4_testcase /in/
 #  /src/proj4/nad/testvarious /src/proj4/src/cs2cs
 #  cp tv_out nad/tv_out.dist
 #popd
-exec "/bin/bash"
+cd /src/scripts
+if [ x$SANITIZER = xundefined ] ; then
+    echo "./executeAFLGO" >> run.sh
+elif [ x$SANITIZER = xaddress ] ; then
+    echo "./executeAFLGO_address" >> run.sh
+fi
+#exec "/bin/bash"
+/bin/bash run.sh

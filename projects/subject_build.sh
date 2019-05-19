@@ -1,19 +1,22 @@
 #!/bin/bash -eu
-# Copyright 2016 Google Inc.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#      http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-#
-################################################################################
+/*
+  This file is part of Fix2Fit.
+  Copyright (C) 2016  Xiang Gao, Sergey Mechtaev, Shin Hwei Tan, Abhik Roychoudhury
+
+  f1x is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 
 #########################################################################
 # For building the target subject
@@ -23,8 +26,6 @@
 if [ x$SANITIZER = xundefined ] ; then
     export CFLAGS=${CFLAGS/\,vptr/}
     export CXXFLAGS=${CXXFLAGS/\,vptr/}
-#   export CFLAGS="$CFLAGS  -fsanitize-undefined-trap-on-error"
-#   export CXXFLAGS="$CXXFLAGS  -fsanitize-undefined-trap-on-error"
 fi
 
 export CFLAGS="$CFLAGS  -fsanitize-undefined-trap-on-error"
@@ -39,17 +40,17 @@ export IS_DOCKER_SINGLE_CORE_MODE=
 #export AFL_SKIP_CPUFREQ=
 #export AFL_NO_AFFINITY=
 
-export SUBJECT=libarchive
-export BUGGY_FILE
+export SUBJECT=
+export BUGGY_FILE=
 export DRIVER=/driver
-export TESTCASE="libarchive_testcase"
-export BINARY=libarchive_fuzzer
+export BINARY=
+export TESTCASE="${SUBJECT}_testcase"
 
 export F1X_PROJECT_CC=/src/aflgo/afl-clang-fast
 export F1X_PROJECT_CXX=/src/aflgo/afl-clang-fast++
 export CC=f1x-cc
 export CXX=f1x-cxx
-#export LDFLAGS=-lpthread
+export LDFLAGS=-lpthread
 export LD_LIBRARY_PATH=/usr/local/lib
 export PATH=$PATH:/src/scripts
 
@@ -59,16 +60,13 @@ pushd /src/f1x-oss-fuzz/f1x/CInterface/ > /dev/null
 popd > /dev/null
 
 mkdir /in
-cp /libarchive_testcase /in/
-touch /out/distance.cfg.txt
+cp /proj4_testcase /in/
 
-cd ../scripts
+cd /src/scripts
 if [ x$SANITIZER = xundefined ] ; then
     echo "./executeAFLGO" >> run.sh
-fi
-if [ x$SANITIZER = xaddress ] ; then
+elif [ x$SANITIZER = xaddress ] ; then
     echo "./executeAFLGO_address" >> run.sh
 fi
-#bash run.sh
-/bin/bash run.sh
 #exec "/bin/bash"
+/bin/bash run.sh
