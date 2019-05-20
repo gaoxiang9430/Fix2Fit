@@ -4,3 +4,6 @@
 [submodule "IntPTI"]
 	path = IntPTI
 	url = git@github.com:domainexpert/IntPTI.git
+[submodule "aflgo"]
+	path = aflgo
+	url = https://github.com/gaoxiang9430/aflgo.git

@@ -48,7 +48,9 @@ pushd build > /dev/null
 cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX=$LLVM_INSTALL_DIR -DCMAKE_BUILD_TYPE=Release -DLLVM_ENABLE_ASSERTIONS=Off -DLLVM_BINUTILS_INCDIR=/usr/include ../src
 make -j$(nproc) install
 popd > /dev/null
+rm -rf $PWD/src
 popd > /dev/null
+
 
 cp $LLVM_BUILD_DIR/lib/libLTO.so /usr/local/lib/libLTO.so
 cp $LLVM_BUILD_DIR/lib/LLVMgold.so /usr/local/lib/LLVMgold.so
@@ -72,9 +74,7 @@ pip3 install networkx
 pip3 install pydot
 pip3 install pydotplus
 
-git clone https://github.com/aflgo/aflgo.git
-mv /afl-fuzz.c /src/aflgo/afl-fuzz.c
-mv /config.h /src/aflgo/config.h
+#git clone https://github.com/aflgo/aflgo.git
 export AFLGO=$PWD/aflgo
 
 # Compile source code

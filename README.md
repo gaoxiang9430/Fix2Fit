@@ -1,14 +1,47 @@
-# OSS-Fuzz Repair: Automated repair on OSS-Fuzz data
+# Fix2Fit: Crash-avoiding Program Repair
 
-Please see `README_OSSFUZZ.md` for the renamed original OSS-Fuzz `README.md`.
+Fix2Fit is an integrated approach for detecting and discarding crashing patches. Fix2Fit fuses test and patch generation into a single process, in which patches are generated with the objective of passing existing tests, and new tests are generated with the objective of filtering out over-fitted patches by distinguishing candidate patches in terms of behavior. The oracle to discard patch candidates is determined by crash-freedom including traditional crash and security vulnerability detected by Sanitizer.
 
-This software is built on top of
-[OSS-Fuzz](https://github.com/google/oss-fuzz). As with OSS-Fuzz, it
-mainly consists of a number of *projects*.  The new projects added to
-the original OSS-Fuzz are for running the automated repair tools on a
-version of software that contains a bug. For example
-`projects/ffmpeg_1298` directory contains the project files for FFmpeg
-bug 1298. The number 1298 is assigned by OSS-Fuzz issue tracker.
+This software is built on top of [OSS-Fuzz](https://github.com/google/oss-fuzz)(please refer `README_OSSFUZZ.md` for the renamed original OSS-Fuzz `README.md`). As with OSS-Fuzz, it mainly fixes the bugs/vulnerabilities detected by fuzzing techniques. Fix2Fit takes inputs the buggy program and a failing test case, generates a set of plausible patches, which fix the bug and does not introduce crash.
+[//]: <> (For example `projects/proj4_1793` directory contains the project files for FFmpeg bug 1793. The number 1793 is assigned by OSS-Fuzz issue tracker.)
+
+### Requirement
+1. Python 2.7
+2. Docker
+
+### Installation
+1. Get Fix2Fit source:
+```
+git clone https://github.com/gaoxiang9430/Fix2Fit.git
+git submodule update --init --recursive
+```
+
+2. Build OSS-fuzz base images
+```
+cd Fix2Fit
+./infra/base-images/all.sh
+```
+
+3. Build Fix2Fit image
+```
+docker build -t gaoxiang9430/fix2fit .
+```
+
+### Runing Example
+1. prepare docker file for subjects
+```
+cd projects
+./prepare_docker.sh [SUBJECT]
+```
+**SUBJECT** is the subject name, such as ffmpeg
+
+2. Run 
+```
+./scripts/run.sh [SUBJECT]  [SUBJECT_ID]  [CPU_ID] 
+```
+**SUBJECT_ID** is the issue id that is assigned by OSS-Fuzz issue tracker (e.g. [1345](https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=1345))
+**CPU_ID** is the CPU id on which you execute this process
+
 
 Here we mention several important files:
 
@@ -44,6 +77,5 @@ Here we mention several important files:
   ```
   will run only the project 3372 of wireshark.
 
-The repository does not contain the source code of the buggy code
-subjects: The code will be automatically downloaded and the right
-commit hash will be checked out.
+The repository does not contain the source code of the buggy code subjects: The code will be automatically downloaded and the right commit hash will be checked out.
+
