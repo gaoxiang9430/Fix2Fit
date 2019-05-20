@@ -38,8 +38,7 @@ cd projects
 2. Run 
 <pre>
 ./scripts/run.sh [SUBJECT]  [SUBJECT_ID]  [CPU_ID] 
-<b>SUBJECT_ID</b> is the issue id that is assigned by OSS-Fuzz issue tracker (e.g. <a herf=(https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=1345)>1345</a>)
-<i><a href="http://manpages.ubuntu.com/manpages/dapper/man1/prename.1.html">rename</a></i>
+<b>SUBJECT_ID</b> is the issue id that is assigned by OSS-Fuzz issue tracker (e.g. <a href=(https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=1345)>1345</a>)
 <b>CPU_ID</b> is the CPU id on which you execute this process
 </pre>
 
