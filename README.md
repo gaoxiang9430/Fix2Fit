@@ -1,8 +1,9 @@
-# Fix2Fit: Crash-avoiding Program Repair ()
+# Fix2Fit: Crash-avoiding Program Repair (Alpha version)
+---
 
 Fix2Fit is an integrated approach for detecting and discarding crashing patches. Fix2Fit fuses test and patch generation into a single process, in which patches are generated with the objective of passing existing tests, and new tests are generated with the objective of filtering out over-fitted patches by distinguishing candidate patches in terms of behavior. The oracle to discard patch candidates is determined by crash-freedom including traditional crash and security vulnerability detected by Sanitizer.
 
-This software is built on top of [OSS-Fuzz](https://github.com/google/oss-fuzz)(please refer `README_OSSFUZZ.md` for the renamed original OSS-Fuzz `README.md`). As with OSS-Fuzz, it mainly fixes the bugs/vulnerabilities detected by fuzzing techniques. Fix2Fit takes inputs the buggy program and a failing test case, generates a set of plausible patches, which fix the bug and does not introduce crash.
+This software is built on top of [OSS-Fuzz](https://github.com/google/oss-fuzz) (please refer `README_OSSFUZZ.md` for the renamed original OSS-Fuzz `README.md`). As with OSS-Fuzz, it mainly fixes the bugs/vulnerabilities detected by fuzzing techniques. Fix2Fit takes inputs the buggy program and a failing test case, generates a set of plausible patches, which fix the bug and does not introduce crash.
 
 ### Requirement
 1. Python 2.7
