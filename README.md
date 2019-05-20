@@ -1,4 +1,4 @@
-# Fix2Fit: Crash-avoiding Program Repair
+# Fix2Fit: Crash-avoiding Program Repair ()
 
 Fix2Fit is an integrated approach for detecting and discarding crashing patches. Fix2Fit fuses test and patch generation into a single process, in which patches are generated with the objective of passing existing tests, and new tests are generated with the objective of filtering out over-fitted patches by distinguishing candidate patches in terms of behavior. The oracle to discard patch candidates is determined by crash-freedom including traditional crash and security vulnerability detected by Sanitizer.
 
@@ -43,6 +43,7 @@ cd projects
 </pre>
 
 
+<!---
 Here we mention several important files:
 
 * `Makefile`: This is used to execute all of the automated repair
@@ -78,4 +79,5 @@ Here we mention several important files:
   will run only the project 3372 of wireshark.
 
 The repository does not contain the source code of the buggy code subjects: The code will be automatically downloaded and the right commit hash will be checked out.
+-->
 
