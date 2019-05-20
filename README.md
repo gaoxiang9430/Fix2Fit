@@ -43,6 +43,19 @@ cd projects
 </pre>
 
 
+### Contributors
+Principal investigator:
+- Abhik Roychoudhury
+
+Developers:
+- Xiang Gao
+- Sergey Mechteav
+
+Contributors:
+- Edwin Lesmana
+- Andrew Santosa
+
+
 <!---
 Here we mention several important files:
 
