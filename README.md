@@ -38,7 +38,7 @@ cd projects
 2. Run 
 <pre>
 ./scripts/run.sh [SUBJECT]  [SUBJECT_ID]  [CPU_ID] 
-<b>SUBJECT_ID</b> is the issue id that is assigned by OSS-Fuzz issue tracker (e.g. <a href=(https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=1345)>1345</a>)
+<b>SUBJECT_ID</b> is the issue id that is assigned by OSS-Fuzz issue tracker (e.g. <a href="https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=1345">1345</a>)
 <b>CPU_ID</b> is the CPU id on which you execute this process
 </pre>
 
