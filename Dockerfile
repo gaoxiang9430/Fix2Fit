@@ -15,7 +15,7 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #FROM gcr.io/oss-fuzz-base/base-builder
-FROM base-builder-3.8.1
+FROM gcr.io/oss-fuzz-base/base-builder
 
 MAINTAINER mechtaev@gmail.com
 ENV DEBIAN_FRONTEND noninteractive

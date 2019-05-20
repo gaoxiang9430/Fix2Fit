@@ -15,7 +15,7 @@
 ################################################################################
 
 #FROM gcr.io/oss-fuzz-base/base-builder
-FROM f1x-oss-fuzz
+FROM gaoxiang9430/fix2fit
 MAINTAINER even.rouault@spatialys.com
 RUN apt-get update && apt-get install -y make autoconf automake libtool build-essential \
     libass-dev libfreetype6-dev libsdl1.2-dev \

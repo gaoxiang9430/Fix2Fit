@@ -15,7 +15,7 @@
 ################################################################################
 
 #FROM gcr.io/oss-fuzz-base/base-builder
-FROM f1x-oss-fuzz
+FROM gaoxiang9430/fix2fit
 MAINTAINER even.rouault@spatialys.com
 RUN apt-get update && apt-get install -y make vim autoconf automake libtool g++
 RUN git clone --depth 1 https://github.com/OSGeo/proj.4 proj4
