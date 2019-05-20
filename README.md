@@ -28,18 +28,20 @@ docker build -t gaoxiang9430/fix2fit .
 
 ### Runing Example
 1. prepare docker file for subjects
-```
+<pre>
 cd projects
 ./prepare_docker.sh [SUBJECT]
-**SUBJECT** is the subject name, such as ffmpeg
-```
+<b>SUBJECT</b> is the subject name, such as ffmpeg
+</pre>
+
 
 2. Run 
-```
+<pre>
 ./scripts/run.sh [SUBJECT]  [SUBJECT_ID]  [CPU_ID] 
-**SUBJECT_ID** is the issue id that is assigned by OSS-Fuzz issue tracker (e.g. [1345](https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=1345))
-**CPU_ID** is the CPU id on which you execute this process
-```
+<b>SUBJECT_ID</b> is the issue id that is assigned by OSS-Fuzz issue tracker (e.g. [<a herf=(https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=1345)>1345</a>])
+<b>CPU_ID</b> is the CPU id on which you execute this process
+</pre>
+
 
 Here we mention several important files:
 
