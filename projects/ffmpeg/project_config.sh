@@ -26,22 +26,10 @@ PKG_CONFIG_PATH="$FFMPEG_DEPS_PATH/lib/pkgconfig" ./configure \
     --cc=$CC --cxx=$CXX --ld="$CXX $CXXFLAGS -std=c++11" \
     --extra-cflags="-I$FFMPEG_DEPS_PATH/include" \
     --extra-ldflags="-L$FFMPEG_DEPS_PATH/lib" \
-    --extra-libs=-lpthread \
     --prefix="$FFMPEG_DEPS_PATH" \
     --pkg-config-flags="--static" \
     --libfuzzer=-lFuzzingEngine \
     --optflags=-O1 \
-    --enable-gpl \
-    --enable-libass \
-    --enable-libfdk-aac \
-    --enable-libfreetype \
-    --enable-libmp3lame \
-    --enable-libopus \
-    --enable-libtheora \
-    --enable-libvorbis \
-    --enable-libvpx \
-    --enable-libx264 \
-    --enable-nonfree \
     --disable-shared
 make clean
-#make -j$(nproc) install
+

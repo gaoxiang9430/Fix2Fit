@@ -25,26 +25,30 @@ ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get update --fix-missing && apt-get autoremove -y
 
-RUN apt-get install -y build-essential cmake zlib1g-dev libtinfo-dev python
+RUN apt-get install -y build-essential cmake zlib1g-dev libtinfo-dev python unzip
 RUN apt-get install -y libboost-filesystem-dev libboost-program-options-dev libboost-log-dev
 
 WORKDIR $SRC
 
-RUN mkdir f1x-oss-fuzz  
+RUN mkdir f1x-oss-fuzz
+RUN mkdir f1x-oss-fuzz/repair/
 
-ADD docs 	f1x-oss-fuzz/docs
-ADD f1x 	f1x-oss-fuzz/f1x
-#ADD infra	f1x-oss-fuzz/infra
-ADD projects	f1x-oss-fuzz/projects
-ADD f1x/demo	f1x-oss-fuzz/f1x/demo
-ADD aflgo	$SRC/aflgo
+#ADD docs 	f1x-oss-fuzz/docs
+ADD infra/repair.zip 	   f1x-oss-fuzz/
+ADD aflgo                  $SRC/aflgo
 ADD scripts/build_aflgo.sh /src/build_aflgo.sh
 
-RUN mkdir f1x-oss-fuzz/f1x/build && cd f1x-oss-fuzz/f1x/build \
-    && cmake .. -DF1X_LLVM=/llvm-3.8.1  \
-    && make && make install
+RUN unzip f1x-oss-fuzz/repair.zip -d f1x-oss-fuzz/repair/
+#RUN mkdir f1x-oss-fuzz/f1x/build && cd f1x-oss-fuzz/f1x/build \
+#    && cmake .. -DF1X_LLVM=/llvm-3.8.1  \
+#    && make && make install
 
-ENV PATH="$SRC/f1x-oss-fuzz/f1x/build/tools:${PATH}"
+ENV C_INCLUDE_PATH="$C_INCLUDE_PATH:/src/f1x-oss-fuzz/repair/include"
+ENV CPLUS_INCLUDE_PATH="$CPLUS_INCLUDE_PATH:/src/f1x-oss-fuzz/repair/include"
+ENV LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/src/f1x-oss-fuzz/repair/lib"
+ENV LIBRARY_PATH="$LD_LIBRARY_PATH:/src/f1x-oss-fuzz/repair/lib"
+
+ENV PATH="$SRC/f1x-oss-fuzz/repair/tools:${PATH}"
 
 RUN chmod u+x $SRC/build_aflgo.sh
 RUN $SRC/build_aflgo.sh
