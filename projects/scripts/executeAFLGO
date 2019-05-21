@@ -2,7 +2,7 @@
 usage="Usage: ./executeAFLGO.sh"
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-TIME_OUT=8h
+TIME_OUT=24h
 
 INITIAL_LD_LIBRARY_PATH=$LD_LIBRARY_PATH
 
@@ -13,45 +13,14 @@ cooling_time=120m
 export LD_LIBRARY_PATH=/out:$LD_LIBRARY_PATH
 prefix_f1x_cmd="f1x -f $BUGGY_FILE -t $TESTCASE -T 15000 -d $DRIVER -b ./project_build.sh -a -P /out -N ${BINARY} -M 16"
 
-f1x_cmd="$prefix_f1x_cmd -o $SCRIPT_DIR/patches0"
+f1x_cmd="$prefix_f1x_cmd -o $SCRIPT_DIR/patches"
 echo $f1x_cmd > $SCRIPT_DIR/f1xcmd.sh
-rm -rf /out0
-mkdir /out0
+rm -rf /out
+mkdir /out
 pushd $SCRIPT_DIR/../$SUBJECT/ >/dev/null
   echo "executing:"
-  echo "ctimeout $TIME_OUT /src/aflgo/afl-fuzz -S ef709ce2 -z no -c $cooling_time -i /in -o /out1 -C -t 1000 -R $SCRIPT_DIR/f1xcmd.sh /out/${BINARY}_profile @@"
-  timeout $TIME_OUT /src/aflgo/afl-fuzz -S ef709ce2 -z no -c $cooling_time -i /in -o /out0 -C -t 1000 -R $SCRIPT_DIR/f1xcmd.sh /out/${BINARY}_profile @@ | tee $SCRIPT_DIR/afl.txt
-popd > /dev/null
-
-f1x_cmd="$prefix_f1x_cmd -o $SCRIPT_DIR/patches1"
-echo $f1x_cmd > $SCRIPT_DIR/f1xcmd.sh
-rm -rf /out1
-mkdir /out1
-pushd $SCRIPT_DIR/../$SUBJECT/ >/dev/null
-  echo "executing:"
-  echo "ctimeout $TIME_OUT /src/aflgo/afl-fuzz -S ef709ce2 -z exp -c $cooling_time -i /in -o /out1 -C -t 1000 -R $SCRIPT_DIR/f1xcmd.sh /out/${BINARY}_profile @@"
-  timeout $TIME_OUT /src/aflgo/afl-fuzz -S ef709ce2 -z exp -c $cooling_time -i /in -o /out1 -C -t 1000 -R $SCRIPT_DIR/f1xcmd.sh /out/${BINARY}_profile @@ | tee $SCRIPT_DIR/aflgo.txt
-popd > /dev/null
-
-
-f1x_cmd="$prefix_f1x_cmd -o $SCRIPT_DIR/patches2"
-echo $f1x_cmd > $SCRIPT_DIR/f1xcmd.sh
-rm -rf /out2
-mkdir /out2
-pushd $SCRIPT_DIR/../$SUBJECT/ >/dev/null
-  echo "executing:"
-  echo "ctimeout $TIME_OUT /src/aflgo/afl-fuzz -S ef709ce2 -z exp -c $cooling_time -i /in -o /out2 -s pat -C -t 1000 -R $SCRIPT_DIR/f1xcmd.sh /out/${BINARY}_profile @@"
-  timeout $TIME_OUT /src/aflgo/afl-fuzz -S ef709ce2 -z exp -c $cooling_time -i /in -o /out2 -s pat -C -t 1000 -R $SCRIPT_DIR/f1xcmd.sh /out/${BINARY}_profile @@ | tee $SCRIPT_DIR/aflgo_pat.txt
-popd > /dev/null
-
-f1x_cmd="$prefix_f1x_cmd -o $SCRIPT_DIR/patches4"
-echo $f1x_cmd > $SCRIPT_DIR/f1xcmd.sh
-rm -rf /out4
-mkdir /out4
-pushd $SCRIPT_DIR/../$SUBJECT/ >/dev/null
-  echo "executing:"
-  echo "ctimeout $TIME_OUT /src/aflgo/afl-fuzz -S ef709ce2 -z exp -c $cooling_time -i /in -o /out4 -s part -C -t 1000 -R $SCRIPT_DIR/f1xcmd.sh /out/${BINARY}_profile @@"
-  timeout $TIME_OUT /src/aflgo/afl-fuzz -S ef709ce2 -z exp -c $cooling_time -i /in -o /out4 -s part -C -t 1000 -R $SCRIPT_DIR/f1xcmd.sh /out/${BINARY}_profile @@ | tee $SCRIPT_DIR/aflgo_part.txt
+  echo "timeout $TIME_OUT /src/aflgo/afl-fuzz -S ef709ce2 -z exp -c $cooling_time -i /in -o /out -s part -C -t 1000 -R $SCRIPT_DIR/f1xcmd.sh /out/${BINARY}_profile @@"
+  timeout $TIME_OUT /src/aflgo/afl-fuzz -S ef709ce2 -z exp -c $cooling_time -i /in -o /out -s part -C -t 1000 -R $SCRIPT_DIR/f1xcmd.sh /out/${BINARY}_profile @@ | tee $SCRIPT_DIR/aflgo_part.txt
 popd > /dev/null
 
 export LD_LIBRARY_PATH=$INITIAL_LD_LIBRARY_PATH

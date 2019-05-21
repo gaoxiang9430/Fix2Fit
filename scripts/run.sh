@@ -26,8 +26,8 @@ make_ffmpeg_project() {
 	FILED_BUG_NUMBER=`echo -n $LINE | cut --delimiter=, --fields=1`
 	if [ x$BUG_NUMBER = x$FILED_BUG_NUMBER ] ; then
 	    FFMPEG_HASH=`echo -n $LINE | cut --delimiter=, --fields=2`
-	    X264_HASH=`echo -n $LINE | cut --delimiter=, --fields=3`
-	    SANITIZER_TYPE=`echo -n $LINE | cut --delimiter=, --fields=4`
+	    X264_HASH=09705c #`echo -n $LINE | cut --delimiter=, --fields=3`
+	    SANITIZER_TYPE=`echo -n $LINE | cut --delimiter=, --fields=3`
 	    break;
 	fi
     done < $SCRIPT_DIR/../projects/all_issue_ids_ffmpeg.txt
@@ -311,7 +311,7 @@ build_project() {
 	make_wireshark_project $BUG_NUMBER
     fi
     python $SCRIPT_DIR/../infra/helper.py build_image $PROJECT_NAME $BUG_NUMBER
-    python $SCRIPT_DIR/../infra/helper.py build_fuzzers --engine afl --core $ASSIGNED_CORE --sanitizer $SANITIZER_TYPE $PROJECT_NAME $BUG_NUMBER --no_tty
+    python $SCRIPT_DIR/../infra/helper.py build_fuzzers --engine afl --core $ASSIGNED_CORE --sanitizer $SANITIZER_TYPE $PROJECT_NAME $BUG_NUMBER #--no_tty
     # For running the fuzzer
     # python $SCRIPT_DIR/../infra/helper.py run_fuzzer "$PROJECT_NAME"_$BUG_NUMBER "$PROJECT_NAME"_fuzzer
 
@@ -363,13 +363,7 @@ container_name=gcr.io/oss-fuzz/${PROJECT_NAME}_${BUG_NUMBER}
 container_id=`docker ps --all | grep ${PROJECT_NAME}_${BUG_NUMBER} | awk '{print $1}'`
 output_dir=$SCRIPT_DIR/../output/${PROJECT_NAME}_${BUG_NUMBER}
 rm -rf $output_dir
-mkdir $output_dir
+mkdir -p $output_dir
 docker cp $container_id:/src/scripts/original.txt $output_dir
-docker cp $container_id:/src/scripts/afl.txt $output_dir
-docker cp $container_id:/src/scripts/aflgo.txt $output_dir
-docker cp $container_id:/src/scripts/aflgo_pat.txt $output_dir
 docker cp $container_id:/src/scripts/aflgo_part.txt $output_dir
-docker cp $container_id:/src/scripts/patches0 $output_dir
-docker cp $container_id:/src/scripts/patches1 $output_dir
-docker cp $container_id:/src/scripts/patches2 $output_dir
-docker cp $container_id:/src/scripts/patches4 $output_dir
+docker cp $container_id:/src/scripts/patches $output_dir

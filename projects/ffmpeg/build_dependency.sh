@@ -1,5 +1,10 @@
 #!/bin/bash
 
+OLD_CC=$CC
+OLD_CXX=$CXX
+OLD_CFLAGS=$CFLAGS
+OLD_CXXFLAGS=$CXXFLAGS
+
 # Disable UBSan vptr since several targets built with -fno-rtti.
 export CC=/usr/local/bin/clang
 export CXX=/usr/local/bin/clang++
@@ -38,6 +43,7 @@ make -j$(nproc)
 make install
 
 cd $SRC/fdk-aac
+git checkout e45ae429b9ca8f234eb861338a75b2d89cde206a
 autoreconf -fiv
 ./configure --prefix="$FFMPEG_DEPS_PATH" --disable-shared
 make clean
@@ -138,3 +144,8 @@ make install
 # Remove shared libraries to avoid accidental linking against them.
 rm $FFMPEG_DEPS_PATH/lib/*.so
 rm $FFMPEG_DEPS_PATH/lib/*.so.*
+
+export CC=$OLD_CC
+export CXX=$OLD_CXX
+export CFLAGS=$OLD_CFLAGS
+export CXXFLAGS=$OLD_CXXFLAGS

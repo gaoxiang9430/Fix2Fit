@@ -41,7 +41,6 @@ PKG_CONFIG_PATH="$FFMPEG_DEPS_PATH/lib/pkgconfig" ./configure \
     --enable-libvorbis \
     --enable-libvpx \
     --enable-libx264 \
-    --enable-libx265 \
     --enable-nonfree \
     --disable-shared
 make clean
