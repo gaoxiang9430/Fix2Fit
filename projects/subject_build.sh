@@ -51,16 +51,15 @@ export F1X_PROJECT_CXX=/src/aflgo/afl-clang-fast++
 export CC=f1x-cc
 export CXX=f1x-cxx
 export LDFLAGS=-lpthread
-export LD_LIBRARY_PATH=/usr/local/lib
 export PATH=$PATH:/src/scripts
 
-pushd /src/f1x-oss-fuzz/f1x/CInterface/ > /dev/null
+pushd /src/f1x-oss-fuzz/repair/CInterface/ > /dev/null
   make
 #  make f1x-aflgo
 popd > /dev/null
 
 mkdir /in
-cp /proj4_testcase /in/
+cp /$TESTCASE /in/
 
 cd /src/scripts
 if [ x$SANITIZER = xundefined ] ; then

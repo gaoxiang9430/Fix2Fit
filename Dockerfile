@@ -38,17 +38,18 @@ ADD infra/repair.zip 	   f1x-oss-fuzz/
 ADD aflgo                  $SRC/aflgo
 ADD scripts/build_aflgo.sh /src/build_aflgo.sh
 
-RUN unzip f1x-oss-fuzz/repair.zip -d f1x-oss-fuzz/repair/
+#ADD f1x                    f1x-oss-fuzz/
 #RUN mkdir f1x-oss-fuzz/f1x/build && cd f1x-oss-fuzz/f1x/build \
 #    && cmake .. -DF1X_LLVM=/llvm-3.8.1  \
 #    && make && make install
 
+RUN unzip f1x-oss-fuzz/repair.zip -d f1x-oss-fuzz/repair/
+RUN rm -rf f1x-oss-fuzz/repair.zip
+RUN cp f1x-oss-fuzz/repair/lib/* /usr/lib/
+
 ENV C_INCLUDE_PATH="$C_INCLUDE_PATH:/src/f1x-oss-fuzz/repair/include"
 ENV CPLUS_INCLUDE_PATH="$CPLUS_INCLUDE_PATH:/src/f1x-oss-fuzz/repair/include"
-ENV LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/src/f1x-oss-fuzz/repair/lib"
-ENV LIBRARY_PATH="$LD_LIBRARY_PATH:/src/f1x-oss-fuzz/repair/lib"
-
-ENV PATH="$SRC/f1x-oss-fuzz/repair/tools:${PATH}"
+ENV PATH="/src/f1x-oss-fuzz/repair/bin/:${PATH}"
 
 RUN chmod u+x $SRC/build_aflgo.sh
 RUN $SRC/build_aflgo.sh

@@ -51,5 +51,9 @@ RUN git clone https://github.com/Distrotech/libtheora.git
 RUN git clone git://git.xiph.org/vorbis.git
 RUN git clone git://git.videolan.org/git/x264.git
 RUN hg clone https://bitbucket.org/multicoreware/x265
+RUN $SRC/build_dependency.sh
+ENV FFMPEG_DEPS_PATH=/src/ffmpeg_deps
+ENV PATH="$FFMPEG_DEPS_PATH/bin:$PATH"
+ENV LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$FFMPEG_DEPS_PATH/lib"
 
 COPY x264_prev x264
