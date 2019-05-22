@@ -1,1 +1,0 @@
-testing substitution of a node with a BOOL2 expression in the synthesizer

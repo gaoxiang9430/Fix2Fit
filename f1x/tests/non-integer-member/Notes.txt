@@ -1,1 +1,0 @@
-Testing non-integer member causing "incompatible types when initializing type" if selected
