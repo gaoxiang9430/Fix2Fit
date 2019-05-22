@@ -1,0 +1,1 @@
+Testing assignment inside if condition

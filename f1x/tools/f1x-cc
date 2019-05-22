@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+#  This file is part of f1x.
+#  Copyright (C) 2016  Sergey Mechtaev, Gao Xiang, Shin Hwei Tan, Abhik Roychoudhury
+#
+#  f1x is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or
+#  (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+if [[ ! -z "$F1X_RUNTIME_H" ]]; then
+    ${F1X_PROJECT_CC:-gcc} $F1X_PROJECT_CFLAGS -include "$F1X_RUNTIME_H" $@ "-L$F1X_RUNTIME_LIB" "-lf1xrt"
+else
+    ${F1X_PROJECT_CC:-gcc} $F1X_PROJECT_CFLAGS $@
+fi

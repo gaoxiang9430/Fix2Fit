@@ -53,7 +53,7 @@ export CC=f1x-cc
 export CXX=f1x-cxx
 export LDFLAGS=-lpthread
 export LD_LIBRARY_PATH="/usr/local/lib:$FFMPEG_DEPS_PATH/lib"
-export PATH=$PATH:/src/scripts
+export PATH=$PATH:/src/scripts:/src/f1x-oss-fuzz/repair/bin
 
 export PS1='${debian_chroot:+($debian_chroot)}SUBJECT_TAG~\h:\w\$ '
 
@@ -72,5 +72,5 @@ if [ x$SANITIZER = xundefined ] ; then
 elif [ x$SANITIZER = xaddress ] ; then
     echo "./executeAFLGO_address" >> run.sh
 fi
-/bin/bash run.sh
-#exec "/bin/bash"
+#/bin/bash run.sh
+exec "/bin/bash"

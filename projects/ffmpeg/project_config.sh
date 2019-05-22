@@ -18,18 +18,13 @@
 rm -f *.gcda
 rm -f src/*.gcda
 
-export FFMPEG_DEPS_PATH=$SRC/ffmpeg_deps
+#export FFMPEG_DEPS_PATH=$SRC/ffmpeg_deps
 
 # Build ffmpeg.
 cd $SRC/ffmpeg
-PKG_CONFIG_PATH="$FFMPEG_DEPS_PATH/lib/pkgconfig" ./configure \
+./configure \
     --cc=$CC --cxx=$CXX --ld="$CXX $CXXFLAGS -std=c++11" \
-    --extra-cflags="-I$FFMPEG_DEPS_PATH/include" \
-    --extra-ldflags="-L$FFMPEG_DEPS_PATH/lib" \
-    --prefix="$FFMPEG_DEPS_PATH" \
-    --pkg-config-flags="--static" \
     --libfuzzer=-lFuzzingEngine \
     --optflags=-O1 \
     --disable-shared
 make clean
-

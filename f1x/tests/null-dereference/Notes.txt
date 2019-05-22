@@ -1,0 +1,3 @@
+Test when a synthesis component causes null dereferencing:
+1. Component inside expression that causes null dereferencing (but may be lazy evaluated)
+2. Component selected from scope

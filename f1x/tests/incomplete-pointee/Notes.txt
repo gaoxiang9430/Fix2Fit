@@ -1,0 +1,1 @@
+Testing that pointers with incomplete types are not selected for pointer airthmetic

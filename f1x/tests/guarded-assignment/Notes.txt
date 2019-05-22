@@ -1,0 +1,1 @@
+Testing handling of assignment that is not a child of a compound statement
