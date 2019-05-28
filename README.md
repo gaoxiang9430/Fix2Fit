@@ -42,6 +42,10 @@ cd projects
 <b>CPU_ID</b> is the CPU id on which you execute this process
 </pre>
 
+### Publication
+**Crash-avoiding Program Repair** Xiang Gao, Sergey Mechtaev, Abhik Roychoudhury [pdf]
+
+ACM SIGSOFT International Symposium on Testing and Analysis (ISSTA) 2019.
 
 ### Contributors
 Principal investigator:
