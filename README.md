@@ -44,8 +44,7 @@ cd projects
 
 ### Publication
 **Crash-avoiding Program Repair** Xiang Gao, Sergey Mechtaev, Abhik Roychoudhury [pdf]
-
-ACM SIGSOFT International Symposium on Testing and Analysis (ISSTA) 2019.
+-ACM SIGSOFT International Symposium on Testing and Analysis (ISSTA) 2019.
 
 ### Contributors
 Principal investigator:
