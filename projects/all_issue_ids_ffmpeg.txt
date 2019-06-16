@@ -1,0 +1,1 @@
+1345,0953736b7e97f6e121a0587a95434bf1857a27da,address,libavcodec/dfa.c:178,ffmpeg_AV_CODEC_ID_DFA_fuzzer
