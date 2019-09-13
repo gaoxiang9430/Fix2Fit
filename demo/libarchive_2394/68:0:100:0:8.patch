@@ -1,0 +1,6 @@
+--- a/libarchive/archive_read_support_format_zip.c
++++ b/libarchive/archive_read_support_format_zip.c
+493c493
+< 			break;
+---
+> 			if ((extra_length != 8)) break;

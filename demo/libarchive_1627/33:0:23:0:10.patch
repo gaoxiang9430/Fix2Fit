@@ -1,0 +1,6 @@
+--- a/libarchive/archive_read_support_format_tar.c
++++ b/libarchive/archive_read_support_format_tar.c
+2244c2244
+< 	if (remaining < 0 || offset < 0) {
+---
+> 	if ((((remaining < 0) || (offset < 0)) || (offset > 10))) {

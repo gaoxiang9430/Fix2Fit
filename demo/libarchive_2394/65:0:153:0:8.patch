@@ -1,0 +1,6 @@
+--- a/libarchive/archive_read_support_format_zip.c
++++ b/libarchive/archive_read_support_format_zip.c
+478c478
+< 			if (zip_entry->local_header_offset == 0xffffffff) {
+---
+> 			if (((zip_entry->local_header_offset == 4294967295U) || (extra_length == 8))) {
