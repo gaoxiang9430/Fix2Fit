@@ -1,6 +1,0 @@
---- a/libavcodec/fmvc.c
-+++ b/libavcodec/fmvc.c
-462c462
-<             if (offset > s->nb_blocks)
----
->             if (((offset > s->nb_blocks) || (s->nb_blocks <= 15)))

@@ -1,0 +1,6 @@
+--- a/libavcodec/dfa.c
++++ b/libavcodec/dfa.c
+178c178
+<             if (frame_end - frame < width + 3)
+---
+>             if ((((long) frame_end - (long) frame) < (width + 13)))

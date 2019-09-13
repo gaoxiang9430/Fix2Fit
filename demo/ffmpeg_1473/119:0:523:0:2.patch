@@ -1,0 +1,6 @@
+--- a/libavcodec/dvbsubdec.c
++++ b/libavcodec/dvbsubdec.c
+1106c1106
+<     if (depth & 0x80) {
+---
+>     if (depth & 0x80 & entry_id < 2) {

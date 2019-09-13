@@ -1,0 +1,6 @@
+--- a/libarchive/archive_read_support_format_zip.c
++++ b/libarchive/archive_read_support_format_zip.c
+454c454
+< 			if (zip_entry->uncompressed_size == 0xffffffff) {
+---
+> 			if ((extra_length <= 8)) {

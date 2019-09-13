@@ -1,6 +1,0 @@
---- a/libavcodec/cdxl.c
-+++ b/libavcodec/cdxl.c
-280c280
-<     if (!encoding && c->palette_size && c->bpp <= 8) {
----
->     if ((((! (encoding == 0) && (c->palette_size == 0)) && (c->bpp <= 8)) && (c->avctx->width <= 12))) {
