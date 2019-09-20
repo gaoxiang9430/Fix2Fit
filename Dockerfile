@@ -26,7 +26,7 @@ ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update --fix-missing && apt-get autoremove -y
 
 RUN apt-get install -y build-essential cmake zlib1g-dev libtinfo-dev python unzip
-RUN apt-get install -y libboost-filesystem-dev libboost-program-options-dev libboost-log-dev
+RUN apt-get install -y libboost-filesystem-dev libboost-program-options-dev libboost-log-dev wget
 
 WORKDIR $SRC
 
@@ -37,6 +37,9 @@ RUN mkdir f1x-oss-fuzz/repair/
 ADD infra/repair.zip 	   f1x-oss-fuzz/
 ADD aflgo                  $SRC/aflgo
 ADD scripts/build_aflgo.sh /src/build_aflgo.sh
+ADD scripts/driver         /driver
+ADD projects/scripts       $SRC/scripts
+ADD scripts/build.sh          /$SRC/build.sh
 
 #ADD f1x                    f1x-oss-fuzz/
 #RUN mkdir f1x-oss-fuzz/f1x/build && cd f1x-oss-fuzz/f1x/build \

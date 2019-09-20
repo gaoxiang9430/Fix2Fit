@@ -1,1 +1,0 @@
-./scripts/run.sh: line 13: /src/f1x-oss-fuzz/f1x/CInterface/main: No such file or directory
