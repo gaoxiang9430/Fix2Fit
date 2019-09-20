@@ -11,25 +11,25 @@ This software is built on top of [OSS-Fuzz](https://github.com/google/oss-fuzz) 
 ### Installation
 1. Get Fix2Fit source:
 ```
-git clone https://github.com/gaoxiang9430/Fix2Fit.git
-git submodule update --init --recursive
+$ git clone https://github.com/gaoxiang9430/Fix2Fit.git
+$ git submodule update --init --recursive
 ```
 
 2. Build OSS-fuzz base images
 ```
-cd Fix2Fit
-./infra/base-images/all.sh
+$ cd Fix2Fit
+$ ./infra/base-images/all.sh
 ```
 
 3. Build Fix2Fit image
 ```
-docker build -t gaoxiang9430/fix2fit .
+$ docker build -t gaoxiang9430/fix2fit .
 ```
 
 ### Runing
 To fix a bug detected by OSS-Fuzz, there are several steps:
 
-1. prepare
+1. Prepare work dir
 <pre>
 <b>$ cd projects</b>
 <b>$ cp -r [SUBJECT] [SUBJECT]_[BUG_ID]</b>
