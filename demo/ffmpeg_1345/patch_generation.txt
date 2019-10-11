@@ -1,0 +1,72 @@
++ PATH=/src/ffmpeg_deps/bin:/src/ffmpeg_deps/bin:/src/llvm-4.0.0/install/bin/:/src/f1x-oss-fuzz/repair/bin/:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/out:/root/.go/bin:/root/go/bin:/src/scripts
++ export LD_LIBRARY_PATH=/tmp/a3c1-681f-5b17-5740:/src/ffmpeg_deps/lib
++ LD_LIBRARY_PATH=/tmp/a3c1-681f-5b17-5740:/src/ffmpeg_deps/lib
++ rm -f /usr/lib/libFuzzingEngine.a
++ echo 'Compiling aflgo to /usr/lib/libFuzzingEngine.a ...'
+Compiling aflgo to /usr/lib/libFuzzingEngine.a ...
++ mkdir -p /work/afl
++ pushd /work/afl
++ f1x-cxx -O1 -fno-omit-frame-pointer -gline-tables-only -DFUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION -fsanitize=address -fsanitize-address-use-after-scope -fsanitize-coverage=trace-pc-guard -stdlib=libc++ -fsanitize-undefined-trap-on-error -fno-sanitize=vptr -lrt -stdlib=libstdc++ -std=c++11 -O2 -c /src/libfuzzer/afl/afl_driver.cpp -I/src/libfuzzer
+aflgo-compiler (yeah!) 2.49b
+^C[2019-Sep-24 23:04:54.004673] [info]	prioritizing search space
+[2019-Sep-24 23:04:54.005302] [info]	candidates evaluated: 0
+[2019-Sep-24 23:04:54.005390] [info]	tests executed: 0
+[2019-Sep-24 23:04:54.005424] [info]	executions with timeout: 0
+[2019-Sep-24 23:04:54.005460] [info]	number of equivalent partition: 0
+[2019-Sep-24 23:04:54.005476] [info]	plausible patches: 0
+[2019-Sep-24 23:04:54.005509] [info]	fix locations: 0
+[2019-Sep-24 23:04:54.005866] [info]	no patch found
+root@03ed43c414f5:/src/ffmpeg# f1x -f libavcodec/dfa.c:178 -t testcase -T 15000 -d /driver -b ./project_build.sh -a -P /out -N ffmpeg_AV_CODEC_ID_DFA_fuzzer -M 16 -o /src/scripts/patches   
+[2019-Sep-24 23:04:58.035618] [info]	intermediate data directory: "/tmp/2dad-eb66-6af2-7aa4"
+[2019-Sep-24 23:04:58.035858] [info]	output data directory: "/src/scripts/patches"
+[2019-Sep-24 23:04:58.036200] [info]	building project and inferring compile commands
+[2019-Sep-24 23:04:58.348943] [info]	using existing compilation database (compile_commands.json)
+[2019-Sep-24 23:11:05.390806] [info]	instrumenting source files for profiling
+[2019-Sep-24 23:11:06.174827] [warning]	profiling instrumentation of "libavcodec/dfa.c" returned non-zero exit code
+[2019-Sep-24 23:11:06.559214] [info]	building project with f1x runtime
+[2019-Sep-24 23:17:16.452599] [info]	profiling project
+[2019-Sep-24 23:17:16.752977] [info]	number of positive tests: 0
+[2019-Sep-24 23:17:16.753015] [info]	number of negative tests: 1
+[2019-Sep-24 23:17:16.753120] [info]	negative tests: [testcase]
+[2019-Sep-24 23:17:16.753203] [info]	binary path /out
+[2019-Sep-24 23:17:16.753222] [info]	binary name ffmpeg_AV_CODEC_ID_DFA_fuzzer
+[2019-Sep-24 23:17:16.774691] [info]	copy profile executable: 0
+[2019-Sep-24 23:17:16.775068] [info]	number of locations: 1
+[2019-Sep-24 23:17:16.775107] [info]	applying transfomation schemas to source files
+[2019-Sep-24 23:17:17.479939] [warning]	transformation returned non-zero exit code
+[2019-Sep-24 23:17:17.480974] [info]	generating search space
+[2019-Sep-24 23:17:17.505085] [info]	original expression is : (((long) frame_end - (long) frame) < (width + 3))
+[2019-Sep-24 23:17:17.505241] [info]	search space size: 2108
+[2019-Sep-24 23:17:17.505271] [info]	compiling analysis runtime
+[2019-Sep-24 23:17:17.674182] [info]	building project with f1x runtime
+[2019-Sep-24 23:23:43.467040] [info]	prioritizing search space
+[2019-Sep-24 23:23:45.094213] [info]	exploration progress: 0%
+[2019-Sep-24 23:23:45.136665] [info]	partition size : 10
+[2019-Sep-24 23:23:45.136863] [info]	plausible patch: "(((long) frame_end - (long) frame) < (width + 3))" ---> "(((long) frame_end - (long) frame) == (width + 3))" in libavcodec/dfa.c:178
+[2019-Sep-24 23:23:45.168700] [info]	partition size : 690
+[2019-Sep-24 23:23:45.168867] [info]	more patches found in libavcodec/dfa.c:178
+[2019-Sep-24 23:23:45.502224] [info]	partition size : 18
+[2019-Sep-24 23:23:45.533847] [info]	partition size : 8
+[2019-Sep-24 23:23:45.565099] [info]	partition size : 8
+[2019-Sep-24 23:23:45.596663] [info]	partition size : 4
+[2019-Sep-24 23:23:45.600404] [info]	exploration progress: 10%
+[2019-Sep-24 23:23:45.604555] [info]	exploration progress: 20%
+[2019-Sep-24 23:23:45.636709] [info]	partition size : 24
+[2019-Sep-24 23:23:45.667536] [info]	partition size : 50
+[2019-Sep-24 23:23:45.699170] [info]	partition size : 2
+[2019-Sep-24 23:23:45.702268] [info]	exploration progress: 30%
+[2019-Sep-24 23:23:45.704792] [info]	exploration progress: 40%
+[2019-Sep-24 23:23:45.704884] [info]	exploration progress: 50%
+[2019-Sep-24 23:23:45.705077] [info]	exploration progress: 60%
+[2019-Sep-24 23:23:45.706387] [info]	exploration progress: 70%
+[2019-Sep-24 23:23:45.709962] [info]	exploration progress: 80%
+[2019-Sep-24 23:23:45.713944] [info]	exploration progress: 90%
+[2019-Sep-24 23:23:45.717972] [info]	computing source diffs
+[2019-Sep-24 23:23:49.436092] [info]	candidates evaluated: 2108
+[2019-Sep-24 23:23:49.436148] [info]	tests executed: 10
+[2019-Sep-24 23:23:49.436164] [info]	executions with timeout: 0
+[2019-Sep-24 23:23:49.436203] [info]	execution speed: 17.4 exe/sec
+[2019-Sep-24 23:23:49.436230] [info]	number of equivalent partition: 9
+[2019-Sep-24 23:23:49.436282] [info]	plausible patches: 814
+[2019-Sep-24 23:23:49.436298] [info]	fix locations: 1
+[2019-Sep-24 23:23:49.440088] [info]	patches successfully generated : "/src/scripts/patches"
