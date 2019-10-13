@@ -15,6 +15,10 @@
 #
 ################################################################################
 
+export FFMPEG_DEPS_PATH=/src/ffmpeg_deps
+export PATH="$FFMPEG_DEPS_PATH/bin:$PATH"
+export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$FFMPEG_DEPS_PATH/lib"
+
 rm -f $LIB_FUZZING_ENGINE
 echo "Compiling aflgo to $LIB_FUZZING_ENGINE ..." 
 mkdir -p $WORK/afl

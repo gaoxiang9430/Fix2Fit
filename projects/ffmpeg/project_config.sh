@@ -18,7 +18,9 @@
 rm -f *.gcda
 rm -f src/*.gcda
 
-#export FFMPEG_DEPS_PATH=$SRC/ffmpeg_deps
+export FFMPEG_DEPS_PATH=/src/ffmpeg_deps
+export PATH="$FFMPEG_DEPS_PATH/bin:$PATH"
+export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$FFMPEG_DEPS_PATH/lib"
 
 # Build ffmpeg.
 cd $SRC/ffmpeg

@@ -25,7 +25,6 @@ if [ x$SANITIZER = xundefined ] ; then
     export CXXFLAGS=${CXXFLAGS/\,vptr/}
 fi
 
-# Disable UBSan vptr since several targets built with -fno-rtti.
 export CFLAGS="$CFLAGS  -fsanitize-undefined-trap-on-error -fno-sanitize=vptr"
 export CXXFLAGS="$CXXFLAGS  -fsanitize-undefined-trap-on-error -fno-sanitize=vptr"
 

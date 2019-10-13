@@ -29,9 +29,9 @@ RUN apt-get install -y git \
 
 # Download and install the latest stable Go.
 ADD https://storage.googleapis.com/golang/getgo/installer_linux $SRC/
-RUN chmod +x $SRC/installer_linux && \
-    SHELL="bash" $SRC/installer_linux && \
-    rm $SRC/installer_linux
+RUN chmod +x $SRC/installer_linux
+RUN SHELL="bash" $SRC/installer_linux
+RUN rm $SRC/installer_linux
 
 # Set up Golang environment variables (copied from /root/.bash_profile).
 ENV GOPATH /root/go
