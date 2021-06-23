@@ -25,40 +25,59 @@ $ ./infra/base-images/all.sh
 ```
 $ docker build -t gaoxiang9430/fix2fit .
 ```
+Alternatively, the pre-compiled docker image can be found in the docker hub
+```
+$ docker pull gaoxiang9430/fix2fit:v0.1
+```
 
 ### Runing
-To fix a bug detected by OSS-Fuzz, there are several steps:
+Create a container and you can find Fix2Fit.py at the /src/script.
+```
+docker run -it gaoxiang9430/fix2fit:v0.1 /bin/bash
+```
+To fix a detected bug, Fix2Fit takes as input the buggy program (path), a set of test cases including at least one failing test, a driver to execute the tests and buggy file. The detailed usage is as follows.
 
-1. Prepare work dir
-<pre>
-<b>$ cd projects</b>
-<b>$ cp -r [SUBJECT] [SUBJECT]_[BUG_ID]</b>
-<i>SUBJECT</i> and <i>BUG_ID</i> are the the <i>project name</i> and <i>bug id</i> in <a href=https://bugs.chromium.org/p/oss-fuzz/issues/list>OSS-Fuzz Issue tracker</a>.
-</pre>
+```
+usage: Fix2Fit.py [-h] -s SOURCE_PATH -t TESTS [TESTS ...] -d DRIVER -f FILE
+                  -b BUILD -c CONFIG -T TIMEOUT -B BINARY [-v] [-C]
 
-2. Create config and build script
-<pre>
-<b>$ cd [SUBJECT]_[BUG_ID]</b>
-<b>create project_config.sh and project_build.sh</b>
-<i>project_config.sh</i> and <i>project_build.sh</i> give the scripts to config and compile [SUBJECT],respectively. Those files can be create by spliting [SUBJECT]/<i>build.sh</i>
-</pre>
-
-3. Configuration for bug
-<pre>
-<b>put the reproducible test case in [SUBJECT]_[BUG_ID] directory and name it as <i>testcase</i></b>
-<b>create a configuration file by specifying BINARY_NAME, BUGGY_COMMIT_ID, etc. Please refer to the <a href=./scripts/template.config>template</a></b>.
-</pre>
-
-4. Run
-<pre>
-<b>$ ./scripts/run.sh [CONFIGURATION_FILE] [CPU_ID] </b>
-<i>CPU_ID</i> is the CPU id on which you execute this process [default 0]
-</pre>
+optional arguments:
+  -h, --help            show this help message and exit
+  -s SOURCE_PATH, --source-path SOURCE_PATH
+                        the path of target project
+  -t TESTS [TESTS ...], --tests TESTS [TESTS ...]
+                        the list of unique test identifiers (e.g. ID1 ID2 ...)
+  -d DRIVER, --driver DRIVER
+                        the path to the test driver. The test driver is
+                        executed from the project root directory
+  -f FILE, --file FILE  the suspicious file that many contain the bug. Fix2Fit
+                        allows to restrict the search space to certain parts
+                        of the source code files. For the arguments --files
+                        main.c:20 lib.c:5-45, the candidate locations will be
+                        restricted to the line 20 of main.c and from the line
+                        5 to the line 45 (inclusive) of lib.c
+  -b BUILD, --build BUILD
+                        the build command. The build command is executed from
+                        the project root directory
+  -c CONFIG, --config CONFIG
+                        the config command. The config command is executed
+                        from the project root directory
+  -T TIMEOUT, --timeout TIMEOUT
+                        the fuzzing execution timeout
+  -B BINARY, --binary BINARY
+                        The path to the binary program from the project root
+                        directory
+  -v, --verbose         show debug information
+  -C, --crash           crash exploration mode (the peruvian rabbit thing)
+```
+If everything works well, it will produce a set of patches at the SOURCE_PATH/patches directory.
 
 ### Runing Example
-<pre>
-<b>$ ./scripts/run.sh ./project/proj4_1793/proj4_1793.config 0 </b>
-</pre>
+We include a demo in the docker image.
+```
+$ cd /benchmark/proj4
+$ python3 /src/scripts/Fix2Fit.py -s /benchmark/proj4/ -t /benchmark/proj4/input/testcase -d /out/standard_fuzzer -f src/pj_init.c:368-394 -b ./build.sh -c ./config.sh -B /out/standard_fuzzer -T 1h -C
+```
 
 ### Publication
 **Crash-avoiding Program Repair** Xiang Gao, Sergey Mechtaev, Abhik Roychoudhury [[pdf]](https://www.comp.nus.edu.sg/~gaoxiang/Fix2Fit.pdf)<br>
@@ -75,4 +94,5 @@ Developers:
 Contributors:
 - Edwin Lesmana
 - Andrew Santosa
+
 
